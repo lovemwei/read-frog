@@ -10,6 +10,8 @@ export const TRANSLATION_NODE_STYLE = [
   "border",
   "textColor",
   "background",
+  "subtleFont",
+  "gradientHover",
 ] as const
 
 export const CUSTOM_TRANSLATION_NODE_ATTRIBUTE = "read-frog-custom-translation-style"

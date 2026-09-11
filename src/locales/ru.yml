@@ -574,6 +574,8 @@ options:
         border: Граница
         textColor: Цвет текста
         background: Фон
+        subtleFont: Приглушённый шрифт
+        gradientHover: Градиент при наведении
       customCSS:
         editor:
           placeholder: |

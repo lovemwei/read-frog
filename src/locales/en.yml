@@ -690,6 +690,8 @@ options:
         border: Border
         textColor: Text color
         background: Background
+        subtleFont: Faded font
+        gradientHover: Gradient on hover
       customCSS:
         editor:
           placeholder: |

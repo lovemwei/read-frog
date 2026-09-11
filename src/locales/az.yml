@@ -690,6 +690,8 @@ options:
         border: Çərçivə
         textColor: Mətn rəngi
         background: Fon
+        subtleFont: Solğun şrift
+        gradientHover: Üzərinə gələndə qradiyent
       customCSS:
         editor:
           placeholder: |

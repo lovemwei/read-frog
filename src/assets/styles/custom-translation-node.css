@@ -43,3 +43,38 @@
   padding: 2px 4px;
   border-radius: 4px;
 }
+
+[data-read-frog-custom-translation-style="subtleFont"] {
+  display: block;
+  opacity: 0.7;
+  font-family:
+    system-ui,
+    -apple-system,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif !important;
+  line-height: inherit;
+}
+
+[data-read-frog-custom-translation-style="gradientHover"] {
+  display: block;
+  opacity: 0.7;
+  font-family:
+    system-ui,
+    -apple-system,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif !important;
+  line-height: inherit;
+  transition: opacity 0.3s ease;
+}
+
+/* On hover: restore opacity and paint the text with a gradient */
+[data-read-frog-custom-translation-style="gradientHover"]:hover {
+  opacity: 1;
+  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}

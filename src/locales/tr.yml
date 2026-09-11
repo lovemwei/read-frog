@@ -574,6 +574,8 @@ options:
         border: Kenarlık
         textColor: Metin rengi
         background: Arka plan
+        subtleFont: Soluk yazı tipi
+        gradientHover: Üzerine gelince degrade
       customCSS:
         editor:
           placeholder: |

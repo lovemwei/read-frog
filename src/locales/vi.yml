@@ -574,6 +574,8 @@ options:
         border: Viền
         textColor: Màu chữ
         background: Nền
+        subtleFont: Phông chữ nhạt
+        gradientHover: Gradient khi di chuột
       customCSS:
         editor:
           placeholder: |

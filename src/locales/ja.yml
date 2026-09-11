@@ -574,6 +574,8 @@ options:
         border: 枠線
         textColor: テキストカラー
         background: 背景
+        subtleFont: 淡いフォント
+        gradientHover: ホバーグラデーション
       customCSS:
         editor:
           placeholder: |

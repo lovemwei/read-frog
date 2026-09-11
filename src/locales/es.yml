@@ -690,6 +690,8 @@ options:
         border: Borde
         textColor: Color del texto
         background: Fondo
+        subtleFont: Fuente atenuada
+        gradientHover: Degradado al pasar el cursor
       customCSS:
         editor:
           placeholder: |

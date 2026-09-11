@@ -690,6 +690,8 @@ options:
         border: 边框
         textColor: 文字颜色
         background: 背景
+        subtleFont: 淡雅字体
+        gradientHover: 悬停渐变
       customCSS:
         editor:
           placeholder: |
