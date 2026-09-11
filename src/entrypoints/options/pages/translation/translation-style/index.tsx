@@ -23,6 +23,19 @@ export function TranslationStyleSection() {
       title={i18n.t("options.translation.translationStyle.title")}
     >
       <ConfigItem
+        title={i18n.t("options.translation.translationStyle.alwaysBreakLine.title")}
+        description={i18n.t("options.translation.translationStyle.alwaysBreakLine.description")}
+      >
+        <Switch
+          checked={translationNodeStyle.alwaysBreakLine}
+          onCheckedChange={(alwaysBreakLine) => {
+            void setTranslateConfig({
+              translationNodeStyle: { ...translationNodeStyle, alwaysBreakLine },
+            })
+          }}
+        />
+      </ConfigItem>
+      <ConfigItem
         title={i18n.t("options.translation.translationStyle.useCustomStyle")}
         description={i18n.t("options.translation.translationStyle.useCustomStyleDescription")}
       >

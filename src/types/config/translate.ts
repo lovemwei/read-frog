@@ -56,6 +56,9 @@ export const translationNodeStyleConfigSchema = z.object({
   preset: translationNodeStylePresetSchema,
   isCustom: z.boolean(),
   customCSS: z.string().max(MAX_CUSTOM_CSS_LENGTH, "Custom CSS cannot exceed 8KB").nullable(),
+  // Default is load-bearing: configs stored before this field existed must still
+  // parse (zod fills the default) instead of falling back to DEFAULT_CONFIG.
+  alwaysBreakLine: z.boolean().default(false),
 })
 
 export type TranslationNodeStyleConfig = z.infer<typeof translationNodeStyleConfigSchema>

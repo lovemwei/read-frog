@@ -180,7 +180,7 @@ export async function insertTranslatedNodeIntoWrapper(
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (forceInlineTranslation) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
-  } else if (forceBlockTranslation) {
+  } else if (forceBlockTranslation || translationNodeStyle.alwaysBreakLine) {
     addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (shortInlineTranslation) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)

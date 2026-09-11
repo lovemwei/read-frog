@@ -118,6 +118,7 @@ export const DEFAULT_CONFIG: Config = {
       preset: TRANSLATION_NODE_STYLE_ON_INSTALLED,
       isCustom: false,
       customCSS: null,
+      alwaysBreakLine: false,
     },
   },
   languageDetection: {

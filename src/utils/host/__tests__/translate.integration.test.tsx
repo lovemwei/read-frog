@@ -3580,6 +3580,31 @@ describe("translate", () => {
       expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
     })
 
+    it("forces short block text onto a new line when alwaysBreakLine is enabled", async () => {
+      const config = structuredClone(BILINGUAL_CONFIG)
+      config.pageTranslation.translationNodeStyle.alwaysBreakLine = true
+
+      render(<p data-testid="test-node">Introduction</p>)
+
+      const node = screen.getByTestId("test-node")
+      await removeOrShowPageTranslation("bilingual", true, config)
+
+      const wrapper = expectTranslationWrapper(node, "bilingual")!
+      expect(wrapper.querySelector("br")).toBeTruthy()
+      expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
+    })
+
+    it("keeps short text inline when alwaysBreakLine is disabled", async () => {
+      render(<p data-testid="test-node">Introduction</p>)
+
+      const node = screen.getByTestId("test-node")
+      await removeOrShowPageTranslation("bilingual", true)
+
+      const wrapper = expectTranslationWrapper(node, "bilingual")!
+      expect(wrapper.querySelector("br")).toBeFalsy()
+      expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
+    })
+
     it("keeps structural force-block priority over the short-text heuristic", async () => {
       render(
         <div data-testid="test-node">
