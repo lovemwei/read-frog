@@ -1,4 +1,3 @@
-import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
 // @vitest-environment jsdom
 
 import type { PromptableProviderRef } from "@/utils/providers/provider-ref"
@@ -20,8 +19,6 @@ const localRef: PromptableProviderRef = {
   } as never,
 }
 
-const hostedRef: PromptableProviderRef = { kind: "local", config: { ...DEFAULT_PROVIDER_CONFIG.openai, apiKey: "unit-test" } }
-
 const webPageContext = {
   url: "https://example.com/article",
   webTitle: "Page title",
@@ -34,40 +31,25 @@ describe("getOrGenerateWebPageSummary", () => {
     vi.mocked(sendMessage).mockResolvedValue("Generated summary")
 
     const { getOrGenerateWebPageSummary } = await import("../webpage-summary")
-    const result = await getOrGenerateWebPageSummary(
-      webPageContext,
-      localRef,
-      true)
+    const result = await getOrGenerateWebPageSummary(webPageContext, localRef, true)
 
     expect(result).toBe("Generated summary")
     expect(sendMessage).toHaveBeenCalledWith("getOrGenerateWebPageSummary", {
       webTitle: "Page title",
       webContent: "Page body",
       providerRef: localRef,
-      
     })
   })
-
-  
-
-  
 
   it("skips the round trip when AI content awareness is off or context is empty", async () => {
     const { sendMessage } = await import("@/utils/message")
     vi.mocked(sendMessage).mockClear()
 
     const { getOrGenerateWebPageSummary } = await import("../webpage-summary")
+    await expect(getOrGenerateWebPageSummary(webPageContext, localRef, false)).resolves.toBeNull()
+    await expect(getOrGenerateWebPageSummary(null, localRef, true)).resolves.toBeNull()
     await expect(
-      getOrGenerateWebPageSummary(webPageContext, localRef, false),
-    ).resolves.toBeNull()
-    await expect(
-      getOrGenerateWebPageSummary(null, localRef, true),
-    ).resolves.toBeNull()
-    await expect(
-      getOrGenerateWebPageSummary(
-        { ...webPageContext, webContent: "  " },
-        localRef,
-        true),
+      getOrGenerateWebPageSummary({ ...webPageContext, webContent: "  " }, localRef, true),
     ).resolves.toBeNull()
 
     expect(sendMessage).not.toHaveBeenCalled()

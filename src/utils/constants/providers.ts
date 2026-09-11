@@ -6,10 +6,8 @@ import type {
   LLMProviderTypes,
   ProviderConfig,
   ProvidersConfig,
-  
 } from "@/types/config/provider"
 import type { Theme } from "@/types/config/theme"
-
 import { camelCase } from "case-anything"
 import customProviderLogo from "@/assets/providers/custom-provider.svg?url&no-inline"
 import customResponsesLogo from "@/assets/providers/custom-responses.svg?url&no-inline"
@@ -17,7 +15,6 @@ import deeplxLogoDark from "@/assets/providers/deeplx-dark.svg?url&no-inline"
 import deeplxLogoLight from "@/assets/providers/deeplx-light.svg?url&no-inline"
 import jalapenoCloudLogo from "@/assets/providers/jalapeno-cloud.png?url&no-inline"
 import tensdaqLogoColor from "@/assets/providers/tensdaq-color.svg?url&no-inline"
-
 import {
   API_PROVIDER_TYPES,
   NON_API_TRANSLATE_PROVIDERS,
@@ -29,7 +26,6 @@ import {
 } from "@/types/config/provider"
 import { omit, pick } from "@/types/utils"
 import { i18n } from "@/utils/i18n"
-
 
 export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
   openrouter: {
@@ -190,7 +186,7 @@ export const PROVIDER_ITEMS: Record<
     logo: (theme: Theme) => string
     name: string
     website: string
-    
+
     /**
      * Where someone signs up for or copies this provider's key. Only providers that set it get
      * the "Get API key" button next to the API key field — absent means no button, because most
@@ -224,14 +220,12 @@ export const PROVIDER_ITEMS: Record<
     name: "Jalapeno Cloud",
     website: "https://www.jalapeno-cloud.ai",
     apiKeyUrl: "https://www.jalapeno-cloud.ai",
-    
   },
   atlascloud: {
     logo: () => customProviderLogo,
     name: "Atlas Cloud",
     website: "https://www.atlascloud.ai",
     apiKeyUrl: "https://www.atlascloud.ai",
-    
   },
   "openai-compatible": {
     logo: () => customProviderLogo,
@@ -395,7 +389,7 @@ export const DEFAULT_PROVIDER_CONFIG = {
     provider: "jalapenocloud",
     baseURL: "https://api.jalapeno-cloud.ai/v1",
     model: DEFAULT_LLM_PROVIDER_MODELS.jalapenocloud,
-    
+
     providerOptions: {
       chat_template_kwargs: {
         thinking: false,
@@ -666,8 +660,8 @@ export const PROVIDER_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>
   atlascloud: DEFAULT_PROVIDER_CONFIG.atlascloud.baseURL,
   siliconflow: DEFAULT_PROVIDER_CONFIG.siliconflow.baseURL,
   tensdaq: DEFAULT_PROVIDER_CONFIG.tensdaq.baseURL,
-  "openai-compatible": "http://localhost:1234/v1",
-  "open-responses": "http://localhost:1234/v1/responses",
+  "openai-compatible": "https://api.example.com/v1",
+  "open-responses": "https://api.example.com/v1/responses",
   openai: "https://api.openai.com/v1",
   azure: "https://<resource>.services.ai.azure.com/openai",
   deepseek: "https://api.deepseek.com",
@@ -749,10 +743,6 @@ export function getProviderItemName(providerType: APIProviderTypes): string {
 
   return i18n.t(PROVIDER_NAME_I18N_KEYS[providerType]) || PROVIDER_ITEMS[providerType].name
 }
-
-
-
-
 
 export const PROVIDER_GROUPS = {
   compatibleProviders: { types: ["openai-compatible", "open-responses"] as const },

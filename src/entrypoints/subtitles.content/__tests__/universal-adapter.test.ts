@@ -1,12 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { SUBTITLES_SOURCE } from "@/utils/constants/subtitles"
 import { OverlaySubtitlesError, ToastSubtitlesError } from "@/utils/subtitles/errors"
 import {
   adPlayingAtom,
   currentTimeMsAtom,
   sourceTrackAtom,
   subtitlesSidebarOpenAtom,
-  subtitlesSourceAtom,
   subtitlesStore,
   translatedTrackAtom,
 } from "../atoms"
@@ -262,9 +260,6 @@ describe("universalVideoAdapter", () => {
 
   // The loading state has no auto-hide of its own, so a wall that only raises a
   // toast used to leave "Loading AI subtitles" pinned to the player forever.
-  
-
-  
 
   // Only the AI request has a control on screen to point at. Anything else has
   // nothing on the player that would explain a toast pinned to that button.
@@ -315,16 +310,6 @@ describe("universalVideoAdapter", () => {
     expect(mocks.showSubtitlesErrorToast).not.toHaveBeenCalled()
     expect(mocks.showAiSubtitlesWallToast).not.toHaveBeenCalled()
   })
-
-  
-
-  
-
-  
-
-  
-
-  
 
   it("disposes translated subtitle download state when navigation starts", () => {
     const { adapter } = createAdapter([])
@@ -492,7 +477,7 @@ describe("universalVideoAdapter", () => {
 
     await (adapter as any).tryAutoStartSubtitles()
 
-    expect(toggleSpy).toHaveBeenCalledExactlyOnceWith(true, "auto")
+    expect(toggleSpy).toHaveBeenCalledExactlyOnceWith(true)
   })
 
   it("leaves subtitles off when neither autoStart nor the learning panel asks", async () => {

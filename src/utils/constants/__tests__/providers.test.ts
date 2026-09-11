@@ -63,8 +63,8 @@ describe("provider constants", () => {
     expect(PROVIDER_URL_PLACEHOLDERS.atlascloud).toBe("https://api.atlascloud.ai/v1")
     expect(PROVIDER_URL_PLACEHOLDERS.azure).toBe("https://<resource>.services.ai.azure.com/openai")
     expect(PROVIDER_URL_PLACEHOLDERS.openai).toBe("https://api.openai.com/v1")
-    expect(PROVIDER_URL_PLACEHOLDERS["openai-compatible"]).toBe("http://localhost:1234/v1")
-    expect(PROVIDER_URL_PLACEHOLDERS["open-responses"]).toBe("http://localhost:1234/v1/responses")
+    expect(PROVIDER_URL_PLACEHOLDERS["openai-compatible"]).toBe("https://api.example.com/v1")
+    expect(PROVIDER_URL_PLACEHOLDERS["open-responses"]).toBe("https://api.example.com/v1/responses")
     expect(PROVIDER_URL_PLACEHOLDERS.openrouter).toBe("https://openrouter.ai/api/v1")
     expect(PROVIDER_URL_PLACEHOLDERS.ollama).toBe("http://127.0.0.1:11434/")
     expect(PROVIDER_URL_PLACEHOLDERS.minimax).toBe("https://api.minimax.io/v1")
@@ -182,9 +182,7 @@ describe("provider constants", () => {
   })
 
   it("groups both protocol adapters under the compatible providers key", () => {
-    expect(PROVIDER_GROUPS.compatibleProviders.types).toEqual(
-      PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
-    )
+    expect(PROVIDER_GROUPS.compatibleProviders.types).toEqual(CUSTOM_MODEL_ONLY_PROVIDER_TYPES)
     expect(PROVIDER_GROUPS).not.toHaveProperty("openaiCompatibleProviders")
   })
 

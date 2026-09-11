@@ -1,6 +1,6 @@
 name: 陪读蛙
 extName: 陪读蛙 - 翻译与学习
-extDescription: 使用自定义服务翻译网页、划词和字幕。数据保存在本地，无账号、会员或统计上报。
+extDescription: 提供 Google、Microsoft 在线翻译及自定义 AI 翻译，配置、密钥和缓存仅本地保存。
 dataTypes:
   string: 文本
   number: 数字
@@ -85,7 +85,7 @@ options:
   apiProviders:
     title: API 提供商
     pageDescription: 配置你自己的服务。设置、密钥和缓存仅保存在本浏览器中；翻译内容只发送给你选择的服务。
-    description: 添加 Read Frog 可以调用的提供商。内置 20 多个，也可以添加兼容 Chat Completions 的自定义 API 和 Open Responses 自定义 API。
+    description: Google 和 Microsoft 提供基础在线翻译。可在此添加自定义 AI 服务，使用在线接口或本机服务。
     configTitle: 提供商配置
     addProvider: 添加提供商
     setApiKeyWarning:
@@ -220,7 +220,7 @@ options:
         videoSubtitles: 翻译视频播放器中随播放出现的字幕。
     languageDetection:
       title: 语言检测
-      description: 影响自动翻译语言检测和朗读语音选择的准确性。
+      description: 识别文本语言，用于翻译和自动翻译判断。
       mode:
         basic: 基础
         llm: LLM
@@ -634,6 +634,7 @@ options:
         outputSchemaRequired: 至少需要一个输出字段
         fieldKeyRequired: 字段名不能为空
         duplicateFieldKey: 字段名不能重复
+    description: 在网页上选择文本时显示工具栏，快速翻译和使用自定义 AI 指令。
   contextMenu:
     title: 右键菜单
     pageDescription: 控制浏览器右键菜单里的 Read Frog 选项。

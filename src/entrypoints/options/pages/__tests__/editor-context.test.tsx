@@ -10,7 +10,6 @@ import { isAPIProviderConfig } from "@/types/config/provider"
 import { configAtom } from "@/utils/atoms/config"
 import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
 const DEFAULT_CONFIG = createConfiguredTestConfig()
-import { BUILT_IN_DICTIONARY_ACTION_ID } from "@/utils/constants/custom-action"
 
 import { getBuiltInDictionaryAction } from "@/utils/custom-actions"
 import {
@@ -22,7 +21,6 @@ import {
 import {
   ActionEditor,
   BuiltInActionEditor,
-  CustomActionEditor,
   useActionEditor,
 } from "../custom-actions/action-config-form/action-editor"
 
@@ -39,19 +37,6 @@ function ActionContextProbe() {
 function ProviderContextProbe() {
   useProviderEditor()
   return null
-}
-
-function DeleteActionProbe() {
-  const deleteAction = useActionEditor().actions.delete
-  if (!deleteAction) {
-    throw new Error("Expected custom action delete command")
-  }
-
-  return (
-    <button type="button" onClick={() => void deleteAction()}>
-      Delete action
-    </button>
-  )
 }
 
 function createConfigStore() {
@@ -105,10 +90,6 @@ describe("editor compound component contexts", () => {
     ).toThrow("ActionEditor.delete is unavailable in this composition")
   })
 
-  
-
-  
-
   it("assigns an action and enables a disabled custom provider through context actions", async () => {
     const store = createConfigStore()
     const config = structuredClone(store.get(configAtom))
@@ -121,6 +102,7 @@ describe("editor compound component contexts", () => {
     config.providersConfig = config.providersConfig.map((provider) =>
       provider.id === providerConfig.id ? { ...provider, enabled: false } : provider,
     )
+    config.selectionToolbar.builtInActions.dictionary.providerId = "deepseek-default"
     seedConfig(store, config)
     const dictionary = getBuiltInDictionaryAction(config.selectionToolbar)
 

@@ -1,5 +1,3 @@
-import { fakeBrowser } from "wxt/testing/fake-browser"
-import { DEFAULT_CONFIG as EMPTY_CONFIG } from "@/utils/constants/config"
 // @vitest-environment jsdom
 import type { ReactElement, ReactNode } from "react"
 import type {
@@ -11,9 +9,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { fakeBrowser } from "wxt/testing/fake-browser"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { configAtom } from "@/utils/atoms/config"
+import { DEFAULT_CONFIG as EMPTY_CONFIG } from "@/utils/constants/config"
 import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
 const DEFAULT_CONFIG = createConfiguredTestConfig()
 DEFAULT_CONFIG.selectionToolbar.features.translate.providerId = "deeplx-default"
@@ -1071,9 +1071,6 @@ describe("selection toolbar requests", () => {
     await waitFor(() => {
       expect(screen.getByTestId("translation-result").textContent).toBe("Context menu result")
     })
-
-    const { sendMessage } = await import("@/utils/message")
-    
   })
 
   it("reuses the same captured session for cross-node context-menu translation", async () => {
@@ -1183,9 +1180,6 @@ describe("selection toolbar requests", () => {
     await waitFor(() => {
       expect(screen.getByTestId("translation-result").textContent).toBe("Shortcut result")
     })
-
-    const { sendMessage } = await import("@/utils/message")
-    
   })
 
   it("opens selection translation from the shortcut when the toolbar UI is disabled", async () => {
@@ -1659,7 +1653,6 @@ describe("selection toolbar requests", () => {
     })
     expect(streamBackgroundStructuredObjectMock.mock.calls[0]?.[0]).toMatchObject({
       providerId: "openai-default",
-      requestId: expect.stringMatching(/^[0-9a-f-]{36}$/i),
     })
 
     await act(async () => {
@@ -1692,9 +1685,6 @@ describe("selection toolbar requests", () => {
     await waitFor(() => {
       expect(streamBackgroundStructuredObjectMock).toHaveBeenCalledTimes(2)
     })
-    expect(streamBackgroundStructuredObjectMock.mock.calls[1]?.[0].requestId).not.toBe(
-      streamBackgroundStructuredObjectMock.mock.calls[0]?.[0].requestId,
-    )
 
     expect(screen.getByTestId("selection-popover-content")).toBe(content)
     expect(screen.getByRole("button", { name: "Unpin popover" })).toHaveAttribute(
@@ -1764,9 +1754,6 @@ describe("selection toolbar requests", () => {
       "Selected text inside a paragraph.",
     )
     expect(toastAddMock).not.toHaveBeenCalled()
-
-    const { sendMessage } = await import("@/utils/message")
-    
   })
 
   it("renders a custom action footer tool button that opens the action options", async () => {
@@ -1850,9 +1837,6 @@ describe("selection toolbar requests", () => {
       title: "options.selectionToolbar.errors.missingSelection",
     })
     expect(streamBackgroundStructuredObjectMock).not.toHaveBeenCalled()
-
-    const { sendMessage } = await import("@/utils/message")
-    
   })
 
   it("does not rerun custom action requests on passive config refresh, but reruns when request values change", async () => {
@@ -2099,9 +2083,6 @@ describe("selection toolbar requests", () => {
     expect(alert).toHaveTextContent("options.selectionToolbar.errors.customActionFailed")
     expect(alert).toHaveTextContent("options.selectionToolbar.errors.missingSelection")
     expect(streamBackgroundStructuredObjectMock).not.toHaveBeenCalled()
-
-    const { sendMessage } = await import("@/utils/message")
-    
   })
 
   it("renders custom action errors inline and clears them after a successful rerun", async () => {

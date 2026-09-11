@@ -1,6 +1,6 @@
 name: 読書カエル
 extName: 読書カエル - 翻訳して学ぶ
-extDescription: Translate pages, selections and subtitles with your own provider. Local storage, without accounts, subscriptions or analytics.
+extDescription: Google, Microsoft and custom AI translation. Settings, keys and caches are stored locally.
 dataTypes:
   string: テキスト
   number: 数値
@@ -85,7 +85,7 @@ options:
   apiProviders:
     title: APIプロバイダー
     pageDescription: Configure your own service. Settings, keys and caches stay in this browser; text is sent only to the service you choose.
-    description: Read Frog が呼び出せるプロバイダーを追加します。20 以上を内蔵し、Chat Completions 互換 API と Open Responses API をカスタム追加できます。
+    description: Google and Microsoft provide basic online translation. Add optional custom AI providers using online or local endpoints.
     configTitle: プロバイダー設定
     addProvider: プロバイダーを追加
     setApiKeyWarning:
@@ -219,7 +219,7 @@ options:
         videoSubtitles: 動画プレーヤーに表示される字幕を翻訳します。
     languageDetection:
       title: 言語検出
-      description: 自動翻訳の言語検出と読み上げの音声選択精度に影響します。
+      description: Identifies the text language for translation and automatic translation rules.
       mode:
         basic: 基本
         llm: LLM
@@ -518,6 +518,7 @@ options:
         outputSchemaRequired: 少なくとも1つの出力フィールドを追加してください
         fieldKeyRequired: フィールド名は必須です
         duplicateFieldKey: フィールド名は一意である必要があります
+    description: Show a toolbar for selected text to translate or run custom AI actions.
   contextMenu:
     title: コンテキストメニュー
     pageDescription: ブラウザーの右クリックメニューに表示される Read Frog の項目を設定します。

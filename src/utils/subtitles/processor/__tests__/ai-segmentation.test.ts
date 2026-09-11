@@ -7,12 +7,6 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@/utils/message", () => ({ sendMessage: mocks.sendMessage }))
 
-const HOSTED_REF = {
-  kind: "system" as const,
-  providerId: "read-frog-advance-ai" as const,
-  modelTier: "advance" as const,
-  modelRevision: "advance-r1",
-}
 const LOCAL_REF = { kind: "local" as const, config: { id: "openai-default" } as never }
 
 /** `chars` characters of text per fragment, one second apart. */
@@ -38,10 +32,6 @@ describe("aiSegmentBlock oversize handling", () => {
     )
   })
 
-  
-
-  
-
   it("never splits a local provider, which has no prompt cap", async () => {
     const { aiSegmentBlock } = await import("../ai-segmentation")
 
@@ -49,6 +39,4 @@ describe("aiSegmentBlock oversize handling", () => {
 
     expect(mocks.sendMessage).toHaveBeenCalledTimes(1)
   })
-
-  
 })

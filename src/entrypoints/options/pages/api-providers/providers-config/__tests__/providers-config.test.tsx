@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
 
 import type { ReactNode } from "react"
-import { fireEvent, render, screen, within } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { ProvidersConfig } from "@/entrypoints/options/pages/api-providers/providers-config"
-
 
 const {
   anchoredToastAddMock,
@@ -159,43 +158,7 @@ vi.mock("@/components/llm-providers/use-hosted-ai-status", () => ({
   useHostedAiStatus: () => hostedAiState.value,
 }))
 
-function makeUltraAccessStatus(accessAllowed: boolean) {
-  // A denial carries its reason: the server answers the advance tier of a
-  // non-Ultra account with `ultra_required`, never with a bare accessAllowed
-  // flag. The panel locks on the reason, so a fixture without one models a
-  // state the wire cannot produce.
-  //
-  // `requiresUltra` is left off deliberately. The real wire sets it on every
-  // advance tier, but it renders the Ultra badge inside the row's <label>,
-  // which then becomes part of the switch's accessible name and breaks the
-  // `getByRole("switch", { name })` queries below. These cases are about
-  // locking, not badging — the badge has its own test above.
-  const advance = accessAllowed
-    ? { accessAllowed: true, available: true, unavailableReason: null }
-    : { accessAllowed: false, available: false, unavailableReason: "ultra_required" as const }
-  return {
-    credits: [],
-    features: {
-      pageTranslation: { advance },
-      selectionTranslation: { advance },
-      noteSuggestion: { advance },
-      customAction: { advance },
-      videoSubtitles: { advance },
-      inputTranslation: { advance },
-      languageDetection: { advance },
-    },
-  }
-}
-
 /** Must mirror the built-in hosted assignment rows, except dynamic custom actions. */
-const BUILT_IN_ASSIGNMENT_LABELS = [
-  "feature.pageTranslation",
-  "feature.videoSubtitles",
-  "feature.selectionTranslation",
-  "feature.inputTranslation",
-  "feature.noteSuggestion",
-  "options.apiProviders.languageDetection.title",
-] as const
 
 vi.mock("@/utils/i18n", () => ({
   i18n: {
@@ -269,26 +232,8 @@ describe("ProvidersConfig", () => {
     })
   })
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
   it("opens the provider a ?provider= deep link names", () => {
-    testState.selectedProviderId = BUILT_IN_AI_PROVIDER_ID
+    testState.selectedProviderId = ""
 
     renderProvidersConfig(`/api-providers?provider=${providerConfig.id}`)
 
@@ -296,10 +241,10 @@ describe("ProvidersConfig", () => {
   })
 
   it("keeps the current selection when the deep link names an unknown provider", () => {
-    testState.selectedProviderId = BUILT_IN_AI_PROVIDER_ID
+    testState.selectedProviderId = ""
 
     renderProvidersConfig("/api-providers?provider=deleted-provider")
 
-    expect(testState.selectedProviderId).toBe(BUILT_IN_AI_PROVIDER_ID)
+    expect(testState.selectedProviderId).toBe("")
   })
 })

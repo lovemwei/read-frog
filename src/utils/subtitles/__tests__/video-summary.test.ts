@@ -60,27 +60,28 @@ function localRef(model: string) {
       apiKey: "test-key",
       model: { model, isCustomModel: false, customModel: null },
     },
-  } as unknown as VideoSummaryProviderRef
+  } as unknown as NonNullable<VideoSummaryProviderRef>
 }
 
-function systemRef(providerId: string) {
+function namedProviderRef(providerId: string) {
+  const ref = localRef("model")
   return {
-    kind: "system",
+    ...ref,
     id: providerId,
     name: providerId,
-    modelTier: "standard",
-  } as unknown as VideoSummaryProviderRef
+    config: { ...ref.config, id: providerId, name: providerId },
+  }
 }
 
 describe("videoSummaryQueryKey", () => {
   it("separates the cache per video, language and provider", () => {
-    const ref = systemRef("built-in-ai")
+    const ref = namedProviderRef("built-in-ai")
     const base = videoSummaryQueryKey("video-1", "cmn", ref)
 
     expect(hashKey(base)).not.toBe(hashKey(videoSummaryQueryKey("video-2", "cmn", ref)))
     expect(hashKey(base)).not.toBe(hashKey(videoSummaryQueryKey("video-1", "eng", ref)))
     expect(hashKey(base)).not.toBe(
-      hashKey(videoSummaryQueryKey("video-1", "cmn", systemRef("other"))),
+      hashKey(videoSummaryQueryKey("video-1", "cmn", namedProviderRef("other"))),
     )
     expect(hashKey(base)).toBe(hashKey(videoSummaryQueryKey("video-1", "cmn", ref)))
   })
@@ -92,21 +93,12 @@ describe("videoSummaryQueryKey", () => {
     expect(hashKey(before)).not.toBe(hashKey(after))
   })
 
-  it("hashes the same regardless of the order fields were written in", () => {
-    const a = videoSummaryQueryKey("video-1", "cmn", {
-      kind: "system",
-      id: "built-in-ai",
-      name: "built-in-ai",
-      modelTier: "standard",
-    } as unknown as VideoSummaryProviderRef)
-    const b = videoSummaryQueryKey("video-1", "cmn", {
-      modelTier: "standard",
-      name: "built-in-ai",
-      id: "built-in-ai",
-      kind: "system",
-    } as unknown as VideoSummaryProviderRef)
-
-    expect(hashKey(a)).toBe(hashKey(b))
+  it("hashes the same regardless of outer reference field order", () => {
+    const ref = namedProviderRef("custom")
+    const reordered = { config: ref.config, name: ref.name, id: ref.id, kind: ref.kind }
+    expect(hashKey(videoSummaryQueryKey("video-1", "cmn", ref))).toBe(
+      hashKey(videoSummaryQueryKey("video-1", "cmn", reordered)),
+    )
   })
 })
 

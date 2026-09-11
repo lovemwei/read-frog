@@ -1,4 +1,3 @@
-import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
 import type { PromptableProviderRef } from "@/utils/providers/provider-ref"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -21,7 +20,17 @@ vi.mock("../background-stream", () => {
   throw new Error("Video summary cache handlers must not initialize generation")
 })
 
-const providerRef: PromptableProviderRef = { kind: "local", config: { ...DEFAULT_PROVIDER_CONFIG.openai, apiKey: "unit-test" } }
+const providerRef: PromptableProviderRef = {
+  kind: "local",
+  config: {
+    id: "custom",
+    name: "Custom",
+    enabled: true,
+    provider: "openai-compatible",
+    baseURL: "http://localhost:1234/v1",
+    model: { model: "use-custom-model", isCustomModel: true, customModel: "test-model" },
+  },
+}
 const request = { transcript: "Video transcript", targetLanguage: "English", providerRef }
 
 function handler(name: string) {
@@ -56,7 +65,7 @@ describe("video summary cache handlers", () => {
 
   it("reads entries written under the existing video summary cache key", async () => {
     // Frozen key from the pre-extraction handler for the fixture above.
-    const existingKey = "958c70bddad760bf24d1fe288965fa2c3ade57aca94024932082af53c3b97494"
+    const existingKey = "49b938525436fc902ca9ad5c9e757aac08f45e62ec21710c4093403a559f9337"
     mocks.get.mockImplementation(async (key) =>
       key === existingKey ? { summary: "Existing summary" } : undefined,
     )

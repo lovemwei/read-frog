@@ -26,7 +26,7 @@ describe("ProviderURLField", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("id", "url")
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
-      "http://localhost:1234/v1/responses",
+      "https://api.example.com/v1/responses",
     )
   })
 

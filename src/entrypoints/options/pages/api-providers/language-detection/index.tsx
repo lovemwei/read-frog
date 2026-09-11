@@ -1,14 +1,11 @@
 import { useAtom, useAtomValue } from "jotai"
 import { useMemo } from "react"
 import ProviderSelector from "@/components/llm-providers/provider-selector"
-
-
 import { Label } from "@/components/ui/base-ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/base-ui/radio-group"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { resolveLanguageDetectionConfigForModeChange } from "@/utils/config/helpers"
 import { i18n } from "@/utils/i18n"
-
 import { getSelectableProvidersForCapability } from "@/utils/providers/provider-registry"
 import { ConfigItem } from "../../../components/config-item"
 import { ConfigSection } from "../../../components/config-section"
@@ -18,30 +15,26 @@ export function LanguageDetectionConfig() {
   const [languageDetection, setLanguageDetection] = useAtom(configFieldsAtomMap.languageDetection)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
 
-  
   const selectableProviders = useMemo(
     () => getSelectableProvidersForCapability("languageDetection", providersConfig),
     [providersConfig],
   )
-  // Adds the Ultra badge and grays out tiers this account cannot run, matching
-  // every other provider dropdown.
   const providerOptions = selectableProviders
 
-  
   const hasProviders = providerOptions.length > 0
   const isLLMMode = languageDetection.mode === "llm"
 
   const statusIndicator = useMemo(() => {
-    if (!hasProviders) {
-      return {
-        color: "bg-orange-400",
-        text: i18n.t("options.apiProviders.languageDetection.status.noProviders"),
-      }
-    }
     if (!isLLMMode) {
       return {
         color: "bg-blue-400",
         text: i18n.t("options.apiProviders.languageDetection.status.basicRecommend"),
+      }
+    }
+    if (!hasProviders) {
+      return {
+        color: "bg-orange-400",
+        text: i18n.t("options.apiProviders.languageDetection.status.noProviders"),
       }
     }
     return {

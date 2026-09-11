@@ -1,6 +1,6 @@
 name: Read Frog
 extName: Read Frog - Çevir ve Öğren
-extDescription: Translate pages, selections and subtitles with your own provider. Local storage, without accounts, subscriptions or analytics.
+extDescription: Google, Microsoft and custom AI translation. Settings, keys and caches are stored locally.
 dataTypes:
   string: Metin
   number: Sayı
@@ -85,7 +85,7 @@ options:
   apiProviders:
     title: API Sağlayıcıları
     pageDescription: Configure your own service. Settings, keys and caches stay in this browser; text is sent only to the service you choose.
-    description: Read Frog'un çağırabileceği sağlayıcıları ekleyin. 20'den fazlası yerleşik gelir; ayrıca Chat Completions uyumlu ve Open Responses API'lerini özel olarak ekleyebilirsiniz.
+    description: Google and Microsoft provide basic online translation. Add optional custom AI providers using online or local endpoints.
     configTitle: Sağlayıcı yapılandırması
     addProvider: Sağlayıcı ekle
     setApiKeyWarning:
@@ -219,7 +219,7 @@ options:
         videoSubtitles: Video oynatıcıda görünen altyazıları çevirir.
     languageDetection:
       title: Dil algılama
-      description: Otomatik çeviri dil algılama ve Konuşma ses seçimi doğruluğunu etkiler.
+      description: Identifies the text language for translation and automatic translation rules.
       mode:
         basic: Temel
         llm: LLM
@@ -518,6 +518,7 @@ options:
         outputSchemaRequired: En az bir çıktı alanı ekleyin
         fieldKeyRequired: Alan adı gerekli
         duplicateFieldKey: Alan adları benzersiz olmalıdır
+    description: Show a toolbar for selected text to translate or run custom AI actions.
   contextMenu:
     title: Bağlam Menüsü
     pageDescription: Tarayıcının sağ tık menüsündeki Read Frog seçeneklerini yönetin.

@@ -52,7 +52,7 @@ describe("api provider utils", () => {
       expect.objectContaining({
         provider: "open-responses",
         name: "options.apiProviders.providers.name.customResponses",
-        url: "https://api.example.com/v1/responses",
+        url: "",
       }),
     )
   })

@@ -1,6 +1,6 @@
 name: Read Frog
 extName: Read Frog - Dịch và học
-extDescription: Translate pages, selections and subtitles with your own provider. Local storage, without accounts, subscriptions or analytics.
+extDescription: Google, Microsoft and custom AI translation. Settings, keys and caches are stored locally.
 dataTypes:
   string: Văn bản
   number: Số
@@ -85,7 +85,7 @@ options:
   apiProviders:
     title: Nhà cung cấp API
     pageDescription: Configure your own service. Settings, keys and caches stay in this browser; text is sent only to the service you choose.
-    description: Thêm các nhà cung cấp mà Read Frog có thể gọi. Hơn 20 nhà cung cấp được tích hợp sẵn; bạn cũng có thể thêm API tùy chỉnh tương thích Chat Completions và API Open Responses.
+    description: Google and Microsoft provide basic online translation. Add optional custom AI providers using online or local endpoints.
     configTitle: Cấu hình nhà cung cấp
     addProvider: Thêm nhà cung cấp
     setApiKeyWarning:
@@ -219,7 +219,7 @@ options:
         videoSubtitles: Dịch phụ đề hiện ra trong trình phát video.
     languageDetection:
       title: Phát hiện ngôn ngữ
-      description: Ảnh hưởng đến phát hiện ngôn ngữ tự động dịch và độ chính xác chọn giọng nói.
+      description: Identifies the text language for translation and automatic translation rules.
       mode:
         basic: Cơ bản
         llm: LLM
@@ -518,6 +518,7 @@ options:
         outputSchemaRequired: Thêm ít nhất một trường đầu ra
         fieldKeyRequired: Tên trường là bắt buộc
         duplicateFieldKey: Tên trường phải là duy nhất
+    description: Show a toolbar for selected text to translate or run custom AI actions.
   contextMenu:
     title: Menu ngữ cảnh
     pageDescription: Kiểm soát các mục Read Frog trong menu chuột phải của trình duyệt.

@@ -5,6 +5,7 @@ import { render, screen } from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { describe, expect, it, vi } from "vitest"
 import { FeatureProviderSelectorList } from "@/components/llm-providers/feature-provider-selector-list"
+import { ThemeProvider } from "@/components/providers/theme-provider"
 import { configAtom } from "@/utils/atoms/config"
 import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
 const DEFAULT_CONFIG = createConfiguredTestConfig()
@@ -48,8 +49,33 @@ function renderWithConfig(config: Config) {
   )
 }
 
-describe("featureProviderSelectorList feature rows", () => {
-  
+describe("provider selection without a configured AI service", () => {
+  it("renders placeholders for empty selections in both selector layouts", async () => {
+    const { default: ProviderSelector } =
+      await vi.importActual<typeof import("../provider-selector")>("../provider-selector")
+    const view = render(
+      <ThemeProvider forcedTheme="light">
+        <ProviderSelector
+          providers={[]}
+          value=""
+          onChange={() => {}}
+          placeholder="Choose a provider"
+        />
+      </ThemeProvider>,
+    )
+    expect(screen.getByText("Choose a provider")).toBeInTheDocument()
+    view.rerender(
+      <ThemeProvider forcedTheme="light">
+        <ProviderSelector
+          providers={[...DEFAULT_CONFIG.providersConfig]}
+          value=""
+          onChange={() => {}}
+          placeholder="Choose a provider"
+        />
+      </ThemeProvider>,
+    )
+    expect(screen.getByText("Choose a provider")).toBeInTheDocument()
+  })
 })
 
 describe("featureProviderSelectorList custom action filtering", () => {

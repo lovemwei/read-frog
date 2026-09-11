@@ -4,7 +4,6 @@ import type {
 } from "@/types/background-stream"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
-import { defaultRequestRetryPolicy } from "@/utils/request/retry-policy"
 
 const streamTextMock = vi.fn<(...args: any[]) => any>()
 const outputObjectMock = vi.fn<(...args: any[]) => any>((params: Record<string, unknown>) => params)
@@ -135,10 +134,6 @@ describe("background-stream", () => {
     vi.clearAllMocks()
   })
 
-  
-
-  
-
   it("streams structured object output from background", async () => {
     getModelByIdMock.mockResolvedValue("mock-model")
     streamTextMock.mockReturnValue({
@@ -230,14 +225,6 @@ describe("background-stream", () => {
     ).toBe(false)
   })
 
-  
-
-  
-
-  
-
-  
-
   // Denials arrive two ways and they are normalized by different code. Failing
   // to open the stream lands in each path's own `catch` around
   // `normalizeHostedAiError` — four independent call sites, so covering one
@@ -247,7 +234,6 @@ describe("background-stream", () => {
   // translation, selection translation, subtitles and input translation run
   // on. Either one coming back retryable makes the queue burn its whole
   // backoff budget on a pricing wall that never moves.
-  
 
   it("treats structured object streams without finish as protocol errors", async () => {
     getModelByIdMock.mockResolvedValue("mock-model")
@@ -464,7 +450,7 @@ describe("background-stream", () => {
     },
     {
       providerKind: "system",
-      
+
       providerId: "read-frog-free-ai",
       providerConfig: { ...DEFAULT_PROVIDER_CONFIG.openai, id: "read-frog-free-ai" },
     },
@@ -482,27 +468,23 @@ describe("background-stream", () => {
     })
   })
 
-  
-
-  
-
-  
-
   it("ends the thinking phase at the first output delta when no reasoning is emitted", async () => {
     getModelByIdMock.mockResolvedValue("mock-model")
-    streamTextMock.mockReturnValue({ stream: (async function* () {
+    streamTextMock.mockReturnValue({
+      stream: (async function* () {
         yield { type: "start" }
         yield { type: "text-delta", id: "text-1", text: "Hola" }
         yield { type: "text-delta", id: "text-1", text: " mundo" }
         yield { type: "finish", finishReason: "stop" }
-      })() })
+      })(),
+    })
 
     const chunkSnapshots: BackgroundTextStreamSnapshot[] = []
     const { runStreamTextInBackground } = await import("../background-stream")
     await runStreamTextInBackground(
       {
         providerKind: "local",
-        
+
         providerId: "openai-default",
         instructions: "Translate text",
         prompt: "Hello world",
@@ -522,13 +504,15 @@ describe("background-stream", () => {
 
   it("reopens the thinking phase when reasoning arrives after output", async () => {
     getModelByIdMock.mockResolvedValue("mock-model")
-    streamTextMock.mockReturnValue({ stream: (async function* () {
+    streamTextMock.mockReturnValue({
+      stream: (async function* () {
         yield { type: "start" }
         yield { type: "text-delta", id: "text-1", text: "Hola" }
         yield { type: "reasoning-delta", id: "reasoning-1", text: "second guess" }
         yield { type: "text-delta", id: "text-1", text: " mundo" }
         yield { type: "finish", finishReason: "stop" }
-      })() })
+      })(),
+    })
 
     const chunkSnapshots: BackgroundTextStreamSnapshot[] = []
     const { runStreamTextInBackground } = await import("../background-stream")
@@ -536,7 +520,7 @@ describe("background-stream", () => {
       {
         providerKind: "local",
         providerId: "openai-default",
-        
+
         instructions: "Translate text",
         prompt: "Hello world",
       },
@@ -777,16 +761,4 @@ describe("background-stream", () => {
     expect(mockPort.postMessage).not.toHaveBeenCalled()
     expect(mockPort.disconnect).not.toHaveBeenCalled()
   })
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 })

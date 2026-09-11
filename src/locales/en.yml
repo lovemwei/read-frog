@@ -1,6 +1,6 @@
 name: Read Frog
 extName: "Read Frog - Translate & Learn"
-extDescription: Translate pages, selections and subtitles with your own provider. Local storage, without accounts, subscriptions or analytics.
+extDescription: Google, Microsoft and custom AI translation. Settings, keys and caches are stored locally.
 dataTypes:
   string: Text
   number: Number
@@ -85,7 +85,7 @@ options:
   apiProviders:
     title: API Providers
     pageDescription: Configure your own service. Settings, keys and caches stay in this browser; text is sent only to the service you choose.
-    description: Add the providers Read Frog can call. Over 20 are built in, with custom support for Chat Completions-compatible and Open Responses APIs.
+    description: Google and Microsoft provide basic online translation. Add optional custom AI providers using online or local endpoints.
     configTitle: Provider config
     addProvider: Add provider
     setApiKeyWarning:
@@ -220,7 +220,7 @@ options:
         videoSubtitles: Translates subtitles as they appear in a video player.
     languageDetection:
       title: Language detection
-      description: Affects auto-translate language detection and Speaking voice selection accuracy.
+      description: Identifies the text language for translation and automatic translation rules.
       mode:
         basic: Basic
         llm: LLM
@@ -634,6 +634,7 @@ options:
         outputSchemaRequired: Add at least one output field
         fieldKeyRequired: Field name is required
         duplicateFieldKey: Field names must be unique
+    description: Show a toolbar for selected text to translate or run custom AI actions.
   contextMenu:
     title: Context Menu
     pageDescription: Control the Read Frog entries in the browser's right-click menu.

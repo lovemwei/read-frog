@@ -3,7 +3,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG as BASIC_CONFIG } from "@/utils/constants/config"
 import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
-const DEFAULT_CONFIG = { ...BASIC_CONFIG, providersConfig: [...BASIC_CONFIG.providersConfig, DEFAULT_PROVIDER_CONFIG.openai], selectionToolbar: { ...BASIC_CONFIG.selectionToolbar, builtInActions: { dictionary: { ...BASIC_CONFIG.selectionToolbar.builtInActions.dictionary, providerId: "openai-default" } } } }
+const DEFAULT_CONFIG = {
+  ...BASIC_CONFIG,
+  providersConfig: [...BASIC_CONFIG.providersConfig, DEFAULT_PROVIDER_CONFIG.openai],
+  selectionToolbar: {
+    ...BASIC_CONFIG.selectionToolbar,
+    builtInActions: {
+      dictionary: {
+        ...BASIC_CONFIG.selectionToolbar.builtInActions.dictionary,
+        providerId: "openai-default",
+      },
+    },
+  },
+}
 import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
 import { Sha256Hex } from "@/utils/hash"
@@ -484,38 +496,6 @@ describe("translate-text", () => {
         }),
       )
     })
-
-    
-  })
-
-  describe("hosted route mapping", () => {
-    // Every entry point must name its own route: the route decides which
-    // hosted quota gates and bills a system-provider run, and a copy-pasted
-    // wrong route once made page translation gate on the input-translation
-    // quota (and bypass the session's provider-ref snapshot).
-    const llmAiAwareConfig = {
-      ...DEFAULT_CONFIG,
-      pageTranslation: {
-        ...DEFAULT_CONFIG.pageTranslation,
-        providerId: "openai-default",
-        enableAIContentAware: true,
-      },
-      inputTranslation: {
-        ...DEFAULT_CONFIG.inputTranslation,
-        providerId: "openai-default",
-      },
-    }
-
-    beforeEach(() => {
-      mockGetConfigFromStorage.mockResolvedValue(llmAiAwareConfig)
-      mockSendMessage.mockResolvedValue("translated")
-    })
-
-    
-
-    
-
-    
   })
 
   describe("executeTranslate", () => {

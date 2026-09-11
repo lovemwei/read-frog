@@ -2,7 +2,6 @@ import type { ProviderConfig } from "@/types/config/provider"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
-import { isTranslationCancelledError } from "@/utils/request/cancellation"
 
 const onMessageMock = vi.fn<(...args: any[]) => any>()
 const ensureInitializedConfigMock = vi.fn<(...args: any[]) => any>()
@@ -173,7 +172,6 @@ describe("translation queue helpers", () => {
     expect(shouldUseBatchQueue(deeplProvider)).toBe(false)
     expect(shouldUseBatchQueue(deeplxProvider)).toBe(false)
     expect(shouldUseBatchQueue(llmProvider)).toBe(true)
-    
   }, 15_000)
 
   it("registers translation handlers before queue configuration resolves", async () => {
@@ -197,10 +195,6 @@ describe("translation queue helpers", () => {
     ])
     resolveConfig(DEFAULT_CONFIG)
   })
-
-  
-
-  
 
   it("keeps request-local marker zero isolated across LLM batch items", async () => {
     ensureInitializedConfigMock.mockResolvedValue({
@@ -982,71 +976,6 @@ describe("translation queue helpers", () => {
     expect(translationCachePutMock).not.toHaveBeenCalled()
   })
 
-  
-
-  
-
-  
-
-  
-
-  it("bills the webpage summary against the sender's route and stamps an idempotency key", async () => {
-    generateTextForProviderRefMock.mockResolvedValue("hosted summary")
-    generateArticleSummaryMock.mockImplementation(
-      async (
-        _title: string,
-        _text: string,
-        routing: { providerRef: unknown;  },
-        options: {
-          generate: (payload: unknown, runOptions: unknown) => Promise<string>
-        },
-      ) =>
-        options.generate(
-          {
-            ...routing,
-            instructions: "sys",
-            prompt: "user",
-          },
-          { signal: undefined },
-        ),
-    )
-    const hostedRef = {
-      kind: "system" as const,
-      providerId: "read-frog-advance-ai",
-      modelTier: "advance",
-      modelRevision: "advance-r1",
-    }
-    const { setupPageTranslationHandlers } = await import("../page-translation")
-    setupPageTranslationHandlers()
-
-    const handler = getRegisteredMessageHandler("getOrGenerateWebPageSummary")
-    const result = await handler({
-      data: {
-        webTitle: "Page title",
-        webContent: "page body",
-        providerRef: hostedRef,
-        
-      },
-    })
-
-    expect(result).toBe("hosted summary")
-    // The summary is a sub-call of the triggering feature: gate (content side)
-    // and billing (here) must name the same route.
-    expect(generateArticleSummaryMock).toHaveBeenCalledWith(
-      "Page title",
-      "page body",
-      { providerRef: hostedRef,  },
-      expect.objectContaining({ signal: expect.any(AbortSignal) }),
-    )
-    expect(generateTextForProviderRefMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        
-        requestId: expect.stringMatching(/^[0-9a-f]{8}-[0-9a-f-]{27}$/i),
-      }),
-      expect.anything(),
-    )
-  })
-
   it("exposes webpage summary generation as a separate background handler", async () => {
     const { setupPageTranslationHandlers } = await import("../page-translation")
     setupPageTranslationHandlers()
@@ -1088,7 +1017,7 @@ describe("translation queue helpers", () => {
     expect(generateArticleSummaryMock).toHaveBeenCalledWith(
       "Video title",
       "subtitle transcript",
-      { providerRef: { kind: "local", config: llmProvider },  },
+      { providerRef: { kind: "local", config: llmProvider } },
       expect.objectContaining({
         signal: expect.any(AbortSignal),
       }),
