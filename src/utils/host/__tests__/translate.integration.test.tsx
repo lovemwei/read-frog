@@ -3605,6 +3605,28 @@ describe("translate", () => {
       expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
     })
 
+    it("forces a force-inline anchor title onto a new line when alwaysBreakLine is enabled", async () => {
+      const config = structuredClone(BILINGUAL_CONFIG)
+      config.pageTranslation.translationNodeStyle.alwaysBreakLine = true
+
+      render(
+        <div data-testid="test-node">
+          <a href="https://example.com/news" style={{ display: "block" }}>
+            <span>Breaking news headline</span>
+          </a>
+        </div>,
+      )
+
+      const node = screen.getByTestId("test-node")
+      await removeOrShowPageTranslation("bilingual", true, config)
+
+      const anchor = node.querySelector("a")!
+      const deepestSpan = anchor.querySelector("span")!
+      const wrapper = expectTranslationWrapper(deepestSpan, "bilingual")!
+      expect(wrapper.querySelector("br")).toBeTruthy()
+      expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
+    })
+
     it("keeps structural force-block priority over the short-text heuristic", async () => {
       render(
         <div data-testid="test-node">

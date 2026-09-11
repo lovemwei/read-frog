@@ -674,7 +674,7 @@ options:
       description: 設定自訂樣式以區分翻譯結果與原文
       alwaysBreakLine:
         title: 翻譯始終換行
-        description: 讓翻譯文字始終另起一行，短文字也不例外。連結與行內控制項仍保持行內顯示。
+        description: 讓翻譯文字始終另起一行，短文字、連結與標題也不例外。
       useCustomStyle: 使用自訂 CSS 樣式
       useCustomStyleDescription: 支援任意 CSS，包括修改字型、動畫、多語言差異化樣式
       presetStyle: 預設樣式

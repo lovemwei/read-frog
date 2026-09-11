@@ -674,7 +674,7 @@ options:
       description: Set any style you want to distinguish translation results from original text
       alwaysBreakLine:
         title: Always start translations on a new line
-        description: Force translated text onto its own line, even for short text. Links and inline controls stay inline.
+        description: Force translated text onto its own line, even for short text, links, and titles.
       useCustomStyle: Use custom CSS style
       useCustomStyleDescription: Supports any CSS, including fonts, animations, and language-specific styles
       presetStyle: Preset style

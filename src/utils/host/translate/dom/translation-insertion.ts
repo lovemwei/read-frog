@@ -178,9 +178,13 @@ export async function insertTranslatedNodeIntoWrapper(
     addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (siteRuleForceInlineStyle) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
+  } else if (translationNodeStyle.alwaysBreakLine) {
+    // User opt-in wins over the tag/flex inline heuristic (e.g. Reddit titles
+    // are anchor tags), so a forced block layout must apply even to them.
+    addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (forceInlineTranslation) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
-  } else if (forceBlockTranslation || translationNodeStyle.alwaysBreakLine) {
+  } else if (forceBlockTranslation) {
     addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (shortInlineTranslation) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
