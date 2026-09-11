@@ -1,3 +1,4 @@
+import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
 import type { PromptableProviderRef } from "@/utils/providers/provider-ref"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -20,12 +21,7 @@ vi.mock("../background-stream", () => {
   throw new Error("Video summary cache handlers must not initialize generation")
 })
 
-const providerRef: PromptableProviderRef = {
-  kind: "system",
-  providerId: "read-frog-free-ai",
-  modelTier: "normal",
-  modelRevision: "normal-r1",
-}
+const providerRef: PromptableProviderRef = { kind: "local", config: { ...DEFAULT_PROVIDER_CONFIG.openai, apiKey: "unit-test" } }
 const request = { transcript: "Video transcript", targetLanguage: "English", providerRef }
 
 function handler(name: string) {

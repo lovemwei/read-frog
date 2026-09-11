@@ -17,12 +17,7 @@ import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
 let currentPageTranslationSessionId: string | null = null
 let sessionCounter = 0
 
-/**
- * Provider ref resolved once by start()'s availability gate and reused for
- * every request of the session: per-paragraph serialization must not re-read
- * hosted status mid-page (a status blip would fail in-flight paragraphs, and
- * the model revision used for cache identity must stay stable per session).
- */
+
 let currentSessionProviderRef: SerializableProviderRef | null = null
 
 export function beginPageTranslationSession(): string {

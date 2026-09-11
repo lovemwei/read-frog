@@ -4,7 +4,8 @@
 // restore — never rebuilt from an ancestor innerHTML snapshot.
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { CONTENT_WRAPPER_CLASS, TRANSLATION_ONLY_ATTRIBUTE } from "@/utils/constants/dom-labels"
 import { flushBatchedOperations } from "../../../dom/batch-dom"
 import {

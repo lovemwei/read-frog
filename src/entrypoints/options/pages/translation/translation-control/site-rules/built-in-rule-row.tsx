@@ -1,5 +1,5 @@
 import type { SiteRule } from "@/types/config/site-rules"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useAtom } from "jotai"
 import { useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/base-ui/badge"

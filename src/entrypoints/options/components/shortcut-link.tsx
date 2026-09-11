@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { Link } from "react-router"
 import { Button } from "@/components/ui/base-ui/button"
 import { i18n } from "@/utils/i18n"

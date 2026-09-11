@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { GIANT_SPLIT_STRANDED_TEXT_MAX_UNITS } from "@/utils/constants/translate"
 import {
   markExtensionDrivenNodeRemoval,

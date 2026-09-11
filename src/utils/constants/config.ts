@@ -2,7 +2,6 @@ import type { Config } from "@/types/config/config"
 import type { FloatingButtonSide } from "@/types/config/floating-button"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import type { PageTranslateRange } from "@/types/config/translate"
-import { BUILT_IN_AI_PROVIDER_ID } from "@/utils/providers/provider-registry"
 import { BUILT_IN_DICTIONARY_ACTION_ID } from "./custom-action"
 import { CUSTOM_ACTION_TEMPLATES } from "./custom-action-templates"
 import {
@@ -11,7 +10,6 @@ import {
 } from "./prompt"
 import {
   buildDefaultProviderConfigList,
-  DEFAULT_PROVIDER_CONFIG,
   DEFAULT_PROVIDER_CONFIG_LIST,
   MICROSOFT_TRANSLATE_PROVIDER_ID,
 } from "./providers"
@@ -42,29 +40,27 @@ import {
 } from "./translate"
 import { DEFAULT_TRANSLATION_HUB_SHORTCUT_KEY } from "./translation-hub"
 import { TRANSLATION_NODE_STYLE_ON_INSTALLED } from "./translation-node-style"
-import { DEFAULT_TTS_CONFIG } from "./tts"
+
 
 export const CONFIG_STORAGE_KEY = "config"
-export const LAST_SYNCED_CONFIG_STORAGE_KEY = "lastSyncedConfig"
-export const GOOGLE_DRIVE_TOKEN_STORAGE_KEY = "__googleDriveToken"
 
 export const THEME_STORAGE_KEY = "theme"
 export const DEFAULT_DETECTED_CODE = "eng" as const
-export const CONFIG_SCHEMA_VERSION = 100
+export const CONFIG_SCHEMA_VERSION = 102
 
 export const DEFAULT_FLOATING_BUTTON_POSITION = 0.66
 export const DEFAULT_FLOATING_BUTTON_SIDE: FloatingButtonSide = "right"
 
 /**
  * Build the code-owned Dictionary action definition in the current UI locale.
- * Only enabled/provider/Notebase state is persisted; callers merge those mutable
+ * Only enabled/provider state is persisted; callers merge those mutable
  * fields onto this definition at read time.
  */
 export function createDefaultDictionaryAction(): SelectionToolbarCustomAction | null {
   const template = CUSTOM_ACTION_TEMPLATES.find((t) => t.id === "dictionary")
   if (!template) return null
 
-  const action = template.createAction(BUILT_IN_AI_PROVIDER_ID)
+  const action = template.createAction("")
   return {
     ...action,
     id: BUILT_IN_DICTIONARY_ACTION_ID,
@@ -95,7 +91,7 @@ export const DEFAULT_CONFIG: Config = {
     },
     page: {
       range: "all",
-      autoTranslatePatterns: ["news.ycombinator.com"],
+      autoTranslatePatterns: [],
       neverAutoTranslatePatterns: [],
       autoTranslateLanguages: [],
       shortcut: DEFAULT_AUTO_TRANSLATE_SHORTCUT_KEY,
@@ -127,7 +123,7 @@ export const DEFAULT_CONFIG: Config = {
   languageDetection: {
     mode: "basic",
   },
-  tts: DEFAULT_TTS_CONFIG,
+  
   floatingButton: {
     enabled: true,
     position: DEFAULT_FLOATING_BUTTON_POSITION,
@@ -146,25 +142,15 @@ export const DEFAULT_CONFIG: Config = {
         providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
         shortcut: DEFAULT_SELECTION_TRANSLATION_SHORTCUT_KEY,
       },
-      speak: {
-        enabled: true,
-      },
+      
     },
     builtInActions: {
       dictionary: {
         enabled: true,
-        providerId: BUILT_IN_AI_PROVIDER_ID,
+        providerId: "",
       },
     },
     customActions: [],
-    noteSuggestion: {
-      enabled: true,
-      actionId: BUILT_IN_DICTIONARY_ACTION_ID,
-      // Fresh installs always carry the OpenAI default provider; suggestions
-      // start working the moment the user adds their key, with no hosted plan
-      // requirement attached.
-      providerId: DEFAULT_PROVIDER_CONFIG.openai.id,
-    },
   },
   sideContent: {
     width: DEFAULT_SIDE_CONTENT_WIDTH,
@@ -235,11 +221,6 @@ export const DEFAULT_CONFIG: Config = {
   },
 }
 
-/**
- * Translate features start on Microsoft Translate, which is reachable everywhere; a fresh
- * install is moved onto Google Translate afterwards where that endpoint answers — see
- * `selectFreshTranslateProviders`.
- */
 export function buildFreshDefaultConfig(): Config {
   return {
     ...DEFAULT_CONFIG,
@@ -249,7 +230,7 @@ export function buildFreshDefaultConfig(): Config {
       builtInActions: {
         dictionary: {
           enabled: true,
-          providerId: BUILT_IN_AI_PROVIDER_ID,
+          providerId: "",
         },
       },
       customActions: [],

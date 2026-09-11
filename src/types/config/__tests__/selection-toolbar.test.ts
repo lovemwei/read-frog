@@ -15,7 +15,7 @@ const customAction = {
       name: "Result",
       type: "string" as const,
       description: "",
-      speaking: false,
+      
     },
   ],
 }

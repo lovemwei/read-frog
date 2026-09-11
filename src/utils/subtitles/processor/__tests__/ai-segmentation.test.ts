@@ -38,29 +38,9 @@ describe("aiSegmentBlock oversize handling", () => {
     )
   })
 
-  it("splits an oversized hosted request instead of truncating it", async () => {
-    const { aiSegmentBlock } = await import("../ai-segmentation")
+  
 
-    // Comfortably past the 28000-char hosted prompt bound.
-    const fragments = makeFragments(40, 2000)
-    const result = await aiSegmentBlock(fragments, HOSTED_REF)
-
-    expect(mocks.sendMessage.mock.calls.length).toBeGreaterThan(1)
-    for (const [, data] of mocks.sendMessage.mock.calls) {
-      expect(data.jsonContent.length).toBeLessThanOrEqual(28000)
-    }
-    // Splitting must not drop cues — that is the whole reason it is a split and
-    // not a truncation.
-    expect(result).toHaveLength(fragments.length)
-  })
-
-  it("sends an in-budget hosted request as a single call", async () => {
-    const { aiSegmentBlock } = await import("../ai-segmentation")
-
-    await aiSegmentBlock(makeFragments(5, 50), HOSTED_REF)
-
-    expect(mocks.sendMessage).toHaveBeenCalledTimes(1)
-  })
+  
 
   it("never splits a local provider, which has no prompt cap", async () => {
     const { aiSegmentBlock } = await import("../ai-segmentation")
@@ -70,11 +50,5 @@ describe("aiSegmentBlock oversize handling", () => {
     expect(mocks.sendMessage).toHaveBeenCalledTimes(1)
   })
 
-  it("throws rather than truncating when one fragment alone exceeds the cap", async () => {
-    const { aiSegmentBlock } = await import("../ai-segmentation")
-
-    await expect(aiSegmentBlock(makeFragments(1, 40000), HOSTED_REF)).rejects.toThrow(
-      /exceeds the hosted segmentation limit/,
-    )
-  })
+  
 })

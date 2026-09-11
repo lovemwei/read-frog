@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import type { Config } from "@/types/config/config"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { flushBatchedOperations } from "@/utils/host/dom/batch-dom"
 import { translateNodes } from "../core/translation-modes"
 import { shouldSkipAsTargetLanguage } from "../target-language-skip"

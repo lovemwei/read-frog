@@ -66,22 +66,22 @@ describe("selection toolbar page sections", () => {
     })
   })
 
-  it("switches one built-in action at a time, leaving the other enabled", () => {
+  it("switches translation without changing other toolbar settings", () => {
     const selectionToolbar = testState.selectionToolbar!
 
     render(<ActionsSection />)
-    const [translate, speak] = screen.getAllByRole("switch")
+    const translate = screen.getByRole("switch")
 
-    fireEvent.click(speak!)
+    fireEvent.click(translate)
 
     expect(setSelectionToolbarMock).toHaveBeenCalledWith({
       ...selectionToolbar,
       features: {
         ...selectionToolbar.features,
-        speak: { ...selectionToolbar.features.speak, enabled: false },
+        translate: { ...selectionToolbar.features.translate, enabled: false },
       },
     })
-    expect(translate).toBeChecked()
+    expect(screen.getAllByRole("switch")).toHaveLength(1)
   })
 
   it("adds a disabled site without dropping the rest of the toolbar config", () => {

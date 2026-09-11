@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useMutation } from "@tanstack/react-query"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useEffectEvent, useRef } from "react"
@@ -6,9 +6,9 @@ import ProviderIcon from "@/components/provider-icon"
 import { useTheme } from "@/components/providers/theme-provider"
 import { Button } from "@/components/ui/base-ui/button"
 import { anchoredToastManager } from "@/components/ui/base-ui/toast"
-import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
-import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
-import { classifyProviderConfig } from "@/utils/analytics-provider"
+
+
+
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { getProviderConfigById } from "@/utils/config/helpers"
 import { PROVIDER_ITEMS } from "@/utils/constants/providers"
@@ -51,15 +51,7 @@ export function TranslationCard({
     mutationKey: ["translate", providerId],
     meta: { suppressToast: true },
     mutationFn: async (req: NonNullable<typeof request>) => {
-      return await trackFeatureAttempt(
-        {
-          ...createFeatureUsageContext(
-            ANALYTICS_FEATURE.TRANSLATION_HUB,
-            ANALYTICS_SURFACE.TRANSLATION_HUB,
-          ),
-          ...classifyProviderConfig(provider),
-        },
-        async () => {
+      return await (async () => {
           if (!provider) throw new Error("Provider not found")
 
           const myRequestId = ++requestIdRef.current
@@ -80,8 +72,7 @@ export function TranslationCard({
           }
 
           return result
-        },
-      )
+        })()
     },
   })
 

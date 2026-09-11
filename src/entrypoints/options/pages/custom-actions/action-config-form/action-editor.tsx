@@ -25,7 +25,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { patchActionConfigAtom } from "@/utils/atoms/entity-config"
 import {
-  BUILT_IN_DICTIONARY_ACTION_ID,
+  
   getSelectionToolbarCustomActionTokenCellText,
   SELECTION_TOOLBAR_CUSTOM_ACTION_TOKENS,
 } from "@/utils/constants/custom-action"
@@ -35,7 +35,7 @@ import { selectedCustomActionIdAtom } from "../atoms"
 import { formOpts, useAppForm } from "./form"
 import { IconField as IconFormField } from "./icon-field"
 import { NameField as NameFormField } from "./name-field"
-import { NotebaseConnectionField as NotebaseConnectionFormField } from "./notebase-connection-field"
+
 import {
   OutputSchemaField as EditableOutputSchemaFormField,
   ReadOnlyOutputSchemaField,
@@ -195,13 +195,7 @@ function CustomProvider({
     await setSelectionToolbar({
       ...selectionToolbar,
       customActions: updatedActions,
-      noteSuggestion:
-        selectionToolbar.noteSuggestion.actionId === action.id
-          ? {
-              ...selectionToolbar.noteSuggestion,
-              actionId: BUILT_IN_DICTIONARY_ACTION_ID,
-            }
-          : selectionToolbar.noteSuggestion,
+      
     })
     await setSelectedActionId(nextSelectedAction?.id)
   }
@@ -289,10 +283,7 @@ function ReadOnlyOutputSchema() {
   return <ReadOnlyOutputSchemaField outputSchema={action.outputSchema} />
 }
 
-function NotebaseConnectionField() {
-  const { form } = useActionEditor().state
-  return <NotebaseConnectionFormField form={form} />
-}
+
 
 function DuplicateButton() {
   const { duplicate } = useActionEditor().actions
@@ -369,7 +360,7 @@ export const ActionEditor = {
     Editable: EditableOutputSchema,
     ReadOnly: ReadOnlyOutputSchema,
   },
-  NotebaseConnectionField,
+  
   CustomizeButton,
   DuplicateButton,
   DeleteButton,

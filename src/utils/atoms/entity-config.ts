@@ -3,7 +3,7 @@ import type { SelectionToolbarCustomAction } from "@/types/config/selection-tool
 import { atom } from "jotai"
 import { isAPIProviderConfig } from "@/types/config/provider"
 import { findSelectionToolbarAction, replaceSelectionToolbarAction } from "@/utils/custom-actions"
-import { sanitizeSelectionToolbarCustomAction } from "@/utils/notebase/connection"
+
 import { writeConfigAtom } from "./config"
 
 export const patchProviderConfigAtom = atom(
@@ -30,7 +30,7 @@ export const patchActionConfigAtom = atom(
     await set(writeConfigAtom, (current) => {
       const action = findSelectionToolbarAction(current.selectionToolbar, id)
       if (!action) throw new Error("Action no longer exists")
-      const next = sanitizeSelectionToolbarCustomAction({ ...action, ...changes, id })
+      const next = { ...action, ...changes, id }
       return { selectionToolbar: replaceSelectionToolbarAction(current.selectionToolbar, next) }
     })
   },

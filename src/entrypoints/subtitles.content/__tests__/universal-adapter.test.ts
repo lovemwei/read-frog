@@ -262,39 +262,9 @@ describe("universalVideoAdapter", () => {
 
   // The loading state has no auto-hide of its own, so a wall that only raises a
   // toast used to leave "Loading AI subtitles" pinned to the player forever.
-  it("clears the loading state and anchors the AI wall to its trigger", async () => {
-    const { adapter, subtitlesFetcher } = createAdapter([])
-    const action = { label: "action.upgrade", url: "https://readfrog.app/pricing" }
-    ;(adapter as any).source = SUBTITLES_SOURCE.AI
-    subtitlesFetcher.fetch.mockRejectedValue(
-      new ToastSubtitlesError("subtitles.errors.aiSubscriptionRequired", action),
-    )
-    const scheduler = attachScheduler(adapter, true)
+  
 
-    await expect((adapter as any).startTranslation()).resolves.toBe(false)
-
-    expect(scheduler.setState).toHaveBeenLastCalledWith("idle")
-    expect(mocks.showAiSubtitlesWallToast).toHaveBeenCalledWith(
-      "subtitles.errors.aiSubscriptionRequired",
-      action,
-    )
-  })
-
-  it("raises a toast without an action when the error carries none", async () => {
-    const { adapter, subtitlesFetcher } = createAdapter([])
-    ;(adapter as any).source = SUBTITLES_SOURCE.AI
-    subtitlesFetcher.fetch.mockRejectedValue(
-      new ToastSubtitlesError("subtitles.errors.aiVideoTooLong"),
-    )
-    attachScheduler(adapter, true)
-
-    await expect((adapter as any).startTranslation()).resolves.toBe(false)
-
-    expect(mocks.showAiSubtitlesWallToast).toHaveBeenCalledWith(
-      "subtitles.errors.aiVideoTooLong",
-      undefined,
-    )
-  })
+  
 
   // Only the AI request has a control on screen to point at. Anything else has
   // nothing on the player that would explain a toast pinned to that button.
@@ -346,93 +316,15 @@ describe("universalVideoAdapter", () => {
     expect(mocks.showAiSubtitlesWallToast).not.toHaveBeenCalled()
   })
 
-  it("refuses AI subtitles for live content with a toast before switching fetchers", async () => {
-    const { adapter, subtitlesFetcher } = createAdapter([])
-    ;(adapter as any).config.isLiveContent = vi.fn<() => Promise<boolean>>().mockResolvedValue(true)
-    const switchSubtitlesFetcher = vi
-      .spyOn(adapter as any, "switchSubtitlesFetcher")
-      .mockResolvedValue(undefined)
+  
 
-    await adapter.requestAiSubtitles()
+  
 
-    expect(mocks.showAiSubtitlesWallToast).toHaveBeenCalledWith(
-      "subtitles.errors.aiLiveReplayUnsupported",
-    )
-    expect(switchSubtitlesFetcher).not.toHaveBeenCalled()
-    expect(subtitlesFetcher.cleanup).not.toHaveBeenCalled()
-  })
+  
 
-  it("switches to the AI fetcher when the video is not live content", async () => {
-    const { adapter } = createAdapter([])
-    ;(adapter as any).config.isLiveContent = vi
-      .fn<() => Promise<boolean>>()
-      .mockResolvedValue(false)
-    const switchSubtitlesFetcher = vi
-      .spyOn(adapter as any, "switchSubtitlesFetcher")
-      .mockResolvedValue(undefined)
+  
 
-    await adapter.requestAiSubtitles()
-
-    expect(switchSubtitlesFetcher).toHaveBeenCalledWith(SUBTITLES_SOURCE.AI)
-    expect(mocks.showAiSubtitlesWallToast).not.toHaveBeenCalled()
-  })
-
-  it("switches to the AI fetcher when the platform cannot tell live content apart", async () => {
-    const { adapter } = createAdapter([])
-    const switchSubtitlesFetcher = vi
-      .spyOn(adapter as any, "switchSubtitlesFetcher")
-      .mockResolvedValue(undefined)
-
-    await adapter.requestAiSubtitles()
-
-    expect(switchSubtitlesFetcher).toHaveBeenCalledWith(SUBTITLES_SOURCE.AI)
-    expect(mocks.showAiSubtitlesWallToast).not.toHaveBeenCalled()
-  })
-
-  it("reverts the source back to native so a failed AI switch can be retried", () => {
-    const { adapter, subtitlesFetcher } = createAdapter([])
-    const aiFetcher = { cleanup: vi.fn<(...args: any[]) => any>() }
-    ;(adapter as any).fetcher = aiFetcher
-    ;(adapter as any).source = SUBTITLES_SOURCE.AI
-    subtitlesStore.set(subtitlesSourceAtom, SUBTITLES_SOURCE.AI)
-
-    ;(adapter as any).revertToNativeSource()
-
-    expect(aiFetcher.cleanup).toHaveBeenCalledTimes(1)
-    expect((adapter as any).source).toBe(SUBTITLES_SOURCE.NATIVE)
-    expect(subtitlesStore.get(subtitlesSourceAtom)).toBe(SUBTITLES_SOURCE.NATIVE)
-    expect((adapter as any).fetcher).toBe(subtitlesFetcher)
-  })
-
-  it("does not revert to native when a newer switch supersedes the in-flight one", async () => {
-    const { adapter } = createAdapter([])
-    const aiFetcher = { cleanup: vi.fn<(...args: any[]) => any>() }
-    ;(adapter as any).fetchers = {
-      native: (adapter as any).fetchers.native,
-      ai: () => aiFetcher,
-    }
-    const scheduler = attachScheduler(adapter, true)
-    ;(scheduler as any).start = vi.fn<(...args: any[]) => any>()
-    ;(scheduler as any).show = vi.fn<(...args: any[]) => any>()
-    vi.spyOn(adapter as any, "hideNativeSubtitles").mockImplementation(() => {})
-    vi.spyOn(adapter as any, "showNativeSubtitles").mockImplementation(() => {})
-
-    let resolveStart: (value: boolean) => void = () => {}
-    vi.spyOn(adapter as any, "startTranslation").mockImplementation(
-      () =>
-        new Promise<boolean>((resolve) => {
-          resolveStart = resolve
-        }),
-    )
-    const revertSpy = vi.spyOn(adapter as any, "revertToNativeSource").mockImplementation(() => {})
-
-    const pending = (adapter as any).switchSubtitlesFetcher(SUBTITLES_SOURCE.AI)
-    ;(adapter as any).resetForNavigation()
-    resolveStart(false)
-    await pending
-
-    expect(revertSpy).not.toHaveBeenCalled()
-  })
+  
 
   it("disposes translated subtitle download state when navigation starts", () => {
     const { adapter } = createAdapter([])

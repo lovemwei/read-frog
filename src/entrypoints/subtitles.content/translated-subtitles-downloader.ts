@@ -170,11 +170,7 @@ export class TranslatedSubtitlesDownloader {
     operationId: number,
     pageTitle: string,
   ): Promise<SubtitlesFragment[]> {
-    // One resolve for the whole export: segmentation runs per 60s chunk, and a
-    // hosted ref would otherwise pay a hostedAi.status round trip per chunk.
-    // The generation tasks (segmentation, summary) get the ref narrowed once
-    // here — a translate-only provider exports the rule-based recut without a
-    // doomed prompt attempt per chunk.
+    
     const providerRef = await resolveSubtitlesProviderRef(config, "lineTranslation")
     const promptableProviderRef =
       providerRef && canProviderRefGenerateText(providerRef) ? providerRef : null
@@ -257,9 +253,7 @@ export class TranslatedSubtitlesDownloader {
     operationId: number,
     providerRef: PromptableProviderRef | null,
   ): Promise<SubtitlesFragment[]> {
-    // No ref means AI segmentation cannot run (no provider, no model to
-    // prompt, or the hosted tier is unavailable); the export then keeps the
-    // same rule-based result the feature-off path produces.
+    
     if (!config.videoSubtitles.aiSegmentation || this.fetcher.isPreSegmented?.() || !providerRef) {
       return [...sourceProcessedSubtitles]
     }

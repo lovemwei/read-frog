@@ -54,7 +54,7 @@ export const videoSubtitlesSchema = z.object({
   enabled: z.boolean(),
   autoStart: z.boolean(),
   toggleShortcut: pageTranslationShortcutSchema,
-  providerId: z.string().nonempty(),
+  providerId: z.string(),
   style: subtitlesStyleSchema,
   aiSegmentation: z.boolean(),
   requestQueueConfig: requestQueueConfigSchema,

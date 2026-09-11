@@ -4,7 +4,8 @@ import type { SiteRule } from "@/types/config/site-rules"
 import type { TranslationMode } from "@/types/config/translate"
 import { act, render, screen, waitFor } from "@testing-library/react"
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import {
   BLOCK_ATTRIBUTE,
   BLOCK_CONTENT_CLASS,

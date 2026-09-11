@@ -1,19 +1,12 @@
 name: 陪讀蛙
 extName: 陪讀蛙 - 翻譯與學習
-extDescription: 陪讀蛙是一款開放原始碼的瀏覽器擴充功能，能協助使用者在任何網站上深入學習語言。
-uninstallSurveyUrl: https://tally.so/r/3E9XDL
-account:
-  login: 登入
-  webApp: 網頁應用程式
-  logout: 退出登入
-  logoutError: 退出登入失敗，請重試
+extDescription: 使用自定义服务翻译网页、划词和字幕。数据保存在本地，无账号、会员或统计上报。
 dataTypes:
   string: 文字
   number: 數字
 contextMenu:
   translate: 翻譯
   translateSelection: 翻譯「%s」
-  readAloudSelection: 朗讀「%s」
   showOriginal: 顯示原文
 sidePanel:
   firefoxUserActionHint: 在 Firefox 中，請從瀏覽器側邊欄開啟陪讀蛙。
@@ -48,24 +41,8 @@ popup:
         action: 點選切換為雙語對照
   hub:
     tooltip: 一次使用多個翻譯模型翻譯文字
-  discord:
-    tooltip: 加入 Discord 與開發者討論，搶先體驗新功能
-  blog:
-    notification: 陪讀蛙更新動態
   aiSmartContext: AI 智慧上下文
   aiSmartContextDescription: 結合網頁前後文提升翻譯品質。需要設定 LLM 翻譯服務提供者。
-  more:
-    title: 更多
-    help: 說明
-    tutorial: 使用教學
-    emailUs: 電子郵件聯絡
-    featureRequest: 功能建議
-    bugReport: 回報問題
-    community: 社群
-    joinDiscord: 加入 Discord
-    joinWechat: 加入微信群
-    starGithub: 在 GitHub 加星
-    rateUs: 給予好評
 errorRecovery:
   title: 應用程式發生異常
   description: 已進入復原模式。可先匯出目前設定作為備份，重設設定後再重試。
@@ -103,79 +80,24 @@ options:
     toggle: 切換側邊欄
     settings: 設定
     features: 功能
-    product: 產品
   tools:
     translationHub: 翻譯中心
-  product:
-    roadmap: 產品路線圖
-  helpAndCommunity:
-    title: 說明與社群
-    pageDescription: 了解怎麼使用陪讀蛙、向團隊尋求協助，或加入社群和其他使用者交流。
-    help:
-      title: 說明
-    tutorial:
-      title: 使用教學
-      description: 閱讀文件，了解怎麼使用陪讀蛙
-    email:
-      title: 電子郵件聯絡
-      description: 透過 contact@readfrog.app 直接聯絡團隊
-    featureRequest:
-      title: 功能建議
-      description: 提出想法，並為團隊接下來要做的功能投票
-    bugReport:
-      title: 回報問題
-      description: 建立支援工單，並追蹤到問題解決為止
-    community:
-      title: 社群
-    discord:
-      title: Discord
-      description: 與團隊和其他使用者即時交流
-    wechat:
-      title: 微信群
-      description: 掃描 QR code 進入微信討論群
-      qrCodeAlt: 微信 QR code
   apiProviders:
     title: API 提供者
-    pageDescription: 接入 Read Frog 呼叫的 AI 服務，並為每項功能指定使用哪一個。
+    pageDescription: 配置你自己的服务。设置、密钥和缓存仅保存在本浏览器中；翻译内容只发送给你选择的服务。
     description: 新增 Read Frog 可以呼叫的提供者。內建 20 多個，也可以新增相容 Chat Completions 的自訂 API 和 Open Responses 自訂 API。
     configTitle: 提供者設定
     addProvider: 新增提供者
-    builtInProvider: 內建提供者
-    builtInAiUsage:
-      title: 內建 AI 額度
-      remaining: "剩餘 $1%"
-      supportedFeatures: "支援 $1 項功能"
-      resetsAt: "$1 重置"
-      daily: 每日額度
-      weekly: 每週額度
-      features:
-        pageTranslation: 網頁翻譯
-        customAction: 自訂 AI 指令
-        noteSuggestion: 猜你想存
-        selectionTranslation: 選取文字翻譯
-        videoSubtitles: 影片字幕
-        inputTranslation: 輸入翻譯
-        languageDetection: 語言偵測
-    sponsorCta: 取得高速高性價比 AI
-    sponsorCtaJalapenoCloud: 取得 GLM 5.2 五折優惠
     setApiKeyWarning:
       message: 請在 $1 頁面設定 API 金鑰
     badges:
       featureCount: $1 個功能
-      sponsor: 贊助
-      sponsorJalapenoCloud: $$2 免費額度
     dialog:
       title: 新增提供者
       groups:
-        builtInProviders:
-          title: 內建 LLM 提供者
-          description: 內建的大型語言模型提供者，大多數設定不需要填寫，例如 Base URL
         compatibleProviders:
-          title: 相容 API 提供者
+          title: 自定义提供商
           description: 相容 Chat Completions 的 API 使用自訂 Chat Complete，Open Responses API 使用自訂 Responses。
-        pureTranslationProviders:
-          title: 純翻譯提供者
-          description: 專注於翻譯功能的提供者，沒有大型語言模型能力
     form:
       fields:
         name: 名稱
@@ -238,13 +160,8 @@ options:
       invalidJson: JSON 格式無效
     providers:
       name:
-        builtInAi: 內建 AI
-        builtInAiAdvance: 高級內建 AI
         customChatComplete: 自訂 Chat Complete
         customResponses: 自訂 Responses
-      attribution:
-        builtInAi: 由 Read Frog 託管的普通模型。非 Ultra 使用者僅支援在自訂 AI 指令使用，Ultra 使用者支援在更多功能上使用。
-        builtInAiAdvance: 由 Read Frog 託管的進階模型，Ultra 會員專屬。網頁翻譯、自訂 AI 指令等全部內建 AI 功能均可使用，共享每週額度，額度消耗比標準模型更快。
       description:
         openai: 提供 GPT-4o 等模型
         azure: 透過 Azure 部署使用 OpenAI 模型
@@ -296,13 +213,11 @@ options:
         selectionTranslation: 選取文字翻譯
         inputTranslation: 輸入翻譯
         videoSubtitles: 影片字幕
-        noteSuggestion: 猜你想存
       descriptions:
         pageTranslation: 翻譯整個網頁，雙語對照或直接取代原文。
         selectionTranslation: 透過劃詞工具列翻譯你選取的文字。
         inputTranslation: 在送出前翻譯你寫在輸入框裡的內容。
         videoSubtitles: 翻譯影片播放器中隨播放出現的字幕。
-        noteSuggestion: 選取文字翻譯後，推薦值得存入筆記庫的詞條。
     languageDetection:
       title: 語言偵測
       description: 影響自動翻譯語言偵測和朗讀語音選擇的準確性。
@@ -363,53 +278,6 @@ options:
         urlPattern: URL 模式
     config:
       title: 設定
-      googleDrive:
-        title: Google Drive 雲端同步
-        description: 遠端設定較新時下載，本機設定較新時上傳
-        sync: 同步到 Google Drive
-        syncing: 同步中…
-        syncSuccess:
-          uploaded: 本機設定已上傳至雲端
-          downloaded: 已套用遠端設定
-          sameChanges: 本機和遠端修改一致，已同步
-          noChange: 已是最新狀態
-          unresolved: 衝突已解決並同步至本機和雲端
-        syncError: 同步失敗，請重試
-        metadataCorrupted: 同步資料損壞，已自動套用遠端設定
-        lastSyncTime: 最後同步時間
-        logout: 登出帳號
-        logoutSuccess: 已登出 Google 帳號
-        unresolved:
-          title: 設定同步解決
-          description: 本機與雲端設定存在差異，請選擇每個欄位要保留的版本。
-          resolved: 已解決
-          unresolved: 未解決
-          localValue: 本機值
-          remoteValue: 遠端值
-          useLocal: 使用本機
-          useRemote: 使用遠端
-          useAllLocal: 全選本機
-          useAllRemote: 全選遠端
-          reset: 撤銷選擇
-          progress: 已解決 $1/$2 個變更
-          confirm: 確認同步
-          cancel: 取消
-          hasUnresolvedInChildren: ⚠ 包含待解決項
-          item: 項
-          items: 項
-          unresolvedPrompt: "[待解決 - 請選擇]"
-          localLatest: 本機最新
-          remoteLatest: 遠端最新
-          bothChanged: 雙方已變更
-          localChanged: 本機已變更
-          remoteChanged: 遠端已變更
-          configValid: 設定有效
-          configInvalid: 設定無效
-          resolveToContinue: 解決衝突後繼續
-          validationAlert:
-            title: 合併後的設定存在驗證錯誤
-            description: 請調整下方差異以修復：
-          moreErrors: …還有 $1 個錯誤
       manualSync:
         title: 手動設定同步
         description: 手動匯入與匯出設定
@@ -468,10 +336,6 @@ options:
       beta:
         title: Beta 體驗
         description: 開啟可能還不穩定的實驗性功能
-      analytics:
-        title: 幫助改進使用者體驗
-        tooltip: 開啟後，陪讀蛙會傳送匿名的產品使用訊號，用於發現 bug、驗證功能是否穩定、最佳化效能與互動細節，並協助決定接下來優先投入的方向。
-        description: 透過協助我們定位 bug、最佳化介面配置等改善陪讀蛙
   shortcuts:
     title: 快速鍵
     pageDescription: 設定閱讀時觸發翻譯的按鍵。
@@ -564,16 +428,6 @@ options:
       translate:
         title: 翻譯
         description: 在工具列中顯示翻譯按鈕
-      speak:
-        title: 朗讀
-        description: 在工具列中顯示朗讀按鈕，用於朗讀選取的文字
-      noteSuggestion:
-        title: 儲存建議
-        description: 使用 AI 供應商進行劃詞翻譯後，推薦可存入筆記庫的詞條
-        action: 指令
-        actionDescription: 用於產生儲存建議的指令
-        provider: 提供者
-        providerDescription: 用於產生儲存建議的 AI 提供者
     display:
       title: 顯示
       opacity:
@@ -629,7 +483,6 @@ options:
         fieldType: 欄位類型
         fieldDescription: 描述
         fieldDescriptionPlaceholder: 描述此欄位應包含的內容…
-        fieldSpeaking: 啟用朗讀
         actions: 操作
         cancel: 取消
         save: 儲存
@@ -646,51 +499,6 @@ options:
           description: 此輸出欄位將被移除。
           confirm: 刪除
           cancel: 取消
-        notebase:
-          title: 筆記庫連線
-          description: 將這個指令的結構化結果儲存到遠端筆記庫。
-          loginRequiredTitle: 登入後才能設定筆記庫
-          loginRequiredDescription: 先到 readfrog.app 登入，再選擇筆記庫與編輯對應。
-          loginRequiredConnectedDescription: 這個連線來自下方帳號。如果登入原帳號，會恢復欄位對應；如果登入其他帳號，建立或連線筆記庫時會清除先前的欄位對應。
-          loginAction: 前往登入
-          connectedAccountLabel: 已連線帳號
-          currentAccountLabel: 目前帳號
-          unknownConnectedAccount: 未知帳號
-          tableLabel: 筆記庫
-          tablePlaceholder: 選擇一個筆記庫
-          tableClearOption: 不連線筆記庫
-          clearConnectionAction: 清空連線
-          refreshAction: 重新整理
-          emptyTitle: 還沒有筆記庫
-          emptyDescription: 先到 readfrog.app 建立一個筆記庫，再回來對應欄位。
-          openNotebaseAction: 開啟筆記庫
-          accessDeniedTitle: 無法存取筆記庫
-          accessDeniedDescription: 目前帳號沒有權限載入筆記庫資料。
-          listErrorTitle: 載入筆記庫失敗
-          listErrorDescription: 請稍後再試一次。
-          accountMismatchTitle: 筆記庫連線屬於其他帳號
-          accountMismatchDescription: 目前連線綁定到下方已連線帳號。可清除連線，或選擇目前帳號可存取的筆記庫。
-          tableUnavailableTitle: 所選筆記庫已無法使用
-          tableUnavailableDescription: 這個筆記庫不存在，或目前帳號無法開啟。可以清空連線，或重新選擇一個筆記庫。
-          tableUnavailableOption: 無法使用
-          schemaErrorTitle: 載入筆記庫 schema 失敗
-          schemaErrorDescription: 請稍後再試一次重新整理。
-          schemaLoading: 正在載入筆記庫 schema…
-          mappingsLabel: 欄位對應
-          mappingsEmpty: 尚未建立對應，準備好後即可新增。
-          addMappingAction: 新增對應
-          removeMappingAction: 移除對應
-          localFieldLabel: 指令欄位
-          localFieldPlaceholder: 選擇一個指令欄位
-          remoteFieldLabel: 筆記庫欄位
-          remoteFieldPlaceholder: 選擇一個筆記庫欄位
-          columnUnavailableOption: 已刪除
-          invalidMappingsTitle: 有些對應需要處理
-          invalidMappingsDescription: 無效對應會被保留。儲存到筆記庫前請先修復它們。
-          mappingMissingLocal: 對應的指令欄位已不存在。
-          mappingMissingRemote: 對應的筆記庫欄位已不存在。
-          mappingMissingSchema: 重新整理筆記庫 schema 後才能驗證這個對應。
-          mappingIncompatible: 欄位類型已不相容。
         tokens:
           selection: 選取的文字內容
           paragraphs: 與選取範圍相交的段落內容，會以空行串接，傳給自訂 AI 指令時會截斷到前 2000 個字元
@@ -1035,33 +843,6 @@ options:
       searchPlaceholder: 依 id、描述或網址模式搜尋
       showMore: 顯示更多
       count: 顯示 $1 / $2 條規則
-  tts:
-    title: 文字轉語音
-    pageDescription: 用自然的語音朗讀任何選取的文字。
-    voice:
-      title: 語音
-      selectPlaceholder: 請選擇一個語音
-      noVoicesFound: 找不到語音
-      language:
-        title: 語言語音
-        description: 先選擇一種語言，再挑選朗讀它時使用的語音。重設會換回陪讀蛙為該語言選定的語音。
-        reset: 重設
-        previewSample: 陪讀蛙向你問好！這是朗讀功能的語音。
-      fallback:
-        title: 備用語音
-        description: 你還沒有單獨指定語音的語言，都用這個語音朗讀。
-    speech:
-      title: 朗讀
-      rate:
-        title: 語速
-        description: 相對語音本身的語速快多少或慢多少，範圍 -100 到 100 個百分點。
-      pitch:
-        title: 音高
-        description: 相對語音本身的音高高多少或低多少，範圍 -100 到 100 赫茲。
-      volume:
-        title: 音量
-        description: 相對語音本身的音量大多少或小多少，範圍 -100 到 100 個百分點。
-      error: 請輸入 $1 到 $2 之間的整數
   videoSubtitles:
     title: 影片字幕
     pageDescription: 邊看邊譯影片字幕，並單獨設定提供者、樣式和請求參數。
@@ -1076,20 +857,6 @@ options:
       aiSegmentation:
         title: AI 智慧斷句
         description: 讓 AI 把字幕重新切成讀起來完整的句子。時間軸也由 AI 判斷，可能出現錯位。需要設定 LLM 翻譯服務。
-    aiQuota:
-      title: AI 字幕額度
-      description: AI 利用語音轉文字技術取得任何影片的準確字幕
-      launchBonusPromo: $1 之前購買會員額外贈送 300 分鐘轉錄額度
-      loginRequired: 登入後查看你的 AI 字幕額度
-      upgradeRequired: AI 字幕需要 Pro 或 Ultra 訂閱
-      pools:
-        subscription: 每月額度
-        launchBonus: 上線贈送
-      resetsOn: $1 重置
-      expiresOn: $1 過期
-      loadError: 無法載入額度，請稍後重試。
-      remainingOf: 剩餘 $1 / $2 分鐘
-      used: 已用 $1 分鐘
     style:
       title: 字幕樣式
       description: 顯示模式、位置、字型、顏色和背景，都對著預覽調
@@ -1183,8 +950,6 @@ options:
           confirm: 確認
           cancel: 取消
           description: 這將刪除所有已快取的 AI 斷句結果。下次播放啟用 AI 斷句的影片時，將重新處理字幕。
-  whatsNew:
-    title: 最近更新
   rateUs:
     title: 給予好評
   configMigration:
@@ -1197,7 +962,6 @@ side:
 translateService:
   title: 翻譯服務
   description: 僅用於翻譯網頁內容
-  builtInModels: 內建模型
   llmModels: 大語言模型
   normalTranslator: 一般翻譯
   selectServices: 選擇服務
@@ -1225,61 +989,18 @@ translation:
   sameLanguage: 來源語言和目標語言必須不同
   autoModeSameLanguage: 偵測到的語言「$1」與目標語言相同
   extensionContextInvalidated: 擴充功能已更新，請重新整理此頁面後再試一次。
-speak:
-  fetchingAudio: 正在取得音訊…
-  playingAudio: 正在播放音訊…
-  failedToGenerateSpeech: 語音產生失敗
-  noTextSelected: 未選取文字
-  openaiNotConfigured: 尚未設定或啟用 OpenAI 提供者
-  openaiApiKeyNotConfigured: 尚未設定 OpenAI API 金鑰
 action:
   copy: 複製
   copied: 已複製
   regenerate: 重新產生
   viewContextDetails: 前後文
   customizeCustomAction: 自訂「$1」動作
-  saveToNotebase: 儲存到筆記庫
-  saveToNotebaseSaving: 儲存中…
-  saveToNotebaseSuccess: 已儲存到筆記庫
-  saveToNotebaseFailed: 儲存到筆記庫失敗
-  saveToNotebaseLoginRequired: 請先到 readfrog.app 登入後再儲存到筆記庫
-  saveToNotebaseAccessDenied: 目前帳號無法存取所選筆記庫
-  saveToNotebaseLimitExceeded: 需要升級後才能儲存更多筆記庫內容
-  saveToNotebaseTableUnavailable: 所選筆記庫已無法使用
-  saveToNotebaseConnectionInvalid: 目前的筆記庫連線已過期，請到自訂 AI 指令重新整理並修復對應
-  saveToNotebaseNoMappings: 至少新增一個有效對應後才能儲存
-  saveToNotebaseCreateTitle: 建立筆記庫？
-  saveToNotebaseCreateDescription: 建立一個筆記庫，欄位會對應此自訂 AI 指令的輸出欄位，並將目前結果儲存為第一則筆記。
-  saveToNotebaseCreateAndSave: 直接建立並儲存
-  saveToNotebaseCreateAndSaveShort: 建立並儲存
-  saveToNotebaseLoginAndCreate: 登入並自動建立
-  saveToNotebaseLoginAndSave: 登入並儲存
-  saveToNotebaseConnectExisting: 連線現有筆記庫
-  saveToNotebaseGoConfigure: 前往設定
-  saveToNotebaseLoginConnectedTitle: 登入後繼續儲存？
-  saveToNotebaseLoginConnectedDescription: 這個自訂 AI 指令已連線到下方帳號。登入後，如果可以使用原筆記庫會直接儲存；如果目前帳號無法使用它，會建立新的筆記庫並儲存。
-  saveToNotebaseConnectionUnavailableTitle: 筆記庫連線目前無法使用
-  saveToNotebaseMissingNotebaseDescription: 舊筆記庫不存在，或目前帳號無法開啟。可以建立新的筆記庫並儲存目前結果，或到自訂 AI 指令連線既有筆記庫。
-  saveToNotebaseAccountUnavailableDescription: 目前登入帳號和下方已連線帳號不同。選擇建立並儲存會替換先前的連線設定和欄位對應；也可以到自訂 AI 指令連線既有筆記庫。
-  saveToNotebasePendingLogin: 登入後繼續儲存
-  saveToNotebasePendingLoginDescription: 登入完成後，陪讀蛙會自動建立筆記庫並儲存目前結果。
-  saveToNotebasePendingConnectedLoginDescription: 登入完成後，陪讀蛙會優先儲存到已連線的筆記庫；如果目前帳號無法使用它，會建立新的筆記庫並儲存目前結果。
   upgrade: 升級
   updatePayment: 更新付款方式
   openCustomActions: 開啟自訂 AI 指令
-  openNotebase: 開啟筆記庫
   contextDetailsTitleLabel: 標題
   contextDetailsParagraphsLabel: 段落內容
   translation: 翻譯
-  speak: 朗讀
-  playing: 播放中
-noteSuggestion:
-  title: 猜你想存
-  description: 選擇要存入筆記庫的詞，將來隨時複習
-  save: 儲存
-  saved: 已儲存
-  staleSuggestion: 該建議已過期
-  toggleLabel: 顯示儲存建議
 thinking:
   label: 思考中
   complete: 思考完成
@@ -1306,10 +1027,6 @@ subtitles:
       retry: 重試
       emptyTitle: 沒有可顯示的字幕
       backToCurrent: 回到目前
-  loadingAiSubtitles: 正在載入 AI 字幕（預計 3 分鐘）
-  aiSubtitlesHint: 透過先進 AI 辨識語音生成準確字幕，無官方字幕時依然可用。
-  requestAiSubtitles: 請求 AI 字幕
-  usingAiSubtitles: 正在使用 AI 字幕
   toggle:
     enabled: 字幕翻譯已開啟
     disabled: 字幕翻譯已關閉
@@ -1336,36 +1053,13 @@ subtitles:
     noSubtitlesFound: 這部影片沒有字幕
     videoNotFound: 找不到影片元素
     controlsBarNotFound: 找不到控制列
-    aiRateLimited: 請求過於頻繁，請稍後再試
-    aiAuthFailed: API 認證失敗，請檢查 API 金鑰
-    aiServiceUnavailable: 翻譯服務暫時無法使用
-    aiQuotaExceeded: 本月 AI 字幕額度已用完
-    aiQuotaExceededWithReset: 本月 AI 字幕額度已用完，$1 重置
-    aiLoginRequired: 登入後查看你的 AI 字幕額度
-    aiSubscriptionRequired: AI 字幕需要 Pro 或 Ultra 訂閱
-    aiPaymentRequired: 請更新付款方式後繼續產生 AI 字幕
-    aiVideoTooLong: 影片過長，暫不支援產生 AI 字幕
-    aiLiveReplayUnsupported: 暫不支援為直播回放產生 AI 字幕
-    aiStillProcessing: 轉錄仍在進行中，幾分鐘後再點一次即可繼續取得
-    aiRequestFailed: AI 字幕請求失敗，請稍後重試
-    aiNoResponse: AI 服務未回應，使用原文顯示
     translatedExportFailed: 產生翻譯字幕失敗
     translatedExportIncomplete: 未能翻譯所有字幕行
     translatedExportSameLanguage: 來源語言和目標語言相同
-hostedAi:
-  ultraBadge:
-    tooltip: 需開通 Ultra 方案 · 點擊徽章獲取方案
-  availability:
-    authenticationRequired: 登入後可使用
-    ultraRequired: 需要 Ultra 方案
-    quotaExhausted: 額度已用完
-    serviceUnavailable: 暫時無法使用
-    usedPercent: "額度已使用 $1%"
-    resetsAt: "$1 重置"
-  errors:
-    rateLimited: 請求過於頻繁，請稍後再試
-    guestRateLimited: 訪客請求過於頻繁，請稍後再試
-    userRateLimited: 請求過於頻繁，請稍後再試
+    aiRateLimited: 請求過於頻繁，請稍後再試
+    aiAuthFailed: API 認證失敗，請檢查 API 金鑰
+    aiServiceUnavailable: 翻譯服務暫時無法使用
+    aiNoResponse: AI 服務未回應，使用原文顯示
 hotkey:
   control: Ctrl
   alt: Option

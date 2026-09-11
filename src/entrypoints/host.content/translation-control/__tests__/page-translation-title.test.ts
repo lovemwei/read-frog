@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { PageTranslationManager } from "../page-translation"
 
 const {

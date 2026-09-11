@@ -26,7 +26,7 @@ function createAction(): SelectionToolbarCustomAction {
     id: "mapped-action",
     name: "Vocabulary",
     icon: "tabler:book",
-    providerId: "read-frog-free-ai",
+    providerId: "",
     systemPrompt: "Explain the selected text.",
     prompt: "{{selection}}",
     outputSchema: ["meaning", "example"].map((id) => ({
@@ -34,19 +34,9 @@ function createAction(): SelectionToolbarCustomAction {
       name: id,
       type: "string",
       description: id,
-      speaking: false,
+      
     })),
-    notebaseConnection: {
-      notebaseId: "words",
-      notebaseNameSnapshot: "Words",
-      connectedAccount: { id: "reader", name: "Reader", email: "reader@example.com" },
-      mappings: ["meaning", "example"].map((id) => ({
-        id: `${id}-mapping`,
-        localFieldId: id,
-        notebaseColumnId: `${id}-column`,
-        notebaseColumnNameSnapshot: id,
-      })),
-    },
+    
   }
 }
 
@@ -103,17 +93,14 @@ async function getPersistedAction(): Promise<SelectionToolbarCustomAction> {
 
 describe("output schema autosave", () => {
   afterEach(() => vi.restoreAllMocks())
-  it("persists mapped-field deletion and removes its mapping before form validation", async () => {
+  it("persists field deletion before leaving the editor", async () => {
     const action = createAction()
     const { router, store } = await setup(action)
     const writes = vi.spyOn(fakeBrowser.storage.local, "set")
     const expected: SelectionToolbarCustomAction = {
       ...action,
       outputSchema: [action.outputSchema[1]!],
-      notebaseConnection: {
-        ...action.notebaseConnection!,
-        mappings: [action.notebaseConnection!.mappings[1]!],
-      },
+      
     }
 
     await deleteMeaning()
@@ -136,29 +123,7 @@ describe("output schema autosave", () => {
     expect(screen.queryByText("options.autosave.leaveTitle")).not.toBeInTheDocument()
   })
 
-  it("preserves the connection and remaining mapping when deleting an unmapped field", async () => {
-    const action = createAction()
-    action.notebaseConnection!.mappings = [action.notebaseConnection!.mappings[1]!]
-    await setup(action)
+  
 
-    await deleteMeaning()
-
-    await waitFor(async () =>
-      expect((await getPersistedAction()).outputSchema).toEqual([action.outputSchema[1]!]),
-    )
-    expect((await getPersistedAction()).notebaseConnection).toEqual(action.notebaseConnection)
-  })
-
-  it("deletes a field normally when no Notebase is connected", async () => {
-    const action = createAction()
-    delete action.notebaseConnection
-    await setup(action)
-
-    await deleteMeaning()
-
-    await waitFor(async () =>
-      expect((await getPersistedAction()).outputSchema).toEqual([action.outputSchema[1]!]),
-    )
-    expect((await getPersistedAction()).notebaseConnection).toBeUndefined()
-  })
+  
 })

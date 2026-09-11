@@ -8,7 +8,7 @@ import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { CopyButton } from "../copy-button"
 import { ContextDetailsButton, RegenerateButton } from "../selection-toolbar-footer-content"
-import { SpeakButton } from "../speak-button"
+
 
 vi.mock("@/hooks/use-text-to-speech", () => ({
   useTextToSpeech: () => ({
@@ -107,17 +107,7 @@ describe("selection action tooltips", () => {
     expect(writeTextMock).toHaveBeenCalledWith("Copied text")
   })
 
-  it("renders the speak tooltip above selection popovers", async () => {
-    const { container } = renderWithProviders(<SpeakButton text="Speak text" />)
-    const trigger = container.querySelector("[data-slot='tooltip-trigger']")
-
-    expect(trigger).toBeTruthy()
-
-    const { tooltip, positioner } = await openTooltip(trigger!)
-
-    expect(tooltip).toHaveTextContent("action.speak")
-    expect(positioner).toHaveClass("z-50")
-  })
+  
 
   it("renders the regenerate tooltip above selection popovers", async () => {
     const { container } = renderWithProviders(
@@ -147,23 +137,7 @@ describe("selection action tooltips", () => {
     expect(positioner).toHaveClass("z-50")
   })
 
-  it("keeps the speak tooltip open after click", async () => {
-    const { container } = renderWithProviders(<SpeakButton text="Speak text" />)
-    const trigger = container.querySelector("[data-slot='tooltip-trigger']")
-
-    expect(trigger).toBeTruthy()
-
-    const { tooltip: initialTooltip } = await openTooltip(trigger!)
-    expect(initialTooltip).toHaveTextContent("action.speak")
-
-    fireEvent.click(trigger!)
-
-    await waitFor(() => {
-      expect(document.querySelector("[data-slot='tooltip-content']")).toHaveTextContent(
-        "action.speak",
-      )
-    })
-  })
+  
 
   it("keeps the regenerate tooltip open after click", async () => {
     const onRegenerate = vi.fn<(...args: any[]) => any>()
@@ -215,14 +189,7 @@ describe("selection action tooltips", () => {
     await expectTooltipClosesOnHoverLeave(trigger!)
   })
 
-  it("closes the speak tooltip after hover leave", async () => {
-    const { container } = renderWithProviders(<SpeakButton text="Speak text" />)
-    const trigger = container.querySelector("[data-slot='tooltip-trigger']")
-
-    expect(trigger).toBeTruthy()
-
-    await expectTooltipClosesOnHoverLeave(trigger!)
-  })
+  
 
   it("closes the regenerate tooltip after hover leave", async () => {
     const { container } = renderWithProviders(

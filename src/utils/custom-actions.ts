@@ -26,7 +26,6 @@ export function getBuiltInDictionaryAction(
     ...definition,
     enabled: state.enabled,
     providerId: state.providerId,
-    ...(state.notebaseConnection ? { notebaseConnection: state.notebaseConnection } : {}),
   }
 }
 
@@ -46,18 +45,7 @@ export function findSelectionToolbarAction(
   return selectionToolbar.customActions.find((action) => action.id === actionId)
 }
 
-export function resolveNoteSuggestionAction(
-  selectionToolbar: SelectionToolbarConfig,
-): SelectionToolbarCustomAction {
-  const actionId = selectionToolbar.noteSuggestion.actionId
-  const action = findSelectionToolbarAction(selectionToolbar, actionId)
-  if (!action) {
-    throw new Error(
-      `Note suggestion action "${actionId}" is missing from the validated configuration.`,
-    )
-  }
-  return action
-}
+
 
 function toBuiltInDictionaryState(
   action: SelectionToolbarCustomAction,
@@ -65,7 +53,6 @@ function toBuiltInDictionaryState(
   return {
     enabled: action.enabled !== false,
     providerId: action.providerId,
-    notebaseConnection: action.notebaseConnection,
   }
 }
 
@@ -95,7 +82,7 @@ export function patchSelectionToolbarAction(
   selectionToolbar: SelectionToolbarConfig,
   actionId: string,
   patch: Partial<
-    Pick<SelectionToolbarCustomAction, "enabled" | "providerId" | "notebaseConnection">
+    Pick<SelectionToolbarCustomAction, "enabled" | "providerId">
   >,
 ): SelectionToolbarConfig {
   const action = findSelectionToolbarAction(selectionToolbar, actionId)

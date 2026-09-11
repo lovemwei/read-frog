@@ -1,10 +1,10 @@
-import type { FeatureUsageContext } from "@/types/analytics"
+
 import type { Config } from "@/types/config/config"
 import debounce from "debounce"
 import { toastManager } from "@/components/ui/base-ui/toast"
-import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
-import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
-import { classifyResolvedProvider, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
+
+
+
 import { getLocalConfig } from "@/utils/config/storage"
 import {
   CONTENT_WRAPPER_CLASS,
@@ -88,7 +88,7 @@ interface IPageTranslationManager {
    * Starts the automatic page translation functionality
    * Registers observers, touch triggers and set storage
    */
-  start: (analyticsContext?: FeatureUsageContext) => Promise<void>
+  start: () => Promise<void>
 
   /**
    * Stops the automatic page translation functionality
@@ -174,7 +174,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     return this.isPageTranslating
   }
 
-  async start(analyticsContext?: FeatureUsageContext): Promise<void> {
+  async start(): Promise<void> {
     if (this.isPageTranslating) {
       console.warn("PageTranslationManager is already active")
       return
@@ -191,7 +191,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     const startToken = Symbol("page-translation-start")
     this.pendingStart = startToken
     try {
-      await this.runStart(startToken, analyticsContext)
+      await this.runStart(startToken, )
     } finally {
       if (this.pendingStart === startToken) {
         this.pendingStart = null
@@ -201,9 +201,8 @@ export class PageTranslationManager implements IPageTranslationManager {
 
   private async runStart(
     startToken: symbol,
-    analyticsContext?: FeatureUsageContext,
+    
   ): Promise<void> {
-    const trackedContext = window === window.top ? analyticsContext : undefined
 
     const config = await getLocalConfig()
     if (this.pendingStart !== startToken) {
@@ -211,18 +210,12 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
     if (!config) {
       console.warn("Config is not initialized")
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...UNKNOWN_FEATURE_PROVIDER,
-          outcome: "failure",
-        })
-      }
+
       return
     }
 
     const requestedProviderConfig = resolvePageTranslationProviderOrNull(config)
-    const providerAnalytics = classifyResolvedProvider(requestedProviderConfig)
+    
 
     if (
       !validateTranslationConfigAndToast({
@@ -231,13 +224,7 @@ export class PageTranslationManager implements IPageTranslationManager {
         language: config.language,
       })
     ) {
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...providerAnalytics,
-          outcome: "failure",
-        })
-      }
+
       return
     }
 
@@ -245,23 +232,17 @@ export class PageTranslationManager implements IPageTranslationManager {
     // explicit guard for type-safety and for malformed storage snapshots.
     if (!requestedProviderConfig) return
 
-    const availability = await checkProviderAvailability(requestedProviderConfig, "pageTranslation")
+    const availability = await checkProviderAvailability(requestedProviderConfig)
     if (this.pendingStart !== startToken) {
       return
     }
     if (!availability.available) {
       toastManager.add({ type: "error", title: availability.message })
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...providerAnalytics,
-          outcome: "failure",
-        })
-      }
+
       return
     }
 
-    try {
+    
       const providerConfig = resolvePageTranslationProvider(config)
 
       // Activate before the notify round trip: once the flag is set, stop()
@@ -299,12 +280,7 @@ export class PageTranslationManager implements IPageTranslationManager {
         void ensureSiteRuleCSS(document, siteRule.injectedCss)
       }
 
-      // Same predicate `getWebPagePromptContext` uses to decide whether it
-      // needs the context at all. Excluding system providers was right while
-      // hosted runs sent no context; now that they do, skipping the warm-up
-      // only moves the Defuddle full-document parse out of setup and into the
-      // first translation call, where it blocks the first visible paragraph
-      // and janks the main thread on a long page.
+      
       await this.primeDocumentTitleContext(
         config.pageTranslation.enableAIContentAware &&
           canResolvedProviderRefGenerateText(providerConfig),
@@ -378,23 +354,8 @@ export class PageTranslationManager implements IPageTranslationManager {
         }
       }
 
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...providerAnalytics,
-          outcome: "success",
-        })
-      }
-    } catch (error) {
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...providerAnalytics,
-          outcome: "failure",
-        })
-      }
-      throw error
-    }
+
+    
   }
 
   stop(options?: { userInitiated?: boolean }): void {
@@ -519,12 +480,7 @@ export class PageTranslationManager implements IPageTranslationManager {
         if (this.isPageTranslating) {
           this.stop({ userInitiated: true })
         } else {
-          void this.start(
-            createFeatureUsageContext(
-              ANALYTICS_FEATURE.PAGE_TRANSLATION,
-              ANALYTICS_SURFACE.TOUCH_GESTURE,
-            ),
-          )
+          void this.start()
         }
       }
       reset()

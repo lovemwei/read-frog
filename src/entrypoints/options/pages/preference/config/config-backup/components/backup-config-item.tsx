@@ -1,5 +1,5 @@
 import type { ConfigBackup, ConfigBackupMetadata } from "@/types/backup"
-import { Icon } from "@iconify/react/dist/iconify.js"
+import { Icon } from "@/components/icon"
 import { useMutation } from "@tanstack/react-query"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useState } from "react"

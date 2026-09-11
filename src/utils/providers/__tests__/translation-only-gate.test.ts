@@ -22,7 +22,7 @@ describe("providerSupportsTranslationOnlyMode", () => {
 })
 
 describe("getTranslationOnlyBlockedReason", () => {
-  it("blocks a fresh profile, which ships on Microsoft", () => {
+  it("blocks translation-only mode for the default Microsoft provider", () => {
     expect(getTranslationOnlyBlockedReason(DEFAULT_CONFIG)).not.toBeNull()
   })
 

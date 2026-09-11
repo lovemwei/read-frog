@@ -39,9 +39,7 @@ export const CUSTOM_ACTION_TEMPLATES: CustomActionTemplate[] = [
           i18n.t(`${T_PREFIX}.dictionary.fieldTerm`),
           "string",
           i18n.t(`${T_PREFIX}.dictionary.fieldTermDescription`),
-          "dictionary-term",
-          true,
-        ),
+          "dictionary-term"),
         createOutputSchemaField(
           i18n.t(`${T_PREFIX}.dictionary.fieldPhonetic`),
           "string",
@@ -64,9 +62,7 @@ export const CUSTOM_ACTION_TEMPLATES: CustomActionTemplate[] = [
           i18n.t(`${T_PREFIX}.dictionary.fieldSentence`),
           "string",
           i18n.t(`${T_PREFIX}.dictionary.fieldSentenceDescription`),
-          "dictionary-context",
-          true,
-        ),
+          "dictionary-context"),
         createOutputSchemaField(
           i18n.t(`${T_PREFIX}.dictionary.fieldSentenceTranslation`),
           "string",

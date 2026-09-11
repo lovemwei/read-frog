@@ -43,55 +43,18 @@ describe("dEFAULT_CONFIG", () => {
     expect(DEFAULT_CONFIG.selectionToolbar.customActions).toEqual([])
   })
 
-  it("seeds default translation providers and the default LLM providers in the default providers config", async () => {
-    const { DEFAULT_CONFIG } = await import("../config")
-    const { configSchema } = await import("@/types/config/config")
-
-    const parseResult = configSchema.safeParse(DEFAULT_CONFIG)
-    if (!parseResult.success) {
-      console.error(parseResult.error.issues)
-    }
-
-    expect(parseResult.success).toBe(true)
-    // Google leads deliberately: the deletion fallback takes the first usable provider in this
-    // order, and landing page translation on Microsoft is illegal in translationOnly mode
-    // (see DEFAULT_PROVIDER_CONFIG_LIST).
-    expect(DEFAULT_CONFIG.providersConfig.map((provider) => provider.id)).toEqual([
-      "google-translate-default",
-      "microsoft-translate-default",
-      "openai-default",
-      "jalapenocloud-default",
-      "atlascloud-default",
-    ])
-    expect(DEFAULT_CONFIG.pageTranslation.providerId).toBe("microsoft-translate-default")
-    expect(DEFAULT_CONFIG.selectionToolbar.features.translate.providerId).toBe(
-      "microsoft-translate-default",
-    )
-    expect(DEFAULT_CONFIG.inputTranslation.providerId).toBe("microsoft-translate-default")
-    expect(DEFAULT_CONFIG.videoSubtitles.providerId).toBe("microsoft-translate-default")
-    expect(
-      DEFAULT_CONFIG.providersConfig.find((provider) => provider.id === "jalapenocloud-default"),
-    ).toEqual(
-      expect.objectContaining({
-        model: {
-          model: "GLM-5.2",
-          isCustomModel: false,
-          customModel: null,
-        },
-      }),
-    )
-    expect(
-      DEFAULT_CONFIG.providersConfig.find((provider) => provider.id === "atlascloud-default"),
-    ).toEqual(
-      expect.objectContaining({
-        model: {
-          model: "deepseek-ai/deepseek-v4-flash",
-          isCustomModel: false,
-          customModel: null,
-        },
-      }),
-    )
-  })
+  it("starts with basic online translation and no automatic translation sites", async () => {
+      const { DEFAULT_CONFIG } = await import("../config")
+      const { configSchema } = await import("@/types/config/config")
+      expect(configSchema.safeParse(DEFAULT_CONFIG).success).toBe(true)
+      expect(DEFAULT_CONFIG.providersConfig.map(provider => provider.provider)).toEqual(["google-translate", "microsoft-translate"])
+      expect(DEFAULT_CONFIG.pageTranslation.providerId).toBe("microsoft-translate-default")
+      expect(DEFAULT_CONFIG.selectionToolbar.features.translate.providerId).toBe("microsoft-translate-default")
+      expect(DEFAULT_CONFIG.inputTranslation.providerId).toBe("microsoft-translate-default")
+      expect(DEFAULT_CONFIG.videoSubtitles.providerId).toBe("microsoft-translate-default")
+      expect(DEFAULT_CONFIG.pageTranslation.page.autoTranslatePatterns).toEqual([])
+      expect(DEFAULT_CONFIG).not.toHaveProperty("tts")
+    })
 
   it("defaults fresh hover translation off", async () => {
     const { DEFAULT_CONFIG } = await import("../config")
@@ -131,7 +94,7 @@ describe("dEFAULT_CONFIG", () => {
     )
     expect(config.selectionToolbar.builtInActions.dictionary).toEqual({
       enabled: true,
-      providerId: "read-frog-free-ai",
+      providerId: "",
     })
     expect(config.selectionToolbar.customActions).toEqual([])
     expect(createDefaultDictionaryAction()).toEqual(

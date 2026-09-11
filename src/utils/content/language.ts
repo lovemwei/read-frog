@@ -13,7 +13,6 @@ import {
   parseDetectedLanguageCode,
 } from "@/utils/prompts/language-detection"
 import {
-  HostedAiProviderUnavailableError,
   serializeProviderRef,
 } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
@@ -75,9 +74,7 @@ export async function detectLanguageWithSource(
         // A plan or quota denial says what to do about it; anything else is
         // just "it didn't work".
         title:
-          error instanceof HostedAiProviderUnavailableError
-            ? error.message
-            : i18n.t("languageDetection.llmFailed"),
+          i18n.t("languageDetection.llmFailed"),
         id: LLM_DETECTION_FALLBACK_TOAST_ID,
       })
     }
@@ -128,9 +125,7 @@ export async function detectLanguageWithLLM(
     return null
   }
 
-  // Use the passed ref or resolve one from config. Resolving goes through the
-  // capability registry rather than providersConfig directly, so Built-in AI —
-  // which is never a row in providersConfig — is reachable here.
+  
   let ref: PromptableProviderRef | undefined = providerRef
 
   if (!ref) {
@@ -154,7 +149,7 @@ export async function detectLanguageWithLLM(
         logger.info(`Provider "${ldProviderId}" cannot run language detection`)
         return null
       }
-      ref = await serializeProviderRef(resolved, "languageDetection")
+      ref = await serializeProviderRef(resolved)
     } catch (error) {
       // Everything above returns null for "no LLM detection is configured",
       // which the caller reads as a legal state and quietly resolves with
@@ -162,9 +157,7 @@ export async function detectLanguageWithLLM(
       // the same null is what made the caller's `languageDetection.llmFailed`
       // toast unreachable, so a user who turned LLM detection on and can never
       // run it was told nothing at all.
-      if (error instanceof HostedAiProviderUnavailableError) {
-        throw error
-      }
+      
       logger.error("Failed to resolve the language detection provider:", error)
       return null
     }
@@ -173,12 +166,10 @@ export async function detectLanguageWithLLM(
   try {
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       try {
-        // A fresh request id per attempt: an unparseable answer means the call
-        // must actually be re-run, and reusing the hosted idempotency key
-        // would replay the same bad response instead.
+        
         const response = await sendMessage("backgroundGenerateText", {
           providerRef: ref,
-          hostedFeature: "languageDetection",
+          
           instructions: getLanguageDetectionSystemPrompt(),
           prompt: text,
           requestId: getRandomUUID(),

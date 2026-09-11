@@ -4,14 +4,14 @@ import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { ConfigItem } from "../../../components/config-item"
 import { ConfigSection } from "../../../components/config-section"
-import { NoteSuggestionItems } from "./note-suggestion-items"
+
 
 /** What the toolbar can do with a selection: the two built-in buttons, and the save prompt. */
 export function ActionsSection() {
   const [selectionToolbar, setSelectionToolbar] = useAtom(configFieldsAtomMap.selectionToolbar)
   const { features } = selectionToolbar
 
-  const setFeatureEnabled = (key: "translate" | "speak", enabled: boolean) => {
+  const setFeatureEnabled = (key: "translate", enabled: boolean) => {
     void setSelectionToolbar({
       ...selectionToolbar,
       features: {
@@ -36,17 +36,8 @@ export function ActionsSection() {
           onCheckedChange={(checked) => setFeatureEnabled("translate", checked)}
         />
       </ConfigItem>
-      <ConfigItem
-        id="selection-toolbar-speak"
-        title={i18n.t("options.selectionToolbar.actions.speak.title")}
-        description={i18n.t("options.selectionToolbar.actions.speak.description")}
-      >
-        <Switch
-          checked={features.speak.enabled}
-          onCheckedChange={(checked) => setFeatureEnabled("speak", checked)}
-        />
-      </ConfigItem>
-      <NoteSuggestionItems />
+      
+      
     </ConfigSection>
   )
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { Link } from "react-router"
 import { Button } from "@/components/ui/base-ui/button"
 import { useDrillInBack } from "../navigation/drill-in"

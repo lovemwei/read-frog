@@ -2,7 +2,7 @@ import type {
   SelectionToolbarCustomAction,
   SelectionToolbarCustomActionOutputField,
 } from "@/types/config/selection-toolbar"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useForm } from "@tanstack/react-form"
 import { useEffect, useState } from "react"
 import { fieldContext as FieldContext } from "@/components/form/form-context"
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/base-ui/alert-dialog"
 import { Badge } from "@/components/ui/base-ui/badge"
 import { Button } from "@/components/ui/base-ui/button"
-import { Checkbox } from "@/components/ui/base-ui/checkbox"
+
 import {
   Dialog,
   DialogContent,
@@ -49,7 +49,7 @@ import {
   SELECTION_TOOLBAR_CUSTOM_ACTION_TOKENS,
 } from "@/utils/constants/custom-action"
 import { i18n } from "@/utils/i18n"
-import { sanitizeCustomActionNotebaseConnection } from "@/utils/notebase/connection"
+
 import { withForm } from "./form"
 
 type CustomActionFormKey =
@@ -58,7 +58,6 @@ type CustomActionFormKey =
   | "fieldType"
   | "fieldDescription"
   | "fieldDescriptionPlaceholder"
-  | "fieldSpeaking"
   | "editFieldDialog.save"
   | "deleteFieldDialog.title"
   | "deleteFieldDialog.description"
@@ -188,22 +187,7 @@ function FieldDialog({
                 </FieldContext>
               )}
             </form.Field>
-            <form.Field name="speaking">
-              {(speakingField) => {
-                const checkboxId = `custom-action-field-speaking-${outputField.id}`
-
-                return (
-                  <Field orientation="horizontal" className="items-center">
-                    <Checkbox
-                      id={checkboxId}
-                      checked={speakingField.state.value}
-                      onCheckedChange={(checked) => speakingField.handleChange(checked)}
-                    />
-                    <FieldLabel htmlFor={checkboxId}>{t("fieldSpeaking")}</FieldLabel>
-                  </Field>
-                )
-              }}
-            </form.Field>
+            
           </FieldGroup>
           <DialogFooter>
             <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
@@ -441,15 +425,8 @@ export const OutputSchemaField = withForm({
                         const nextOutputSchema = field.state.value.filter(
                           (item) => item.id !== deletingFieldId,
                         )
-                        const connection = form.state.values.notebaseConnection
-                        if (connection) {
-                          // Drop references before field validation runs; the persistence
-                          // sanitizer cannot repair a draft rejected by handleSubmit.
-                          form.setFieldValue(
-                            "notebaseConnection",
-                            sanitizeCustomActionNotebaseConnection(connection, nextOutputSchema),
-                          )
-                        }
+                        
+                        
                         field.handleChange(nextOutputSchema)
                       },
                       { immediate: true },

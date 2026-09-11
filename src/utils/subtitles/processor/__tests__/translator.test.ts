@@ -1,6 +1,7 @@
 import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 
 const getLocalConfigMock = vi.fn<(...args: any[]) => any>()
 const sendMessageMock = vi.fn<(...args: any[]) => any>()

@@ -55,13 +55,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.preference.extensionActivation.mode.description",
     pageKey: "options.preference.title",
   },
-  {
-    sectionId: "google-drive-sync",
-    route: "/preference",
-    titleKey: "options.preference.config.googleDrive.title",
-    descriptionKey: "options.preference.config.googleDrive.description",
-    pageKey: "options.preference.title",
-  },
+  
   {
     sectionId: "manual-config-sync",
     route: "/preference",
@@ -91,13 +85,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.preference.userExperience.beta.description",
     pageKey: "options.preference.title",
   },
-  {
-    sectionId: "analytics",
-    route: "/preference",
-    titleKey: "options.preference.userExperience.analytics.title",
-    descriptionKey: "options.preference.userExperience.analytics.description",
-    pageKey: "options.preference.title",
-  },
+  
 
   // Shortcuts page
   {
@@ -357,13 +345,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.selectionToolbar.actions.translate.description",
     pageKey: "options.selectionToolbar.title",
   },
-  {
-    sectionId: "selection-toolbar-note-suggestion",
-    route: "/selection-toolbar",
-    titleKey: "options.selectionToolbar.actions.noteSuggestion.title",
-    descriptionKey: "options.selectionToolbar.actions.noteSuggestion.description",
-    pageKey: "options.selectionToolbar.title",
-  },
+  
   {
     sectionId: "selection-toolbar-opacity",
     route: "/selection-toolbar",
@@ -441,13 +423,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.videoSubtitles.preference.aiSegmentation.description",
     pageKey: "options.videoSubtitles.title",
   },
-  {
-    sectionId: "subtitles-ai-quota",
-    route: "/video-subtitles",
-    titleKey: "options.videoSubtitles.aiQuota.title",
-    descriptionKey: "options.videoSubtitles.aiQuota.description",
-    pageKey: "options.videoSubtitles.title",
-  },
+  
   {
     // Its own page, drilled into from the Video Subtitles page's Subtitle style section.
     sectionId: "subtitles-style",
@@ -495,39 +471,9 @@ export const SEARCH_ITEMS: SearchItem[] = [
   },
 
   // Text to Speech page
-  {
-    sectionId: "language-voice",
-    route: "/tts",
-    titleKey: "options.tts.voice.language.title",
-    descriptionKey: "options.tts.voice.language.description",
-    pageKey: "options.tts.title",
-  },
-  {
-    sectionId: "tts-voice",
-    route: "/tts",
-    titleKey: "options.tts.voice.fallback.title",
-    descriptionKey: "options.tts.voice.fallback.description",
-    pageKey: "options.tts.title",
-  },
-  {
-    sectionId: "tts-rate",
-    route: "/tts",
-    titleKey: "options.tts.speech.rate.title",
-    descriptionKey: "options.tts.speech.rate.description",
-    pageKey: "options.tts.title",
-  },
-  {
-    sectionId: "tts-pitch",
-    route: "/tts",
-    titleKey: "options.tts.speech.pitch.title",
-    descriptionKey: "options.tts.speech.pitch.description",
-    pageKey: "options.tts.title",
-  },
-  {
-    sectionId: "tts-volume",
-    route: "/tts",
-    titleKey: "options.tts.speech.volume.title",
-    descriptionKey: "options.tts.speech.volume.description",
-    pageKey: "options.tts.title",
-  },
+  
+  
+  
+  
+  
 ] satisfies SearchItemDefinition[]

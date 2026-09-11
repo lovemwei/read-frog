@@ -3,7 +3,7 @@ import type { Config } from "@/types/config/config"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import type {
   CustomActionProviderRef,
-  ProviderRefForCapability,
+  
   SelectionTranslationProviderRef,
 } from "@/utils/providers/provider-registry"
 import { dequal } from "dequal"
@@ -142,7 +142,7 @@ function createSelectionToolbarCustomActionRequestSliceAtom(actionId: string) {
 export const selectionToolbarTranslateRequestAtom =
   createSelectionToolbarTranslateRequestSliceAtom()
 
-export type NoteSuggestionProviderRef = ProviderRefForCapability<"noteSuggestion">
+
 
 /**
  * Deliberately separate from the translate request slice: the translate slice's
@@ -150,16 +150,7 @@ export type NoteSuggestionProviderRef = ProviderRefForCapability<"noteSuggestion
  * provider in would retranslate the selection whenever only the suggestion
  * provider changes.
  */
-export const noteSuggestionProviderAtom = selectAtom(
-  configAtom,
-  (config): NoteSuggestionProviderRef | null =>
-    resolveProviderRefForCapability(
-      "noteSuggestion",
-      config.providersConfig,
-      config.selectionToolbar.noteSuggestion.providerId,
-    ),
-  dequal,
-)
+
 
 export const selectionToolbarCustomActionRequestAtomFamily = atomFamily((actionId: string) =>
   createSelectionToolbarCustomActionRequestSliceAtom(actionId),

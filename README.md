@@ -1,3 +1,5 @@
+> This checkout is a local, private edition. Accounts, memberships, official hosted AI, cloud sync, analytics, product/update modules, and text-to-speech have been removed. Basic Google/Microsoft online translation and custom providers are supported. See [LOCAL_PRIVACY.md](./LOCAL_PRIVACY.md) for the current behavior and build instructions. The upstream documentation below may describe features that are absent in this edition.
+
 <div align="center"><a name="readme-top"></a>
 
 [![Read Frog banner][image-banner]][website]

@@ -1,9 +1,9 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
-import type { FeatureUsageContext } from "@/types/analytics"
+
 import type { Config } from "@/types/config/config"
 import { browser, storage } from "#imports"
-import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
-import { createFeatureUsageContext } from "@/utils/analytics"
+
+
 import { normalizeDetectedCode } from "@/utils/config/languages"
 import { CONFIG_STORAGE_KEY, DEFAULT_DETECTED_CODE } from "@/utils/constants/config"
 import { getDetectedCodeStateKey, getTranslationStateKey } from "@/utils/constants/storage-keys"
@@ -32,9 +32,9 @@ function notifyPageTranslationStateChanged(tabId: number, enabled: boolean) {
 function requestManagerToTogglePageTranslation(
   tabId: number,
   enabled: boolean,
-  analyticsContext?: FeatureUsageContext,
+  
 ) {
-  void sendMessage("askManagerToTogglePageTranslation", { enabled, analyticsContext }, tabId).catch(
+  void sendMessage("askManagerToTogglePageTranslation", { enabled,  }, tabId).catch(
     (error) => logger.warn("Failed to ask page translation manager to toggle", error),
   )
 }
@@ -135,12 +135,7 @@ export function translationMessage() {
 
         requestManagerToTogglePageTranslation(
           tabId,
-          true,
-          createFeatureUsageContext(
-            ANALYTICS_FEATURE.PAGE_TRANSLATION,
-            ANALYTICS_SURFACE.PAGE_AUTO,
-          ),
-        )
+          true)
       }
       return
     }
@@ -163,7 +158,7 @@ export function translationMessage() {
   })
 
   onMessage("tryToSetEnablePageTranslationByTabId", async (msg) => {
-    const { tabId, enabled, analyticsContext } = msg.data
+    const { tabId, enabled,  } = msg.data
     if (!enabled) {
       // Record the user's refusal before asking the manager to stop, so a
       // concurrent tab-activation re-detection cannot re-enable in between.
@@ -174,12 +169,12 @@ export function translationMessage() {
       await setPageTranslationEnabled(tabId, false, tabUrl, true)
       notifyPageTranslationStateChanged(tabId, false)
     }
-    requestManagerToTogglePageTranslation(tabId, enabled, analyticsContext)
+    requestManagerToTogglePageTranslation(tabId, enabled, )
   })
 
   onMessage("tryToSetEnablePageTranslationOnContentScript", async (msg) => {
     const tabId = msg.sender?.tab?.id
-    const { enabled, analyticsContext } = msg.data
+    const { enabled,  } = msg.data
     if (typeof tabId === "number") {
       logger.info("sending tryToSetEnablePageTranslationOnContentScript to manager", {
         enabled,
@@ -189,7 +184,7 @@ export function translationMessage() {
         await setPageTranslationEnabled(tabId, false, msg.sender?.tab?.url, true)
         notifyPageTranslationStateChanged(tabId, false)
       }
-      requestManagerToTogglePageTranslation(tabId, enabled, analyticsContext)
+      requestManagerToTogglePageTranslation(tabId, enabled, )
     } else {
       logger.error("tabId is not a number", msg)
     }

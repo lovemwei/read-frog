@@ -55,7 +55,7 @@ describe("buildDeepLXUrl", () => {
   })
 })
 
-describe("deeplxTranslate default URL fallback", () => {
+describe("deeplxTranslate configured URL", () => {
   beforeEach(() => {
     fetchMock.mockReset()
     fetchMock.mockResolvedValue({
@@ -72,30 +72,10 @@ describe("deeplxTranslate default URL fallback", () => {
     vi.unstubAllGlobals()
   })
 
-  it("uses the default DeepLX placeholder URL when baseURL is missing", async () => {
-    const result = await deeplxTranslate("Hi", "auto", "zh", {
-      id: "deeplx-default",
-      enabled: true,
-      name: "DeepLX",
-      provider: "deeplx",
-      apiKey: "token123",
+  it("rejects a missing URL without making a network request", async () => {
+      await expect(deeplxTranslate("Hi", "auto", "zh", { id: "deeplx-default", enabled: true, name: "DeepLX", provider: "deeplx" })).rejects.toThrow("DeepLX baseURL is not configured")
+      expect(fetchMock).not.toHaveBeenCalled()
     })
-
-    expect(result).toBe("你好")
-    expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.deeplx.org/token123/translate",
-      expect.objectContaining({
-        method: "POST",
-      }),
-    )
-
-    const [, requestInit] = fetchMock.mock.calls[0]!
-    expect(JSON.parse(requestInit.body)).toEqual({
-      text: "Hi",
-      source_lang: "auto",
-      target_lang: "ZH",
-    })
-  })
 
   it.each(["plain", undefined] as const)(
     "omits tag_handling for %s text format",
@@ -109,8 +89,7 @@ describe("deeplxTranslate default URL fallback", () => {
           enabled: true,
           name: "DeepLX",
           provider: "deeplx",
-          apiKey: "token123",
-        },
+          apiKey: "token123", baseURL: "https://api.deeplx.org/{{apiKey}}/translate" },
         { textFormat },
       )
 
@@ -133,8 +112,7 @@ describe("deeplxTranslate default URL fallback", () => {
         enabled: true,
         name: "DeepLX",
         provider: "deeplx",
-        apiKey: "token123",
-      },
+        apiKey: "token123", baseURL: "https://api.deeplx.org/{{apiKey}}/translate" },
       { textFormat: "html" },
     )
 
@@ -147,14 +125,13 @@ describe("deeplxTranslate default URL fallback", () => {
     })
   })
 
-  it("throws the placeholder API key error when fallback URL needs a missing key", async () => {
+  it("rejects a missing key for a configured URL with a key placeholder", async () => {
     await expect(
       deeplxTranslate("Hi", "auto", "zh", {
         id: "deeplx-default",
         enabled: true,
         name: "DeepLX",
-        provider: "deeplx",
-      }),
+        provider: "deeplx", baseURL: "https://api.deeplx.org/{{apiKey}}/translate" }),
     ).rejects.toThrow("API key is required when using {{apiKey}} placeholder in DeepLX baseURL")
 
     expect(fetchMock).not.toHaveBeenCalled()

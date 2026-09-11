@@ -146,23 +146,7 @@ describe("translation prompt selectors", () => {
     })
   })
 
-  it("keeps prompt selection available for Built-in AI", () => {
-    testState.pageTranslationProviderRef = {
-      kind: "system",
-      id: "read-frog-free-ai",
-      name: "Built-in AI",
-      modelTier: "normal",
-    }
-    render(<TranslatePromptSelector />)
-
-    fireEvent.click(screen.getByRole("option", { name: "Custom" }))
-    expect(setTranslateMock).toHaveBeenCalledWith({
-      customPromptsConfig: {
-        ...testState.pageTranslation!.customPromptsConfig,
-        promptId: "custom",
-      },
-    })
-  })
+  
 
   it("keeps prompt selection hidden for a local translation-only provider", () => {
     testState.pageTranslationProviderRef = {

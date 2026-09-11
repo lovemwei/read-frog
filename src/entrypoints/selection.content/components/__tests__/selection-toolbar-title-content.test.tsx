@@ -12,7 +12,7 @@ vi.mock("@/components/ui/selection-popover", () => ({
   },
 }))
 
-vi.mock("@iconify/react", () => ({
+vi.mock("@/components/icon", () => ({
   Icon: ({
     className,
     icon,

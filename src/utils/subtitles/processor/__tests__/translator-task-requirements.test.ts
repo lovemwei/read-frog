@@ -26,7 +26,7 @@ vi.mock("@/utils/providers/provider-ref", async () => {
   return { ...actual, serializeProviderRef: serializeProviderRefMock }
 })
 
-const GOOGLE = DEFAULT_PROVIDER_CONFIG["google-translate"]
+const GOOGLE = DEFAULT_PROVIDER_CONFIG.deeplx
 
 function configWithProvider(provider: { id: string }) {
   return {

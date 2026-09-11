@@ -206,11 +206,7 @@ function isRateLimitRequestErrorMeta(meta: RequestErrorMeta): boolean {
 }
 
 function isQueueFatalRequestErrorMeta(meta: RequestErrorMeta): boolean {
-  // "access-denied" marks hosted hard denials (quota exhausted / tier
-  // restricted / unauthenticated): every queued sibling would fail
-  // identically, so drain like 401/403/404. Draining also fails unrelated
-  // tasks sharing the queue (e.g. a queued summary) — rare, and consistent
-  // with the status-code drains below.
+  
   return (
     meta.kind === "access-denied" ||
     meta.statusCode === 401 ||

@@ -6,10 +6,10 @@ import type {
   LLMProviderTypes,
   ProviderConfig,
   ProvidersConfig,
-  ProviderSponsorConfig,
+  
 } from "@/types/config/provider"
 import type { Theme } from "@/types/config/theme"
-import { APP_NAME } from "@read-frog/definitions"
+
 import { camelCase } from "case-anything"
 import customProviderLogo from "@/assets/providers/custom-provider.svg?url&no-inline"
 import customResponsesLogo from "@/assets/providers/custom-responses.svg?url&no-inline"
@@ -17,14 +17,11 @@ import deeplxLogoDark from "@/assets/providers/deeplx-dark.svg?url&no-inline"
 import deeplxLogoLight from "@/assets/providers/deeplx-light.svg?url&no-inline"
 import jalapenoCloudLogo from "@/assets/providers/jalapeno-cloud.png?url&no-inline"
 import tensdaqLogoColor from "@/assets/providers/tensdaq-color.svg?url&no-inline"
-import { env } from "@/env"
+
 import {
   API_PROVIDER_TYPES,
-  DEDICATED_LLM_PROVIDER_TYPES,
   NON_API_TRANSLATE_PROVIDERS,
   NON_API_TRANSLATE_PROVIDERS_MAP,
-  PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
-  PURE_API_PROVIDER_TYPES,
   PURE_TRANSLATE_PROVIDERS,
   TRANSLATE_PROVIDER_TYPES,
   isAPIProviderConfig,
@@ -32,7 +29,7 @@ import {
 } from "@/types/config/provider"
 import { omit, pick } from "@/types/utils"
 import { i18n } from "@/utils/i18n"
-import { getLobeIconsCDNUrlFn } from "../logo"
+
 
 export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
   openrouter: {
@@ -193,7 +190,7 @@ export const PROVIDER_ITEMS: Record<
     logo: (theme: Theme) => string
     name: string
     website: string
-    sponsor?: ProviderSponsorConfig
+    
     /**
      * Where someone signs up for or copies this provider's key. Only providers that set it get
      * the "Get API key" button next to the API key field — absent means no button, because most
@@ -203,12 +200,12 @@ export const PROVIDER_ITEMS: Record<
   }
 > = {
   "microsoft-translate": {
-    logo: getLobeIconsCDNUrlFn("microsoft-color"),
+    logo: () => customProviderLogo,
     name: NON_API_TRANSLATE_PROVIDERS_MAP["microsoft-translate"],
     website: "https://translator.microsoft.com",
   },
   "google-translate": {
-    logo: getLobeIconsCDNUrlFn("google-color"),
+    logo: () => customProviderLogo,
     name: NON_API_TRANSLATE_PROVIDERS_MAP["google-translate"],
     website: "https://translate.google.com",
   },
@@ -225,163 +222,154 @@ export const PROVIDER_ITEMS: Record<
   jalapenocloud: {
     logo: () => jalapenoCloudLogo,
     name: "Jalapeno Cloud",
-    website: "https://www.jalapeno-cloud.ai/readfrog",
-    apiKeyUrl: "https://www.jalapeno-cloud.ai/readfrog",
-    sponsor: {
-      sponsoring: true,
-      referUrl: "https://www.jalapeno-cloud.ai/readfrog",
-      // Both default to the generic sponsor wording; Jalapeno names its actual offer instead.
-      badgeI18nKey: "options.apiProviders.badges.sponsorJalapenoCloud",
-      ctaI18nKey: "options.apiProviders.sponsorCtaJalapenoCloud",
-    },
+    website: "https://www.jalapeno-cloud.ai",
+    apiKeyUrl: "https://www.jalapeno-cloud.ai",
+    
   },
   atlascloud: {
-    logo: getLobeIconsCDNUrlFn("atlascloud"),
+    logo: () => customProviderLogo,
     name: "Atlas Cloud",
-    website: "https://readfrog.s.gy/altas",
-    apiKeyUrl: "https://readfrog.s.gy/altas",
-    sponsor: {
-      sponsoring: true,
-      referUrl: "https://readfrog.s.gy/altas",
-    },
+    website: "https://www.atlascloud.ai",
+    apiKeyUrl: "https://www.atlascloud.ai",
+    
   },
   "openai-compatible": {
     logo: () => customProviderLogo,
     name: "Custom Chat Complete",
-    website: `${env.WXT_WEBSITE_URL}/docs/providers/openai-compatible-providers`,
+    website: "",
   },
   "open-responses": {
     logo: () => customResponsesLogo,
     name: "Custom Responses",
-    website: `${env.WXT_WEBSITE_URL}/docs/providers/openai-compatible-providers`,
+    website: "",
   },
   openrouter: {
-    logo: getLobeIconsCDNUrlFn("openrouter"),
+    logo: () => customProviderLogo,
     name: "OpenRouter",
     website: "https://openrouter.ai/",
   },
   minimax: {
-    logo: getLobeIconsCDNUrlFn("minimax-color"),
+    logo: () => customProviderLogo,
     name: "MiniMax",
     website: "https://platform.minimax.io",
   },
   siliconflow: {
-    logo: getLobeIconsCDNUrlFn("siliconcloud-color"),
+    logo: () => customProviderLogo,
     name: "SiliconFlow",
     website: "https://siliconflow.cn/",
   },
   openai: {
-    logo: getLobeIconsCDNUrlFn("openai"),
+    logo: () => customProviderLogo,
     name: "OpenAI",
     website: "https://platform.openai.com",
   },
   azure: {
-    logo: getLobeIconsCDNUrlFn("azure-color"),
+    logo: () => customProviderLogo,
     name: "Azure",
     website: "https://azure.microsoft.com/products/ai-services/openai-service",
   },
   deepseek: {
-    logo: getLobeIconsCDNUrlFn("deepseek-color"),
+    logo: () => customProviderLogo,
     name: "DeepSeek",
     website: "https://platform.deepseek.com",
   },
   google: {
-    logo: getLobeIconsCDNUrlFn("gemini-color"),
+    logo: () => customProviderLogo,
     name: "Gemini",
     website: "https://aistudio.google.com",
   },
   anthropic: {
-    logo: getLobeIconsCDNUrlFn("anthropic"),
+    logo: () => customProviderLogo,
     name: "Anthropic",
     website: "https://console.anthropic.com",
   },
   xai: {
-    logo: getLobeIconsCDNUrlFn("grok"),
+    logo: () => customProviderLogo,
     name: "Grok",
     website: "https://x.ai/api",
   },
   bedrock: {
-    logo: getLobeIconsCDNUrlFn("bedrock-color"),
+    logo: () => customProviderLogo,
     name: "Amazon Bedrock",
     website: "https://aws.amazon.com/bedrock/",
   },
   groq: {
-    logo: getLobeIconsCDNUrlFn("groq"),
+    logo: () => customProviderLogo,
     name: "Groq",
     website: "https://groq.com",
   },
   deepinfra: {
-    logo: getLobeIconsCDNUrlFn("deepinfra-color"),
+    logo: () => customProviderLogo,
     name: "DeepInfra",
     website: "https://deepinfra.com",
   },
   mistral: {
-    logo: getLobeIconsCDNUrlFn("mistral-color"),
+    logo: () => customProviderLogo,
     name: "Mistral AI",
     website: "https://mistral.ai",
   },
   togetherai: {
-    logo: getLobeIconsCDNUrlFn("together-color"),
+    logo: () => customProviderLogo,
     name: "Together.ai",
     website: "https://together.ai",
   },
   cohere: {
-    logo: getLobeIconsCDNUrlFn("cohere-color"),
+    logo: () => customProviderLogo,
     name: "Cohere",
     website: "https://cohere.com",
   },
   fireworks: {
-    logo: getLobeIconsCDNUrlFn("fireworks-color"),
+    logo: () => customProviderLogo,
     name: "Fireworks AI",
     website: "https://fireworks.ai",
   },
   cerebras: {
-    logo: getLobeIconsCDNUrlFn("cerebras-color"),
+    logo: () => customProviderLogo,
     name: "Cerebras",
     website: "https://cerebras.ai",
   },
   replicate: {
-    logo: getLobeIconsCDNUrlFn("replicate"),
+    logo: () => customProviderLogo,
     name: "Replicate",
     website: "https://replicate.com",
   },
   perplexity: {
-    logo: getLobeIconsCDNUrlFn("perplexity-color"),
+    logo: () => customProviderLogo,
     name: "Perplexity",
     website: "https://perplexity.ai",
   },
   vercel: {
-    logo: getLobeIconsCDNUrlFn("vercel"),
+    logo: () => customProviderLogo,
     name: "Vercel",
     website: "https://vercel.com",
   },
   tensdaq: {
     logo: () => tensdaqLogoColor,
     name: "Tensdaq",
-    website: "https://dashboard.x-aio.com/zh/register?ref=c356c1daba9a4641a18e",
+    website: "https://dashboard.x-aio.com",
   },
   ollama: {
-    logo: getLobeIconsCDNUrlFn("ollama"),
+    logo: () => customProviderLogo,
     name: "Ollama",
     website: "https://ollama.ai",
   },
   volcengine: {
-    logo: getLobeIconsCDNUrlFn("volcengine-color"),
+    logo: () => customProviderLogo,
     name: "Volcengine",
     website: "https://www.volcengine.com/product/doubao",
   },
   alibaba: {
-    logo: getLobeIconsCDNUrlFn("bailian-color"),
+    logo: () => customProviderLogo,
     name: "Alibaba Cloud",
     website: "https://modelstudio.alibabacloud.com/",
   },
   moonshotai: {
-    logo: getLobeIconsCDNUrlFn("moonshot"),
+    logo: () => customProviderLogo,
     name: "Moonshot AI",
     website: "https://platform.moonshot.cn/",
   },
   huggingface: {
-    logo: getLobeIconsCDNUrlFn("huggingface-color"),
+    logo: () => customProviderLogo,
     name: "Hugging Face",
     website: "https://huggingface.co/",
   },
@@ -407,11 +395,7 @@ export const DEFAULT_PROVIDER_CONFIG = {
     provider: "jalapenocloud",
     baseURL: "https://api.jalapeno-cloud.ai/v1",
     model: DEFAULT_LLM_PROVIDER_MODELS.jalapenocloud,
-    // Attribution headers are not here on purpose: they are ours to send, not the user's to
-    // configure, so they live in FORCED_PROVIDER_HEADERS and never enter stored config.
-    // Every Jalapeno model is a thinking model. Translation gains nothing from the reasoning
-    // pass and pays for it in latency and output tokens, so it starts off — and unlike the
-    // headers this is a preference, so it is written in where the user can change it.
+    
     providerOptions: {
       chat_template_kwargs: {
         thinking: false,
@@ -447,7 +431,7 @@ export const DEFAULT_PROVIDER_CONFIG = {
     name: PROVIDER_ITEMS["openai-compatible"].name,
     enabled: true,
     provider: "openai-compatible",
-    baseURL: "https://api.example.com/v1",
+    baseURL: "",
     model: DEFAULT_LLM_PROVIDER_MODELS["openai-compatible"],
   },
   "open-responses": {
@@ -455,7 +439,7 @@ export const DEFAULT_PROVIDER_CONFIG = {
     name: PROVIDER_ITEMS["open-responses"].name,
     enabled: true,
     provider: "open-responses",
-    url: "https://api.example.com/v1/responses",
+    url: "",
     model: DEFAULT_LLM_PROVIDER_MODELS["open-responses"],
   },
   openai: {
@@ -514,7 +498,7 @@ export const DEFAULT_PROVIDER_CONFIG = {
     name: PROVIDER_ITEMS.deeplx.name,
     enabled: true,
     provider: "deeplx",
-    baseURL: "https://api.deeplx.org/{{apiKey}}/translate",
+    baseURL: "",
   },
   deepl: {
     id: "deepl-default",
@@ -669,14 +653,6 @@ export const MICROSOFT_TRANSLATE_PROVIDER_ID = DEFAULT_PROVIDER_CONFIG["microsof
  * owns it.
  */
 export const FORCED_PROVIDER_HEADERS: Partial<Record<LLMProviderTypes, Record<string, string>>> = {
-  jalapenocloud: {
-    "HTTP-Referer": env.WXT_WEBSITE_URL,
-    "X-Jalapeno-Title": APP_NAME,
-  },
-  openrouter: {
-    "HTTP-Referer": env.WXT_WEBSITE_URL,
-    "X-OpenRouter-Title": APP_NAME,
-  },
   // Anthropic's API refuses direct browser calls without this, so it is not a default the user
   // can outgrow — it used to sit with the editable ones, where adding any header of your own
   // dropped it and broke every request.
@@ -690,8 +666,8 @@ export const PROVIDER_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>
   atlascloud: DEFAULT_PROVIDER_CONFIG.atlascloud.baseURL,
   siliconflow: DEFAULT_PROVIDER_CONFIG.siliconflow.baseURL,
   tensdaq: DEFAULT_PROVIDER_CONFIG.tensdaq.baseURL,
-  "openai-compatible": DEFAULT_PROVIDER_CONFIG["openai-compatible"].baseURL,
-  "open-responses": DEFAULT_PROVIDER_CONFIG["open-responses"].url,
+  "openai-compatible": "http://localhost:1234/v1",
+  "open-responses": "http://localhost:1234/v1/responses",
   openai: "https://api.openai.com/v1",
   azure: "https://<resource>.services.ai.azure.com/openai",
   deepseek: "https://api.deepseek.com",
@@ -722,9 +698,6 @@ export const PROVIDER_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>
 export const DEFAULT_PROVIDER_CONFIG_LIST: ProvidersConfig = [
   DEFAULT_PROVIDER_CONFIG["google-translate"],
   DEFAULT_PROVIDER_CONFIG["microsoft-translate"],
-  DEFAULT_PROVIDER_CONFIG.openai,
-  DEFAULT_PROVIDER_CONFIG.jalapenocloud,
-  DEFAULT_PROVIDER_CONFIG.atlascloud,
 ]
 
 /** Resolve a provider's default description in the active interface language. */
@@ -777,23 +750,10 @@ export function getProviderItemName(providerType: APIProviderTypes): string {
   return i18n.t(PROVIDER_NAME_I18N_KEYS[providerType]) || PROVIDER_ITEMS[providerType].name
 }
 
-export const PROVIDER_GROUPS = {
-  builtInProviders: {
-    types: DEDICATED_LLM_PROVIDER_TYPES,
-    tutorialSlug: "built-in-providers",
-  },
-  compatibleProviders: {
-    types: PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
-    tutorialSlug: "openai-compatible-providers",
-  },
-  pureTranslationProviders: {
-    types: PURE_API_PROVIDER_TYPES,
-    tutorialSlug: "pure-translation-providers",
-  },
-} as const satisfies Record<string, { types: readonly APIProviderTypes[]; tutorialSlug: string }>
 
-export const SPECIFIC_TUTORIAL_PROVIDER_TYPES = [
-  "ollama",
-  "deeplx",
-  "deepl",
-] as const satisfies readonly APIProviderTypes[]
+
+
+
+export const PROVIDER_GROUPS = {
+  compatibleProviders: { types: ["openai-compatible", "open-responses"] as const },
+} as const

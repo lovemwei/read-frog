@@ -2,17 +2,13 @@ import path from "node:path"
 import process from "node:process"
 import ViteYaml from "@modyfi/vite-plugin-yaml"
 import { defineConfig } from "wxt"
-import { z } from "zod"
-import {
-  createExtensionClientEnvSchema,
-  isLocalPackagesEnabled,
-  resolveExtensionEnv,
-} from "./src/env/shared"
+
+
 
 const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
-const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
-const useLocalPackages = isLocalPackagesEnabled(process.env)
-const shouldSkipEnvValidation = process.env.WXT_SKIP_ENV_VALIDATION === "true"
+
+const useLocalPackages = process.env.WXT_USE_LOCAL_PACKAGES === "true"
+
 // Root of the read-frog monorepo whose source is aliased in when developing
 // with local packages. Defaults to the sibling checkout; override with
 // WXT_MONOREPO_PATH to point at a git worktree (relative or absolute).
@@ -30,7 +26,6 @@ export default defineConfig({
   alias: useLocalPackages
     ? {
         "@read-frog/definitions": path.resolve(monorepoRoot, "packages/definitions/src"),
-        "@read-frog/api-contract": path.resolve(monorepoRoot, "packages/api-contract/src"),
       }
     : {},
   manifest: ({ mode, browser }) => ({
@@ -46,12 +41,10 @@ export default defineConfig({
       "storage",
       "tabs",
       "alarms",
-      "cookies",
       "contextMenus",
-      "identity",
       "scripting",
       "webNavigation",
-      ...(browser !== "firefox" ? ["offscreen", "sidePanel"] : []),
+      ...(browser !== "firefox" ? ["sidePanel"] : []),
     ],
     host_permissions: [
       "*://*/*", // Required for scripting.executeScript in any frame
@@ -77,15 +70,14 @@ export default defineConfig({
           strict_min_version: "112.0",
           data_collection_permissions: {
             required: ["none"],
-            optional: ["technicalAndInteraction"],
           },
         },
       },
     }),
   }),
   zip: {
-    includeSources: ["**/*", ".env.production"],
-    excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
+    includeSources: ["**/*"],
+    excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*", "**/.env*"],
   },
   hooks: {
     "vite:build:extendConfig": (entrypoints, viteConfig) => {
@@ -146,16 +138,9 @@ export default defineConfig({
             {
               name: "check-api-key-env",
               buildStart() {
-                z.object(
-                  createExtensionClientEnvSchema(
-                    configEnv.mode === "production",
-                    shouldSkipEnvValidation,
-                  ),
-                ).parse(resolveExtensionEnv(process.env))
 
                 const apiKeyVars = Object.keys(process.env)
                   .filter((key) => WXT_API_KEY_PATTERN.test(key))
-                  .filter((key) => !ALLOWED_BUNDLED_API_KEYS.has(key))
 
                 if (apiKeyVars.length > 0) {
                   throw new Error(

@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority"
 import type { buttonVariants } from "@/components/ui/base-ui/button"
 import type { Config } from "@/types/config/config"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { Button } from "@/components/ui/base-ui/button"
 import {
   Dialog,

@@ -2,7 +2,7 @@ import type { Config } from "@/types/config/config"
 import type { ConfigMeta } from "@/types/config/meta"
 import { storage } from "#imports"
 import { configSchema } from "@/types/config/config"
-import { isAPIProviderConfig } from "@/types/config/provider"
+
 import { initI18n } from "@/utils/i18n"
 import {
   buildFreshDefaultConfig,
@@ -14,11 +14,7 @@ import { logger } from "../logger"
 import { runMigration } from "./migration"
 
 export interface InitializeConfigResult {
-  /**
-   * The config was created from defaults in this run — either no stored value existed, or the
-   * stored value failed validation and was rebuilt. Callers use it to run one-time setup that
-   * only makes sense on untouched defaults (see `selectFreshTranslateProviders`).
-   */
+  
   isFreshInstall: boolean
 }
 
@@ -73,9 +69,6 @@ export async function initializeConfig(): Promise<InitializeConfigResult> {
   }
 
   if (import.meta.env.DEV) {
-    const apiKeyResult = applyAPIKeysFromEnv(config)
-    config = apiKeyResult.config
-    didConfigChange = didConfigChange || apiKeyResult.changed
 
     const betaResult = applyDevBetaExperience(config)
     config = betaResult.config
@@ -99,39 +92,7 @@ export async function initializeConfig(): Promise<InitializeConfigResult> {
   return { isFreshInstall }
 }
 
-function applyAPIKeysFromEnv(config: Config): { config: Config; changed: boolean } {
-  let changed = false
 
-  const providersConfig = config.providersConfig.map((providerConfig) => {
-    if (!isAPIProviderConfig(providerConfig)) {
-      return providerConfig
-    }
-
-    const apiKeyEnvName = `WXT_${providerConfig.provider.toUpperCase()}_API_KEY`
-    const envApiKey = import.meta.env[apiKeyEnvName] as string | undefined
-    if (!envApiKey || providerConfig.apiKey === envApiKey) {
-      return providerConfig
-    }
-
-    changed = true
-    return {
-      ...providerConfig,
-      apiKey: envApiKey,
-    }
-  })
-
-  if (!changed) {
-    return { config, changed: false }
-  }
-
-  return {
-    config: {
-      ...config,
-      providersConfig,
-    },
-    changed: true,
-  }
-}
 
 function applyDevBetaExperience(config: Config): { config: Config; changed: boolean } {
   if (config.betaExperience.enabled) {

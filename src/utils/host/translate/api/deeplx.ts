@@ -1,7 +1,7 @@
 import type { LangCodeISO6391 } from "@read-frog/definitions"
 import type { ProviderConfig } from "@/types/config/provider"
 import type { TranslationTextFormat } from "@/types/config/translate"
-import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
+
 
 type DeepLXProviderConfig = Extract<ProviderConfig, { provider: "deeplx" }>
 const API_KEY_PLACEHOLDER_RE = /\{\{apiKey\}\}/g
@@ -13,7 +13,7 @@ export async function deeplxTranslate(
   providerConfig: DeepLXProviderConfig,
   options?: { textFormat?: TranslationTextFormat; signal?: AbortSignal },
 ): Promise<string> {
-  const baseURL = providerConfig.baseURL || DEFAULT_PROVIDER_CONFIG.deeplx.baseURL
+  const baseURL = providerConfig.baseURL
   const apiKey = providerConfig.apiKey
 
   if (!baseURL) {

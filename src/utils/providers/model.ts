@@ -97,7 +97,7 @@ async function getLanguageModelById(providerId: string) {
 
   const LLMProvidersConfig = getLLMProvidersConfig(config.providersConfig)
   const providerConfig = getProviderConfigById(LLMProvidersConfig, providerId)
-  if (!providerConfig) {
+  if (!providerConfig?.enabled) {
     throw new Error(`Provider ${providerId} not found`)
   }
 
@@ -113,6 +113,20 @@ async function getLanguageModelById(providerId: string) {
  * new row while the params derived from the ref came from the old one.
  */
 export function getLanguageModelForConfig(providerConfig: LLMProviderConfig) {
+  if (!providerConfig.enabled) {
+    throw new Error("The custom provider is disabled")
+  }
+  const endpoint = isOpenResponsesLLMProviderConfig(providerConfig)
+    ? providerConfig.url
+    : providerConfig.baseURL
+  if (
+    (isOpenAICompatibleLLMProviderConfig(providerConfig) ||
+      isOpenResponsesLLMProviderConfig(providerConfig)) &&
+    !endpoint?.trim()
+  ) {
+    throw new Error("Configure the custom provider URL in extension settings")
+  }
+
   const headers = getProviderHeadersWithOverride(providerConfig.provider, providerConfig.headers)
   const providerSpecificSettings = getProviderSpecificSettings(providerConfig)
 

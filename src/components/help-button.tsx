@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useCallback, useRef, useState } from "react"
 import { cn } from "@/utils/styles/utils"
 

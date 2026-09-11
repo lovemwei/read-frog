@@ -8,7 +8,8 @@ import { describe, expect, it, vi } from "vitest"
 import { fakeBrowser } from "wxt/testing/fake-browser"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
 import { configAtom } from "@/utils/atoms/config"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { i18n } from "@/utils/i18n"
 import { CustomActionConfigForm } from ".."
 import { selectedCustomActionIdAtom } from "../../atoms"
@@ -47,11 +48,7 @@ vi.mock("../output-schema-field", () => ({
   ReadOnlyOutputSchemaField: () => <div>ReadOnlyOutputSchemaField</div>,
 }))
 
-vi.mock("../notebase-connection-field", () => ({
-  NotebaseConnectionField: () => (
-    <div>{i18n.t("options.selectionToolbar.customActions.form.notebase.title")}</div>
-  ),
-}))
+
 
 function seedConfig(store: ReturnType<typeof createStore>, config: SeedConfig) {
   void fakeBrowser.storage.local.set({ config })
@@ -66,17 +63,7 @@ describe("customActionConfigForm notebase availability", () => {
   it("renders built-in fields read-only and duplicates the complete action", async () => {
     const store = createStore()
     const config = cloneConfig(DEFAULT_CONFIG)
-    config.selectionToolbar.builtInActions.dictionary.notebaseConnection = {
-      notebaseId: "table-1",
-      notebaseNameSnapshot: "Dictionary",
-      connectedAccount: {
-        id: "user-1",
-        name: "Reader",
-        email: "reader@example.com",
-        image: null,
-      },
-      mappings: [],
-    }
+    
     seedConfig(store, config)
 
     render(
@@ -112,7 +99,7 @@ describe("customActionConfigForm notebase availability", () => {
     expect(duplicated).toMatchObject({
       enabled: true,
       providerId: config.selectionToolbar.builtInActions.dictionary.providerId,
-      notebaseConnection: config.selectionToolbar.builtInActions.dictionary.notebaseConnection,
+      
     })
     expect(duplicated.id).not.toBe("default-dictionary")
   })
@@ -142,47 +129,7 @@ describe("customActionConfigForm notebase availability", () => {
     )
   })
 
-  it("shows the notebase connection field when beta experience is disabled", () => {
-    const store = createStore()
-    const config = cloneConfig(DEFAULT_CONFIG)
-
-    config.betaExperience.enabled = false
-    config.selectionToolbar.customActions = [
-      {
-        id: "action-1",
-        name: "Summarize",
-        icon: "tabler:sparkles",
-        providerId: config.providersConfig[0]!.id,
-        systemPrompt: "You are helpful.",
-        prompt: "Summarize the selected text.",
-        outputSchema: [],
-        notebaseConnection: {
-          notebaseId: "table-1",
-          notebaseNameSnapshot: "Articles",
-          connectedAccount: {
-            id: "user-1",
-            name: "Reader",
-            email: "reader@example.com",
-            image: null,
-          },
-          mappings: [],
-        },
-      },
-    ]
-
-    seedConfig(store, config)
-    void store.set(selectedCustomActionIdAtom, "action-1")
-
-    render(
-      <Provider store={store}>
-        <CustomActionConfigForm />
-      </Provider>,
-    )
-
-    expect(
-      screen.getByText(i18n.t("options.selectionToolbar.customActions.form.notebase.title")),
-    ).toBeInTheDocument()
-  })
+  
 
   it("duplicates a custom action with its mutable state and connection", async () => {
     const store = createStore()
@@ -201,20 +148,10 @@ describe("customActionConfigForm notebase availability", () => {
           name: "summary",
           type: "string" as const,
           description: "Summary",
-          speaking: false,
+          
         },
       ],
-      notebaseConnection: {
-        notebaseId: "table-1",
-        notebaseNameSnapshot: "Articles",
-        connectedAccount: {
-          id: "user-1",
-          name: "Reader",
-          email: "reader@example.com",
-          image: null,
-        },
-        mappings: [],
-      },
+      
     }
     config.selectionToolbar.customActions = [action]
     seedConfig(store, config)
@@ -253,6 +190,6 @@ describe("customActionConfigForm notebase availability", () => {
       name: "Summarize 1",
     })
     expect(duplicate.id).not.toBe(action.id)
-    expect(duplicate.notebaseConnection).not.toBe(action.notebaseConnection)
+    
   })
 })

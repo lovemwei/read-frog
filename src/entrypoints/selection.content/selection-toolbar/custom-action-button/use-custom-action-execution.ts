@@ -2,23 +2,23 @@ import type { JSONValue } from "ai"
 import type { RefObject } from "react"
 import type { SelectionToolbarCustomActionRequestSlice } from "../atoms"
 import type { SelectionToolbarInlineError } from "../inline-error"
-import type { AnalyticsSurface, FeatureProviderAnalytics } from "@/types/analytics"
+
 import type {
   BackgroundStructuredObjectStreamSnapshot,
   ThinkingSnapshot,
 } from "@/types/background-stream"
 import type { AISDKReasoning } from "@/types/config/provider"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
-import type { HostedAiModelTier } from "@/utils/constants/provider-ids"
+
 import type { CachedWebPageContext } from "@/utils/host/translate/webpage-context"
 import type { CustomActionProviderRef } from "@/utils/providers/provider-registry"
 import { LANG_CODE_TO_EN_NAME } from "@read-frog/definitions"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { ANALYTICS_FEATURE } from "@/types/analytics"
-import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
-import { classifyResolvedProvider } from "@/utils/analytics-provider"
+
+
+
 import { streamBackgroundStructuredObject } from "@/utils/content-script/background-stream-client"
-import { getRandomUUID } from "@/utils/crypto-polyfill"
+
 import { getOrCreateWebPageContext } from "@/utils/host/translate/webpage-context"
 import { resolveModelId } from "@/utils/providers/model-id"
 import { getProviderOptionsWithOverride } from "@/utils/providers/options"
@@ -57,11 +57,7 @@ interface ResolvedWebPageContext {
 }
 
 interface CustomActionExecutionRequest {
-  analytics: FeatureProviderAnalytics & {
-    actionId: string
-    actionName: string
-    surface: AnalyticsSurface
-  }
+  
   key: string
   payload: {
     outputSchema: Array<{
@@ -70,7 +66,6 @@ interface CustomActionExecutionRequest {
     }>
     prompt: string
     providerId: string
-    modelTier?: HostedAiModelTier
     providerOptions?: Record<string, Record<string, JSONValue>>
     reasoning?: AISDKReasoning
     instructions: string
@@ -153,7 +148,7 @@ export function buildCustomActionExecutionPlan(
     }
   }
 
-  if (provider.kind === "local" && !provider.config.enabled) {
+  if ((!provider.config.enabled)) {
     return {
       error: createSelectionToolbarPrecheckError("customAction", "providerDisabled"),
       executionContext: null,
@@ -225,12 +220,12 @@ export function useCustomActionWebPageContext(open: boolean, popoverSessionKey: 
 }
 
 function buildCustomActionExecutionRequest({
-  analyticsSurface,
+  
   executionContext,
   popoverSessionKey,
   rerunNonce,
 }: {
-  analyticsSurface: AnalyticsSurface
+  
   executionContext: CustomActionExecutionContext
   popoverSessionKey: number
   rerunNonce: number
@@ -243,31 +238,24 @@ function buildCustomActionExecutionRequest({
   )
   const prompt = replaceSelectionToolbarCustomActionPromptTokens(action.prompt, promptTokens)
   const outputSchema = action.outputSchema.map(({ name, type }) => ({ name, type }))
-  const providerKey = provider.kind === "local" ? provider.config.provider : provider.id
-  const model = provider.kind === "local" ? provider.config.model : undefined
-  const modelName = provider.kind === "local" ? (resolveModelId(provider.config.model) ?? "") : ""
-  const reasoning = provider.kind === "local" ? getTopLevelReasoning(provider.config) : undefined
+  const providerKey = (provider.config.provider)
+  const model = (provider.config.model)
+  const modelName = (resolveModelId(provider.config.model) ?? "")
+  const reasoning = (getTopLevelReasoning(provider.config))
   const providerOptions =
-    provider.kind === "local"
-      ? getProviderOptionsWithOverride(
+    (getProviderOptionsWithOverride(
           modelName,
           provider.config.provider,
           provider.config.providerOptions,
           reasoning,
-        )
-      : undefined
-  const temperature = provider.kind === "local" ? provider.config.temperature : undefined
+        ))
+  const temperature = (provider.config.temperature)
 
   return {
-    analytics: {
-      actionId: action.id,
-      actionName: action.name,
-      surface: analyticsSurface,
-      ...classifyResolvedProvider(provider),
-    },
+    
     key: stringifyExecutionRequestKey({
       actionId: action.id,
-      analyticsSurface,
+      
       model,
       outputSchema: action.outputSchema.map(({ description, name, type }) => ({
         description,
@@ -287,7 +275,7 @@ function buildCustomActionExecutionRequest({
     }),
     payload: {
       providerId: provider.id,
-      modelTier: provider.kind === "system" ? provider.modelTier : undefined,
+      
       instructions: systemPrompt,
       prompt,
       outputSchema,
@@ -299,14 +287,14 @@ function buildCustomActionExecutionRequest({
 }
 
 export function useCustomActionExecution({
-  analyticsSurface,
+  
   bodyRef,
   executionContext,
   open,
   popoverSessionKey,
   rerunNonce,
 }: {
-  analyticsSurface: AnalyticsSurface
+  
   bodyRef: RefObject<HTMLDivElement | null>
   executionContext: CustomActionExecutionContext | null
   open: boolean
@@ -323,7 +311,7 @@ export function useCustomActionExecution({
   bodyRefRef.current = bodyRef
   const executionRequest = executionContext
     ? buildCustomActionExecutionRequest({
-        analyticsSurface,
+        
         executionContext,
         popoverSessionKey,
         rerunNonce,
@@ -359,19 +347,8 @@ export function useCustomActionExecution({
     let isCancelled = false
     const abortController = new AbortController()
 
-    const analyticsContext = createFeatureUsageContext(
-      ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
-      request.analytics.surface,
-      Date.now(),
-      {
-        action_id: request.analytics.actionId,
-        action_name: request.analytics.actionName,
-      },
-    )
-    const providerAnalytics: FeatureProviderAnalytics = {
-      provider: request.analytics.provider,
-      backend_kind: request.analytics.backend_kind,
-    }
+    
+    
 
     const run = async () => {
       setIsRunning(true)
@@ -386,7 +363,7 @@ export function useCustomActionExecution({
         const finalResult = await streamBackgroundStructuredObject(
           {
             ...request.payload,
-            requestId: getRandomUUID(),
+            
           },
           {
             signal: abortController.signal,
@@ -408,11 +385,7 @@ export function useCustomActionExecution({
 
         setResult(finalResult.output)
         setThinking(finalResult.thinking)
-        void trackFeatureUsed({
-          ...analyticsContext,
-          ...providerAnalytics,
-          outcome: "success",
-        })
+        
       } catch (caughtError) {
         if (isAbortError(caughtError)) {
           return
@@ -424,11 +397,7 @@ export function useCustomActionExecution({
 
         setThinking((prev) => (prev?.text ? { ...prev, status: "complete" } : null))
         setError(createSelectionToolbarRuntimeError("customAction", caughtError))
-        void trackFeatureUsed({
-          ...analyticsContext,
-          ...providerAnalytics,
-          outcome: "failure",
-        })
+        
       } finally {
         if (!isCancelled) {
           setIsRunning(false)

@@ -74,8 +74,7 @@ describe("background context menu", () => {
       initializeContextMenu,
       MENU_ID_SELECTION_TRANSLATE,
       MENU_ID_TRANSLATE,
-      MENU_ID_SELECTION_READ_ALOUD,
-    } = await import("../context-menu")
+        } = await import("../context-menu")
 
     await initializeContextMenu()
 
@@ -90,11 +89,7 @@ describe("background context menu", () => {
       title: 'Translate "%s"',
       contexts: ["selection"],
     })
-    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(3, {
-      id: MENU_ID_SELECTION_READ_ALOUD,
-      title: 'Read aloud "%s"',
-      contexts: ["selection"],
-    })
+    
     expect(browser.contextMenus.update).toHaveBeenCalledWith(MENU_ID_TRANSLATE, {
       title: "Show Original",
     })
@@ -114,12 +109,12 @@ describe("background context menu", () => {
 
     await initializeContextMenu()
 
-    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(4, {
+    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(3, {
       id: `${MENU_ID_SELECTION_CUSTOM_ACTION_PREFIX}dictionary`,
       title: "Dictionary",
       contexts: ["selection"],
     })
-    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(5, {
+    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(4, {
       id: `${MENU_ID_SELECTION_CUSTOM_ACTION_PREFIX}rewrite`,
       title: "Rewrite",
       contexts: ["selection"],
@@ -136,7 +131,7 @@ describe("background context menu", () => {
 
     await initializeContextMenu()
 
-    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(4, {
+    expect(browser.contextMenus.create).toHaveBeenNthCalledWith(3, {
       id: `${MENU_ID_SELECTION_CUSTOM_ACTION_PREFIX}default-dictionary`,
       title: "Dictionary",
       contexts: ["selection"],
@@ -207,34 +202,7 @@ describe("background context menu", () => {
     )
   })
 
-  it("routes read aloud menu clicks to the matching tab and frame", async () => {
-    const { MENU_ID_SELECTION_READ_ALOUD, registerContextMenuListeners } =
-      await import("../context-menu")
-
-    registerContextMenuListeners()
-
-    const clickHandler = contextMenuClickListeners[0]
-    if (!clickHandler) {
-      throw new Error("Context menu click listener was not registered")
-    }
-
-    await clickHandler(
-      {
-        menuItemId: MENU_ID_SELECTION_READ_ALOUD,
-        selectionText: "Selected text",
-        frameId: 4,
-      },
-      {
-        id: 2,
-      },
-    )
-
-    expect(sendMessageMock).toHaveBeenCalledWith(
-      "readAloudSelectionFromContextMenu",
-      { selectionText: "Selected text" },
-      { tabId: 2, frameId: 4 },
-    )
-  })
+  
 
   it("routes custom action menu clicks to the matching tab and frame", async () => {
     const { MENU_ID_SELECTION_CUSTOM_ACTION_PREFIX, registerContextMenuListeners } =

@@ -21,7 +21,7 @@ export default function TranslatePromptSelector() {
 
   if (
     !translateProviderRef ||
-    (translateProviderRef.kind === "local" && !isLLMProvider(translateProviderRef.config.provider))
+    ((!isLLMProvider(translateProviderRef.config.provider)))
   )
     return null
 

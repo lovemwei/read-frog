@@ -3,7 +3,8 @@
 import type { Config } from "@/types/config/config"
 import { createStore } from "jotai"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { configAtom, writeConfigAtom } from "../config"
 import { patchActionConfigAtom, patchProviderConfigAtom } from "../entity-config"
 import { storageAdapter } from "../storage-adapter"
@@ -142,7 +143,7 @@ describe("config persistence and invalidation", () => {
           name: "result",
           type: "string" as const,
           description: "Result",
-          speaking: false,
+          
         },
       ],
     }
@@ -162,23 +163,7 @@ describe("config persistence and invalidation", () => {
     })
   })
 
-  it("removes a built-in action connection rather than deep-merging the old value back", async () => {
-    storage.value.selectionToolbar.builtInActions.dictionary.notebaseConnection = {
-      notebaseId: "table",
-      notebaseNameSnapshot: "Words",
-      connectedAccount: { id: "user", name: "Reader", email: "reader@example.com" },
-      mappings: [],
-    }
-    const store = mountStore()
-    await tick()
-    await store.set(patchActionConfigAtom, {
-      id: "default-dictionary",
-      changes: { notebaseConnection: undefined },
-    })
-    expect(
-      storage.value.selectionToolbar.builtInActions.dictionary.notebaseConnection,
-    ).toBeUndefined()
-  })
+  
 
   it("rejects an entity deleted before the queued update instead of recreating it", async () => {
     const store = mountStore()

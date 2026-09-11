@@ -1,7 +1,8 @@
+import type { ProviderSelectorOption } from "@/utils/providers/provider-display"
 import type { ProviderConfig } from "@/types/config/provider"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import type { FeatureKey } from "@/utils/constants/feature-providers"
-import type { ProviderSelectorOption } from "@/utils/providers/provider-display"
+
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useMemo } from "react"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
@@ -11,10 +12,10 @@ import {
   FEATURE_PROVIDER_DEFS,
 } from "@/utils/constants/feature-providers"
 import { getSelectionToolbarActions, patchSelectionToolbarAction } from "@/utils/custom-actions"
-import { isSystemProviderSelectorItem } from "@/utils/providers/provider-display"
+
 import { getSelectableProvidersForCapability } from "@/utils/providers/provider-registry"
 import { providerSupportsTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
-import { useHostedAiProviderOptions } from "./use-hosted-ai-provider-options"
+
 
 export interface FeatureProviderBinding {
   providers: ProviderSelectorOption[]
@@ -44,11 +45,11 @@ export function useFeatureProvider(featureKey: FeatureKey): FeatureProviderBindi
     }
     return candidates.filter(
       (option) =>
-        isSystemProviderSelectorItem(option) ||
+        
         providerSupportsTranslationOnlyMode(option.provider),
     )
   }, [featureKey, providersConfig, hideTranslationOnlyUnsupported])
-  const providers = useHostedAiProviderOptions(featureKey, baseProviders)
+  const providers = baseProviders
 
   const setProviderId = useCallback(
     (id: string) => void setConfig(buildFeatureProviderPatch({ [featureKey]: id })),
@@ -81,7 +82,7 @@ export function useCustomActionProviders(): CustomActionProvidersBinding {
     () => getSelectableProvidersForCapability("customAction", providersConfig),
     [providersConfig],
   )
-  const providers = useHostedAiProviderOptions("customAction", baseProviders)
+  const providers = baseProviders
 
   const actions = useMemo(
     () =>

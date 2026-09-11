@@ -118,10 +118,6 @@ export function SummarySection() {
             </Button>
           </StatusCard>
         ))
-        // Already actionable; a settings link would point away from it.
-        .with({ status: "hostedUnavailable" }, ({ message }) => (
-          <StatusCard icon={<IconFileTextAi />} title={message} />
-        ))
         .exhaustive()
     )
   }

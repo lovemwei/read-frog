@@ -60,7 +60,7 @@ describe("selection toolbar text wrapping", () => {
             name: "Long Field",
             type: "string",
             description: "",
-            speaking: false,
+            
           },
         ]}
         value={{ "Long Field": value }}

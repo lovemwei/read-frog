@@ -2,7 +2,7 @@ import { atom } from "jotai"
 import { requestEditorNavigationAtom } from "@/components/form/autosave-navigation"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { getAPIProvidersConfig } from "@/utils/config/helpers"
-import { BUILT_IN_AI_PROVIDER_ID } from "@/utils/providers/provider-registry"
+
 
 /**
  * The field a deep link asked Provider Config to draw attention to. Held as state rather than
@@ -30,7 +30,7 @@ export const selectedProviderIdAtom = atom(
     const providersConfig = get(configFieldsAtomMap.providersConfig)
     const apiProvidersConfig = getAPIProvidersConfig(providersConfig)
     const firstProviderId =
-      apiProvidersConfig.length > 0 ? apiProvidersConfig[0]!.id : BUILT_IN_AI_PROVIDER_ID
+      apiProvidersConfig[0]?.id ?? ""
     return firstProviderId
   },
   (get, set, newValue: string | undefined) => {

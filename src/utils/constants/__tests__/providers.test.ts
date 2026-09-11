@@ -35,8 +35,8 @@ describe("provider constants", () => {
   })
 
   it("defines Azure with the LobeHub color icon and GPT shortcut defaults", () => {
-    expect(PROVIDER_ITEMS.azure.logo("light")).toContain("/light/azure-color.webp")
-    expect(PROVIDER_ITEMS.azure.logo("dark")).toContain("/dark/azure-color.webp")
+    expect(PROVIDER_ITEMS.azure.logo("light")).toContain("custom-provider.svg")
+    expect(PROVIDER_ITEMS.azure.logo("dark")).toContain("custom-provider.svg")
 
     expect(DEFAULT_PROVIDER_CONFIG.azure).toEqual(
       expect.objectContaining({
@@ -63,8 +63,8 @@ describe("provider constants", () => {
     expect(PROVIDER_URL_PLACEHOLDERS.atlascloud).toBe("https://api.atlascloud.ai/v1")
     expect(PROVIDER_URL_PLACEHOLDERS.azure).toBe("https://<resource>.services.ai.azure.com/openai")
     expect(PROVIDER_URL_PLACEHOLDERS.openai).toBe("https://api.openai.com/v1")
-    expect(PROVIDER_URL_PLACEHOLDERS["openai-compatible"]).toBe("https://api.example.com/v1")
-    expect(PROVIDER_URL_PLACEHOLDERS["open-responses"]).toBe("https://api.example.com/v1/responses")
+    expect(PROVIDER_URL_PLACEHOLDERS["openai-compatible"]).toBe("http://localhost:1234/v1")
+    expect(PROVIDER_URL_PLACEHOLDERS["open-responses"]).toBe("http://localhost:1234/v1/responses")
     expect(PROVIDER_URL_PLACEHOLDERS.openrouter).toBe("https://openrouter.ai/api/v1")
     expect(PROVIDER_URL_PLACEHOLDERS.ollama).toBe("http://127.0.0.1:11434/")
     expect(PROVIDER_URL_PLACEHOLDERS.minimax).toBe("https://api.minimax.io/v1")

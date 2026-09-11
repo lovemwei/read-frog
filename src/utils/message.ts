@@ -1,27 +1,19 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
-import type { GuideDictionaryNotebaseCompletionInput } from "./guide/dictionary-notebase"
-import type { FeatureUsageContext, FeatureUsedEventProperties } from "@/types/analytics"
+
+
 import type {
   BackgroundGenerateTextPayload,
   BackgroundGenerateTextResponse,
 } from "@/types/background-generate-text"
 import type { Config } from "@/types/config/config"
 import type { TranslationTextFormat } from "@/types/config/translate"
-import type {
-  EdgeTTSHealthStatus,
-  EdgeTTSSynthesizeRequest,
-  EdgeTTSSynthesizeWireResponse,
-} from "@/types/edge-tts"
-import type { ProviderRequestRouting } from "@/types/hosted-request"
-import type { ProxyRequest, ProxyResponse } from "@/types/proxy-fetch"
-import type {
-  TTSPlaybackStartRequest,
-  TTSPlaybackStartResponse,
-  TTSPlaybackStopRequest,
-} from "@/types/tts-playback"
-import type { HostedAiStatus } from "@/utils/hosted-ai/types"
+
+import type { ProviderRequestRouting } from "@/types/provider-request"
+
+
+
 import type { PromptableProviderRef, SerializableProviderRef } from "@/utils/providers/provider-ref"
-import type { EdgeTTSVoice } from "@/utils/server/edge-tts/types"
+
 import { defineExtensionMessaging } from "@webext-core/messaging"
 
 interface ProtocolMap {
@@ -47,11 +39,11 @@ interface ProtocolMap {
   tryToSetEnablePageTranslationByTabId: (data: {
     tabId: number
     enabled: boolean
-    analyticsContext?: FeatureUsageContext
+    
   }) => void
   tryToSetEnablePageTranslationOnContentScript: (data: {
     enabled: boolean
-    analyticsContext?: FeatureUsageContext
+    
   }) => void
   setAndNotifyPageTranslationStateChangedByManager: (data: {
     enabled: boolean
@@ -71,23 +63,15 @@ interface ProtocolMap {
   // ask host to start page translation
   askManagerToTogglePageTranslation: (data: {
     enabled: boolean
-    analyticsContext?: FeatureUsageContext
+    
   }) => void
   openSelectionTranslationFromContextMenu: (data: { selectionText: string }) => void
   openSelectionCustomActionFromContextMenu: (data: {
     actionId: string
     selectionText: string
   }) => void
-  readAloudSelectionFromContextMenu: (data: { selectionText: string }) => void
-  // analytics
-  trackFeatureUsedEvent: (data: FeatureUsedEventProperties) => void
-  // user guide
-  pinStateChanged: (data: { isPinned: boolean }) => void
-  getPinState: () => boolean
-  returnPinState: (data: { isPinned: boolean }) => void
-  guideDictionaryNotebaseStateChanged: (data: { completed: boolean }) => void
-  completeGuideDictionaryNotebase: (data: GuideDictionaryNotebaseCompletionInput) => void
-  // request
+  
+  
   enqueueTranslateRequest: (
     data: ProviderRequestRouting & {
       text: string
@@ -153,27 +137,12 @@ interface ProtocolMap {
     jsonContent: string
     providerRef: PromptableProviderRef
   }) => Promise<string>
-  // Hosted AI availability. Owned by the background because one response covers
-  // every feature and tier — so it can be cached and shared across tabs — and
-  // because content scripts cannot read the session storage that cache lives in.
-  // Null means "no verdict" (fetch failed); callers fail open on it.
-  getHostedAiStatus: () => Promise<HostedAiStatus | null>
-  // network proxy
-  backgroundFetch: (data: ProxyRequest) => Promise<ProxyResponse>
-  // cache management
+  
   clearAllTranslationRelatedCache: () => Promise<void>
   clearAiSegmentationCache: () => Promise<void>
-  // edge tts
-  edgeTtsSynthesize: (data: EdgeTTSSynthesizeRequest) => Promise<EdgeTTSSynthesizeWireResponse>
-  edgeTtsListVoices: () => Promise<EdgeTTSVoice[]>
-  edgeTtsHealthCheck: () => Promise<EdgeTTSHealthStatus>
-  // tts playback
-  ttsPlaybackPrepare: () => Promise<{ ok: true }>
-  ttsPlaybackStart: (data: TTSPlaybackStartRequest) => Promise<TTSPlaybackStartResponse>
-  ttsPlaybackStop: (data: TTSPlaybackStopRequest) => Promise<{ ok: true }>
-  // offscreen internal
-  ttsOffscreenPlay: (data: TTSPlaybackStartRequest) => Promise<TTSPlaybackStartResponse>
-  ttsOffscreenStop: (data: TTSPlaybackStopRequest) => Promise<{ ok: true }>
+  
+  
+  
 }
 
 export const { sendMessage, onMessage } = defineExtensionMessaging<ProtocolMap>()

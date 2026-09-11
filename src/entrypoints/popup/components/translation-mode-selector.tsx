@@ -1,5 +1,5 @@
 import type { TranslationMode as TranslationModeType } from "@/types/config/translate"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useAtom, useAtomValue } from "jotai"
 import { Button } from "@/components/ui/base-ui/button"
 import { Kbd, KbdGroup } from "@/components/ui/base-ui/kbd"

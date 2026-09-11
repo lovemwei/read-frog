@@ -1,6 +1,6 @@
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import type { CustomActionTemplate } from "@/utils/constants/custom-action-templates"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router"

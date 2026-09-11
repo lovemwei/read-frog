@@ -75,16 +75,7 @@ vi.mock("@/utils/i18n/locale-boundary", () => ({
 // unhandled error attributed to whichever file runs next. Render an inert placeholder
 // instead; no test exercises real icon loading. iconify-internal-api.test.ts opts back
 // in via vi.unmock to keep its _api canary pointed at the real package.
-vi.mock("@iconify/react", async () => {
-  const { createElement } = await import("react")
-  return {
-    Icon: ({ className, icon }: { className?: string; icon: string }) =>
-      createElement("span", { "aria-hidden": true, className, "data-icon": icon }),
-    _api: {
-      setFetch: () => {},
-    },
-  }
-})
+
 
 // Mock the fakeBrowser's i18n.getMessage method which is not implemented in fake-browser
 // This is used when WxtVitest plugin replaces browser imports with fake-browser

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useAtom, useSetAtom } from "jotai"
 import { Activity } from "react"
 import { Button } from "@/components/ui/base-ui/button"

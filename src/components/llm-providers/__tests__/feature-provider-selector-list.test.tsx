@@ -6,7 +6,8 @@ import { createStore, Provider } from "jotai"
 import { describe, expect, it, vi } from "vitest"
 import { FeatureProviderSelectorList } from "@/components/llm-providers/feature-provider-selector-list"
 import { configAtom } from "@/utils/atoms/config"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 
 // Keep the render shallow — we only care about which custom-action rows appear,
 // not the provider dropdown internals.
@@ -48,23 +49,7 @@ function renderWithConfig(config: Config) {
 }
 
 describe("featureProviderSelectorList feature rows", () => {
-  it("renders one provider row per feature key, including note suggestion", () => {
-    renderWithConfig(cloneConfig(DEFAULT_CONFIG))
-
-    // The test i18n facade resolves keys to themselves, so the row labels are
-    // the raw feature label keys.
-    for (const featureKey of [
-      "pageTranslation",
-      "videoSubtitles",
-      "selectionTranslation",
-      "inputTranslation",
-      "noteSuggestion",
-    ]) {
-      expect(
-        screen.getByText(`options.apiProviders.featureProviders.features.${featureKey}`),
-      ).toBeInTheDocument()
-    }
-  })
+  
 })
 
 describe("featureProviderSelectorList custom action filtering", () => {

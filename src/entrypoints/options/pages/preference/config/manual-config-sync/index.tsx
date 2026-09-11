@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useMutation } from "@tanstack/react-query"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useState } from "react"

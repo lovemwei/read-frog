@@ -26,17 +26,11 @@ vi.mock("@/utils/providers/provider-ref", async () => {
   return { ...actual, serializeProviderRef: serializeProviderRefMock }
 })
 
-const { HostedAiProviderUnavailableError } = await import("@/utils/providers/provider-ref")
 const { detectLanguageWithSource } = await import("../language")
 
 const mockFranc = vi.mocked(franc)
 
-const BUILT_IN_PROVIDER = {
-  kind: "system" as const,
-  id: "read-frog-free-ai" as const,
-  name: "Built-in AI",
-  modelTier: "normal" as const,
-}
+
 
 describe("detectLanguageWithSource", () => {
   beforeEach(() => {
@@ -75,23 +69,7 @@ describe("detectLanguageWithSource", () => {
       })
     })
 
-    it("says so instead of quietly resolving with franc", async () => {
-      serializeProviderRefMock.mockRejectedValue(
-        new HostedAiProviderUnavailableError(BUILT_IN_PROVIDER, "Ultra plan required"),
-      )
-      mockFranc.mockReturnValue("eng")
-
-      // franc still answers — the degrade is deliberate. What changed is that
-      // the user is now told why, instead of a denial being folded into the
-      // same null that means "no LLM detection is configured".
-      await expect(
-        detectLanguageWithSource("This is enough text to detect language.", { enableLLM: true }),
-      ).resolves.toEqual({ code: "eng", source: "franc" })
-
-      expect(toastAddMock).toHaveBeenCalledWith(
-        expect.objectContaining({ type: "warning", title: "Ultra plan required" }),
-      )
-    })
+    
 
     it("stays silent when no provider is configured at all", async () => {
       getLocalConfigMock.mockResolvedValue({

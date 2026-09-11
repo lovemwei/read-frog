@@ -1,6 +1,6 @@
 import type { MouseEvent } from "react"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { useCallback } from "react"
 import { SelectionToolbarTooltip } from "../../components/selection-tooltip"
 import { useSelectionCustomActionPopover } from "./provider"

@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { Link, useLocation } from "react-router"
 import {
   SidebarGroup,

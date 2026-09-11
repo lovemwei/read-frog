@@ -11,7 +11,8 @@
  * infrastructure are mocked.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import {
   BLOCK_ATTRIBUTE,
   INLINE_ATTRIBUTE,

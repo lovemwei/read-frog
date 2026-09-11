@@ -3,7 +3,8 @@ import type { CachedWebPageContext } from "@/utils/host/translate/webpage-contex
 import { act, render, screen, waitFor } from "@testing-library/react"
 import { createElement } from "react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
 import { getBuiltInDictionaryAction } from "@/utils/custom-actions"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { CUSTOM_ACTION_CONTEXT_CHAR_LIMIT } from "../../../utils"

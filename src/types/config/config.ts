@@ -21,7 +21,7 @@ import {
 import { siteRulesConfigSchema } from "./site-rules"
 import { videoSubtitlesSchema } from "./subtitles"
 import { pageTranslationShortcutSchema, translateConfigSchema } from "./translate"
-import { ttsConfigSchema } from "./tts"
+
 // Language schema
 const languageSchema = z.object({
   sourceCode: langCodeISO6393Schema.or(z.literal("auto")),
@@ -31,13 +31,11 @@ const languageSchema = z.object({
 
 const selectionToolbarFeatureSchema = z.object({
   enabled: z.boolean(),
-  providerId: z.string().nonempty(),
+  providerId: z.string(),
   shortcut: pageTranslationShortcutSchema,
 })
 
-const selectionToolbarSpeakFeatureSchema = z.object({
-  enabled: z.boolean(),
-})
+
 
 // Text selection toolbar schema
 const selectionToolbarSchema = z
@@ -47,29 +45,10 @@ const selectionToolbarSchema = z
     opacity: z.number().min(MIN_SELECTION_OVERLAY_OPACITY).max(MAX_SELECTION_OVERLAY_OPACITY),
     features: z.object({
       translate: selectionToolbarFeatureSchema,
-      speak: selectionToolbarSpeakFeatureSchema,
+      
     }),
     builtInActions: selectionToolbarBuiltInActionsSchema,
     customActions: selectionToolbarCustomActionsSchema,
-    noteSuggestion: z.object({
-      enabled: z.boolean(),
-      actionId: z.string().nonempty(),
-      providerId: z.string().nonempty(),
-    }),
-  })
-  .superRefine((selectionToolbar, ctx) => {
-    const actionId = selectionToolbar.noteSuggestion.actionId
-    const actionExists =
-      actionId === "default-dictionary" ||
-      selectionToolbar.customActions.some((action) => action.id === actionId)
-
-    if (!actionExists) {
-      ctx.addIssue({
-        code: "custom",
-        message: `Note suggestion action "${actionId}" not found.`,
-        path: ["noteSuggestion", "actionId"],
-      })
-    }
   })
 
 // side content schema
@@ -107,7 +86,7 @@ const inputTranslationLangSchema = z.union([
 // input translation schema (triple-space trigger)
 const inputTranslationSchema = z.object({
   enabled: z.boolean(),
-  providerId: z.string().nonempty(),
+  providerId: z.string(),
   fromLang: inputTranslationLangSchema,
   toLang: inputTranslationLangSchema,
   enableCycle: z.boolean(),
@@ -142,7 +121,7 @@ export const configSchema = z
     providersConfig: providersConfigSchema,
     pageTranslation: translateConfigSchema,
     languageDetection: languageDetectionConfigSchema,
-    tts: ttsConfigSchema,
+    
     floatingButton: floatingButtonSchema,
     selectionToolbar: selectionToolbarSchema,
     sideContent: sideContentSchema,
@@ -159,6 +138,7 @@ export const configSchema = z
     for (const featureKey of FEATURE_KEYS) {
       const def = FEATURE_PROVIDER_DEFS[featureKey]
       const providerId = def.getProviderId(data)
+      if (!providerId) continue
 
       if (
         !doesProviderSupportsCapability(featureKey, data.providersConfig, providerId, {
@@ -187,10 +167,6 @@ export const configSchema = z
           path: ["languageDetection", "providerId"],
         })
       } else if (
-        // Capability-based, like the FEATURE_KEYS loop above, rather than a
-        // providersConfig lookup: Built-in AI is never a row in
-        // providersConfig, so requiring one there is what used to make a
-        // hosted provider fail validation and reset the whole config.
         !doesProviderSupportsCapability("languageDetection", data.providersConfig, ldProviderId, {
           requireEnable: true,
         })
@@ -218,6 +194,7 @@ export const configSchema = z
     ]
 
     actionProviderEntries.forEach(({ providerId, path }) => {
+      if (!providerId) return
       if (
         !doesProviderSupportsCapability("customAction", data.providersConfig, providerId, {
           requireEnable: true,

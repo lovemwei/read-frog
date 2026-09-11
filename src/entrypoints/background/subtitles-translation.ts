@@ -43,7 +43,7 @@ export function setupSubtitlesTranslationHandlers(): void {
         text,
         langConfig,
         provider: providerRef,
-        hostedFeature: "videoSubtitles" as const,
+        
         hash,
         scheduleAt,
         context,
@@ -88,7 +88,7 @@ export function setupSubtitlesTranslationHandlers(): void {
       title: videoTitle,
       textContent: subtitlesContext,
       providerRef,
-      hostedFeature: "videoSubtitles",
+      
       // Deliberately without the title, matching the previous key: a video's
       // transcript identifies it, and including a title that players mutate
       // would miss the cache on every re-render.

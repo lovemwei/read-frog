@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import debounce from "debounce"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo } from "react"

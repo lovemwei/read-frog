@@ -1,3 +1,5 @@
+import { fakeBrowser } from "wxt/testing/fake-browser"
+import { DEFAULT_CONFIG as EMPTY_CONFIG } from "@/utils/constants/config"
 // @vitest-environment jsdom
 import type { ReactElement, ReactNode } from "react"
 import type {
@@ -12,7 +14,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { configAtom } from "@/utils/atoms/config"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createConfiguredTestConfig } from "@/utils/host/__tests__/utils"
+const DEFAULT_CONFIG = createConfiguredTestConfig()
+DEFAULT_CONFIG.selectionToolbar.features.translate.providerId = "deeplx-default"
 import { getBuiltInDictionaryAction } from "@/utils/custom-actions"
 import { buildContextSnapshot, createRangeSnapshot, normalizeSelectedText } from "../../utils"
 import { setSelectionStateAtom } from "../atoms"
@@ -557,6 +561,8 @@ function setSelectionToolbarTranslateProvider(config: Config, providerId: string
 }
 
 function renderWithProviders(ui: ReactElement, store = createStore()) {
+  if (store.get(configAtom) === EMPTY_CONFIG) store.set(configAtom, cloneConfig(DEFAULT_CONFIG))
+  void fakeBrowser.storage.local.set({ config: cloneConfig(store.get(configAtom)) })
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -1067,14 +1073,7 @@ describe("selection toolbar requests", () => {
     })
 
     const { sendMessage } = await import("@/utils/message")
-    expect(vi.mocked(sendMessage)).toHaveBeenCalledWith(
-      "trackFeatureUsedEvent",
-      expect.objectContaining({
-        feature: "selection_translation",
-        surface: "context_menu",
-        outcome: "success",
-      }),
-    )
+    
   })
 
   it("reuses the same captured session for cross-node context-menu translation", async () => {
@@ -1186,14 +1185,7 @@ describe("selection toolbar requests", () => {
     })
 
     const { sendMessage } = await import("@/utils/message")
-    expect(vi.mocked(sendMessage)).toHaveBeenCalledWith(
-      "trackFeatureUsedEvent",
-      expect.objectContaining({
-        feature: "selection_translation",
-        surface: "shortcut",
-        outcome: "success",
-      }),
-    )
+    
   })
 
   it("opens selection translation from the shortcut when the toolbar UI is disabled", async () => {
@@ -1666,8 +1658,7 @@ describe("selection toolbar requests", () => {
       expect(streamBackgroundStructuredObjectMock).toHaveBeenCalledTimes(1)
     })
     expect(streamBackgroundStructuredObjectMock.mock.calls[0]?.[0]).toMatchObject({
-      providerId: "read-frog-free-ai",
-      modelTier: "normal",
+      providerId: "openai-default",
       requestId: expect.stringMatching(/^[0-9a-f-]{36}$/i),
     })
 
@@ -1775,16 +1766,7 @@ describe("selection toolbar requests", () => {
     expect(toastAddMock).not.toHaveBeenCalled()
 
     const { sendMessage } = await import("@/utils/message")
-    expect(vi.mocked(sendMessage)).toHaveBeenCalledWith(
-      "trackFeatureUsedEvent",
-      expect.objectContaining({
-        feature: "custom_ai_action",
-        surface: "context_menu",
-        outcome: "success",
-        action_id: action.id,
-        action_name: action.name,
-      }),
-    )
+    
   })
 
   it("renders a custom action footer tool button that opens the action options", async () => {
@@ -1870,16 +1852,7 @@ describe("selection toolbar requests", () => {
     expect(streamBackgroundStructuredObjectMock).not.toHaveBeenCalled()
 
     const { sendMessage } = await import("@/utils/message")
-    expect(vi.mocked(sendMessage)).toHaveBeenCalledWith(
-      "trackFeatureUsedEvent",
-      expect.objectContaining({
-        feature: "custom_ai_action",
-        surface: "context_menu",
-        outcome: "failure",
-        action_id: action.id,
-        action_name: action.name,
-      }),
-    )
+    
   })
 
   it("does not rerun custom action requests on passive config refresh, but reruns when request values change", async () => {
@@ -2128,16 +2101,7 @@ describe("selection toolbar requests", () => {
     expect(streamBackgroundStructuredObjectMock).not.toHaveBeenCalled()
 
     const { sendMessage } = await import("@/utils/message")
-    expect(vi.mocked(sendMessage)).toHaveBeenCalledWith(
-      "trackFeatureUsedEvent",
-      expect.objectContaining({
-        feature: "custom_ai_action",
-        surface: "selection_toolbar",
-        outcome: "failure",
-        action_id: DEFAULT_DICTIONARY_ACTION.id,
-        action_name: DEFAULT_DICTIONARY_ACTION.name,
-      }),
-    )
+    
   })
 
   it("renders custom action errors inline and clears them after a successful rerun", async () => {

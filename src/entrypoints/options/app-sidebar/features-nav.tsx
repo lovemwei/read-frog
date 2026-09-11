@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react"
+import { Icon } from "@/components/icon"
 import { Link, useLocation } from "react-router"
 import { browser } from "#imports"
 import {
@@ -123,16 +123,7 @@ export function FeaturesNav() {
             </SidebarMenuItem>
           </Collapsible>
 
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              render={<Link to="/tts" />}
-              isActive={pathname === "/tts"}
-              tooltip={i18n.t("options.tts.title")}
-            >
-              <Icon icon="tabler:speakerphone" />
-              <span>{i18n.t("options.tts.title")}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          
 
           <SidebarMenuItem>
             <SidebarMenuButton

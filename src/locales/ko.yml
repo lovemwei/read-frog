@@ -1,19 +1,12 @@
 name: Read Frog
 extName: Read Frog - 번역하고 배우기
-extDescription: Read Frog는 모든 웹사이트에서 언어를 깊이 있게 학습할 수 있도록 도와주는 오픈 소스 브라우저 확장 프로그램입니다.
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: 로그인
-  webApp: 웹 앱
-  logout: 로그아웃
-  logoutError: 로그아웃하지 못했습니다. 다시 시도해 주세요.
+extDescription: Translate pages, selections and subtitles with your own provider. Local storage, without accounts, subscriptions or analytics.
 dataTypes:
   string: 텍스트
   number: 숫자
 contextMenu:
   translate: 번역
   translateSelection: '"%s" 번역'
-  readAloudSelection: '"%s" 읽어주기'
   showOriginal: 원문 보기
 sidePanel:
   firefoxUserActionHint: Firefox에서는 브라우저 사이드바에서 Read Frog를 열어 주세요.
@@ -48,24 +41,8 @@ popup:
         action: 클릭하여 이중 언어로 전환
   hub:
     tooltip: 여러 번역 모델로 동시에 텍스트 번역
-  discord:
-    tooltip: Discord에 참여하여 개발자와 소통하고 새 기능을 먼저 체험하세요
-  blog:
-    notification: Read Frog의 새로운 소식
   aiSmartContext: AI 스마트 컨텍스트
   aiSmartContextDescription: 웹페이지 컨텍스트를 사용하여 번역 품질을 향상시킵니다. LLM 번역 제공자가 필요합니다.
-  more:
-    title: 더보기
-    help: 도움말
-    tutorial: 사용 가이드
-    emailUs: 이메일 문의
-    featureRequest: 기능 제안
-    bugReport: 버그 신고
-    community: 커뮤니티
-    joinDiscord: Discord 참여
-    joinWechat: WeChat 그룹 참여
-    starGithub: Github에서 스타
-    rateUs: 리뷰 남기기
 errorRecovery:
   title: 문제가 발생했습니다
   description: 복구 모드가 활성화되었습니다. 현재 설정을 백업으로 내보낸 뒤 설정을 초기화하고 다시 시도하세요.
@@ -103,79 +80,24 @@ options:
     toggle: 사이드바 전환
     settings: 설정
     features: 기능
-    product: 제품
   tools:
     translationHub: 번역 허브
-  product:
-    roadmap: 로드맵
-  helpAndCommunity:
-    title: 도움말 및 커뮤니티
-    pageDescription: Read Frog 사용법을 익히고, 팀에 도움을 요청하거나, 커뮤니티에서 다른 사용자와 교류하세요.
-    help:
-      title: 도움말
-    tutorial:
-      title: 사용 가이드
-      description: 문서를 읽고 Read Frog 사용법을 알아보세요
-    email:
-      title: 이메일 문의
-      description: contact@readfrog.app 으로 팀에 직접 연락하세요
-    featureRequest:
-      title: 기능 제안
-      description: 아이디어를 제안하고 다음에 개발할 기능에 투표하세요
-    bugReport:
-      title: 버그 신고
-      description: 지원 티켓을 열고 해결될 때까지 진행 상황을 확인하세요
-    community:
-      title: 커뮤니티
-    discord:
-      title: Discord
-      description: 팀 및 다른 사용자와 실시간으로 이야기하세요
-    wechat:
-      title: WeChat 그룹
-      description: QR 코드를 스캔해 WeChat 토론 그룹에 참여하세요
-      qrCodeAlt: WeChat QR 코드
   apiProviders:
     title: API 제공업체
-    pageDescription: Read Frog가 호출하는 AI 서비스를 연결하고, 각 기능에 사용할 서비스를 선택하세요.
+    pageDescription: Configure your own service. Settings, keys and caches stay in this browser; text is sent only to the service you choose.
     description: Read Frog가 호출할 수 있는 제공업체를 추가합니다. 20개 이상이 내장되어 있으며, Chat Completions 호환 API와 Open Responses API를 사용자 정의로 추가할 수 있습니다.
     configTitle: 제공업체 구성
     addProvider: 제공업체 추가
-    builtInProvider: 내장 제공업체
-    builtInAiUsage:
-      title: 내장 AI 할당량
-      remaining: "$1% 남음"
-      supportedFeatures: "$1개 기능 지원"
-      resetsAt: "$1에 초기화"
-      daily: 일일 할당량
-      weekly: 주간 할당량
-      features:
-        pageTranslation: 페이지 번역
-        customAction: 사용자 지정 AI 작업
-        noteSuggestion: 노트 제안
-        selectionTranslation: 선택 영역 번역
-        videoSubtitles: 비디오 자막
-        inputTranslation: 입력 번역
-        languageDetection: 언어 감지
-    sponsorCta: 빠르고 가성비 좋은 AI 받기
-    sponsorCtaJalapenoCloud: GLM 5.2 50% 할인 받기
     setApiKeyWarning:
       message: API 키는 $1 페이지에서 설정하세요
     badges:
       featureCount: $1 개 기능
-      sponsor: 스폰서
-      sponsorJalapenoCloud: $$2 무료
     dialog:
       title: 새 제공업체 추가
       groups:
-        builtInProviders:
-          title: 내장 LLM 제공업체
-          description: 내장된 대규모 언어 모델 제공업체, Base URL과 같은 대부분의 설정이 필요 없음
         compatibleProviders:
-          title: 호환 API 제공업체
+          title: Custom providers
           description: Chat Completions 호환 API에는 사용자 정의 Chat Complete를, Open Responses API에는 사용자 정의 Responses를 사용합니다.
-        pureTranslationProviders:
-          title: 순수 번역 제공업체
-          description: 대규모 언어 모델 기능이 없는 번역 전문 제공업체
     form:
       fields:
         name: 이름
@@ -237,13 +159,8 @@ options:
       invalidJson: 잘못된 JSON 형식
     providers:
       name:
-        builtInAi: 내장 AI
-        builtInAiAdvance: 고급 내장 AI
         customChatComplete: 사용자 정의 Chat Complete
         customResponses: 사용자 정의 Responses
-      attribution:
-        builtInAi: Read Frog가 호스팅하는 일반 모델입니다. Ultra가 아닌 사용자는 사용자 지정 AI 작업에서만 사용할 수 있으며, Ultra 사용자는 더 많은 기능에서 사용할 수 있습니다.
-        builtInAiAdvance: Read Frog가 호스팅하는 고급 모델로, Ultra 멤버 전용입니다. 페이지 번역, 사용자 지정 AI 작업 등 모든 내장 AI 기능에서 사용할 수 있으며 주간 할당량을 공유합니다. 표준 모델보다 할당량이 더 빨리 소모됩니다.
       description:
         openai: GPT-4o 같은 모델을 제공합니다
         azure: Azure 배포를 통해 OpenAI 모델 사용
@@ -295,13 +212,11 @@ options:
         selectionTranslation: 선택 툴바 번역
         inputTranslation: 입력 번역
         videoSubtitles: 비디오 자막
-        noteSuggestion: 노트 제안
       descriptions:
         pageTranslation: 페이지 전체를 대역 또는 원문 대체 방식으로 번역합니다.
         selectionTranslation: 선택 도구 모음에서 선택한 텍스트를 번역합니다.
         inputTranslation: 입력창에 쓴 내용을 보내기 전에 번역합니다.
         videoSubtitles: 동영상 플레이어에 표시되는 자막을 번역합니다.
-        noteSuggestion: 선택 번역 후 Notebase에 저장할 만한 단어를 제안합니다.
     languageDetection:
       title: 언어 감지
       description: 자동 번역 언어 감지 및 읽기 음성 선택 정확도에 영향을 줍니다.
@@ -362,53 +277,6 @@ options:
         urlPattern: URL 패턴
     config:
       title: 설정
-      googleDrive:
-        title: Google Drive 클라우드 동기화
-        description: 원격이 최신이면 다운로드, 로컬이 최신이면 업로드
-        sync: Google Drive 동기화
-        syncing: 동기화 중...
-        syncSuccess:
-          uploaded: 로컬 설정이 클라우드에 업로드됨
-          downloaded: 원격 설정이 적용됨
-          sameChanges: 로컬과 원격 변경 사항이 동일하여 동기화됨
-          noChange: 이미 동기화됨
-          unresolved: 충돌이 해결되고 로컬 및 클라우드에 동기화됨
-        syncError: 동기화 실패, 다시 시도해 주세요
-        metadataCorrupted: 동기화 메타데이터가 손상되어 원격 구성을 적용했습니다
-        lastSyncTime: 마지막 동기화 시간
-        logout: 로그아웃
-        logoutSuccess: Google 계정에서 로그아웃되었습니다
-        unresolved:
-          title: 구성 동기화 해결
-          description: 로컬 및 원격 구성이 다릅니다. 각 필드에 대해 유지할 버전을 선택하세요.
-          resolved: 해결됨
-          unresolved: 미해결
-          localValue: 로컬 값
-          remoteValue: 원격 값
-          useLocal: 로컬 사용
-          useRemote: 원격 사용
-          useAllLocal: 모두 로컬 사용
-          useAllRemote: 모두 원격 사용
-          reset: 선택 재설정
-          progress: $1/$2개의 변경 해결됨
-          confirm: 동기화 확인
-          cancel: 취소
-          hasUnresolvedInChildren: ⚠ 미해결 변경 포함
-          item: 항목
-          items: 항목
-          unresolvedPrompt: "[미해결 - 선택하세요]"
-          localLatest: 로컬 최신
-          remoteLatest: 원격 최신
-          bothChanged: 양쪽 모두 변경됨
-          localChanged: 로컬이 변경됨
-          remoteChanged: 원격이 변경됨
-          configValid: 구성이 유효합니다
-          configInvalid: 구성이 유효하지 않습니다
-          resolveToContinue: 계속하려면 충돌을 해결하세요
-          validationAlert:
-            title: 병합된 구성에 유효성 검사 오류가 있습니다
-            description: "아래 차이점을 조정하여 수정하세요:"
-          moreErrors: ...그리고 $1개의 오류가 더 있습니다
       manualSync:
         title: 수동 설정 동기화
         description: 수동으로 설정 가져오기 및 내보내기
@@ -467,10 +335,6 @@ options:
       beta:
         title: Beta 체험
         description: 아직 불안정할 수 있는 실험적 기능을 켭니다
-      analytics:
-        title: 사용자 경험 개선에 기여
-        tooltip: 켜면 Read Frog가 익명 사용 신호를 전송하여 버그를 찾아내고, 기능 안정성을 검증하고, 성능과 UX 디테일을 개선하며, 앞으로 무엇을 우선적으로 만들지 결정하는 데 활용합니다.
-        description: 버그를 찾고 UI 레이아웃을 다듬는 등 Read Frog 개선에 기여합니다
   shortcuts:
     title: 단축키
     pageDescription: 읽는 중에 번역을 실행하는 키를 설정합니다.
@@ -563,16 +427,6 @@ options:
       translate:
         title: 번역
         description: 툴바에 번역 버튼을 표시합니다
-      speak:
-        title: 읽기
-        description: 선택한 텍스트를 읽어 주는 읽기 버튼을 툴바에 표시합니다
-      noteSuggestion:
-        title: 노트 제안
-        description: AI 제공자로 선택 번역 후 Notebase에 저장할 단어를 추천합니다
-        action: 작업
-        actionDescription: 저장 제안을 만드는 작업
-        provider: 제공업체
-        providerDescription: 저장 제안을 만드는 AI 제공업체
     display:
       title: 표시
       opacity:
@@ -628,7 +482,6 @@ options:
         fieldType: 필드 유형
         fieldDescription: 설명
         fieldDescriptionPlaceholder: 이 필드에 포함할 내용을 설명하세요...
-        fieldSpeaking: 음성 읽기 사용
         actions: 작업
         cancel: 취소
         save: 저장
@@ -645,51 +498,6 @@ options:
           description: 이 출력 필드가 제거됩니다.
           confirm: 삭제
           cancel: 취소
-        notebase:
-          title: Notebase 연결
-          description: 이 액션의 구조화된 결과를 원격 Notebase에 저장합니다.
-          loginRequiredTitle: Notebase를 설정하려면 로그인하세요
-          loginRequiredDescription: notebase를 선택하거나 매핑을 편집하기 전에 readfrog.app에 로그인하세요.
-          loginRequiredConnectedDescription: 이 연결은 아래 계정에서 만들어졌습니다. 같은 계정으로 로그인하면 필드 매핑이 복원됩니다. 다른 계정으로 로그인하면 Notebase를 만들거나 연결할 때 이전 매핑이 지워집니다.
-          loginAction: 로그인
-          connectedAccountLabel: 연결된 계정
-          currentAccountLabel: 현재 계정
-          unknownConnectedAccount: 알 수 없는 계정
-          tableLabel: Notebase
-          tablePlaceholder: notebase 선택
-          tableClearOption: notebase 연결 안 함
-          clearConnectionAction: 연결 지우기
-          refreshAction: 새로고침
-          emptyTitle: 아직 Notebase가 없습니다
-          emptyDescription: readfrog.app에서 notebase를 만든 뒤 여기로 돌아와 필드를 매핑하세요.
-          openNotebaseAction: Notebase 열기
-          accessDeniedTitle: Notebase에 접근할 수 없습니다
-          accessDeniedDescription: 이 계정에는 Notebase 데이터를 불러올 권한이 없습니다.
-          listErrorTitle: Notebase 목록을 불러오지 못했습니다
-          listErrorDescription: 잠시 후 Notebase 목록을 다시 새로고침해 보세요.
-          accountMismatchTitle: Notebase 연결이 다른 계정에 속해 있습니다
-          accountMismatchDescription: 이 연결은 아래 연결된 계정에 묶여 있습니다. 연결을 지우거나 현재 계정에서 사용할 수 있는 Notebase를 선택하세요.
-          tableUnavailableTitle: 선택한 notebase를 더 이상 사용할 수 없습니다
-          tableUnavailableDescription: 이 Notebase가 없거나 열 수 없습니다. 연결을 지우거나 다른 Notebase를 선택하세요.
-          tableUnavailableOption: 사용 불가
-          schemaErrorTitle: notebase 스키마를 불러오지 못했습니다
-          schemaErrorDescription: 잠시 후 다시 새로고침해 보세요.
-          schemaLoading: notebase 스키마를 불러오는 중...
-          mappingsLabel: 필드 매핑
-          mappingsEmpty: 아직 매핑이 없습니다. 필드를 저장할 준비가 되면 추가하세요.
-          addMappingAction: 매핑 추가
-          removeMappingAction: 매핑 제거
-          localFieldLabel: 액션 필드
-          localFieldPlaceholder: 액션 필드 선택
-          remoteFieldLabel: Notebase 필드
-          remoteFieldPlaceholder: notebase 필드 선택
-          columnUnavailableOption: 삭제됨
-          invalidMappingsTitle: 일부 매핑을 확인해야 합니다
-          invalidMappingsDescription: 잘못된 매핑은 유지됩니다. Notebase에 저장하기 전에 수정하세요.
-          mappingMissingLocal: 매핑된 액션 필드가 더 이상 존재하지 않습니다.
-          mappingMissingRemote: 매핑된 notebase 필드가 더 이상 존재하지 않습니다.
-          mappingMissingSchema: 이 매핑을 검증하려면 notebase 스키마를 새로고침하세요.
-          mappingIncompatible: 필드 타입이 더 이상 맞지 않습니다.
         tokens:
           selection: 선택한 텍스트 내용
           paragraphs: 선택 영역과 겹치는 문단 내용을 빈 줄로 이어 붙인 값이며, 사용자 정의 AI 액션에 전달될 때는 앞의 2000자로 잘립니다
@@ -919,33 +727,6 @@ options:
       searchPlaceholder: id, 설명 또는 URL 패턴으로 검색
       showMore: 더 보기
       count: 규칙 $2개 중 $1개 표시
-  tts:
-    title: 텍스트 음성 변환
-    pageDescription: 선택한 텍스트를 자연스러운 음성으로 읽어 줍니다.
-    voice:
-      title: 음성
-      selectPlaceholder: 음성을 선택하세요
-      noVoicesFound: 음성을 찾을 수 없습니다
-      language:
-        title: 언어별 음성
-        description: 언어를 고른 다음 그 언어를 읽어 줄 음성을 지정합니다. 재설정하면 Read Frog가 그 언어에 정해 둔 음성으로 돌아갑니다.
-        reset: 재설정
-        previewSample: Read Frog의 인사입니다! 제가 읽어 드릴 때 이렇게 들립니다.
-      fallback:
-        title: 대체 음성
-        description: 따로 음성을 지정하지 않은 언어는 이 음성으로 읽습니다.
-    speech:
-      title: 읽어 주기
-      rate:
-        title: 속도
-        description: 음성 본래의 속도보다 얼마나 빠르거나 느리게 읽을지, -100에서 100 퍼센트.
-      pitch:
-        title: 피치
-        description: 음성 본래의 피치보다 얼마나 높거나 낮게 말할지, -100에서 100 헤르츠.
-      volume:
-        title: 볼륨
-        description: 음성 본래의 크기보다 얼마나 크거나 작게 읽을지, -100에서 100 퍼센트.
-      error: $1에서 $2 사이의 정수를 입력하세요
   videoSubtitles:
     title: 비디오 자막
     pageDescription: 영상을 보면서 자막을 번역하고, 제공업체·스타일·요청 설정을 따로 지정하세요.
@@ -960,20 +741,6 @@ options:
       aiSegmentation:
         title: AI 스마트 분할
         description: AI가 자막을 문장처럼 읽히도록 다시 나눕니다. 타이밍도 AI가 정하므로 싱크가 어긋날 수 있습니다. LLM 번역 공급자가 필요합니다.
-    aiQuota:
-      title: AI 자막 사용량
-      description: AI 음성 인식으로 모든 동영상에 정확한 자막을 만들어 줍니다
-      launchBonusPromo: $1 이전에 구독하면 전사 300분을 추가로 드립니다
-      loginRequired: 로그인하여 AI 자막 사용량 확인
-      upgradeRequired: AI 자막은 Pro 또는 Ultra 구독이 필요합니다
-      pools:
-        subscription: 월간 할당량
-        launchBonus: 출시 기념 보너스
-      resetsOn: $1에 초기화
-      expiresOn: $1에 만료
-      loadError: 사용량을 불러올 수 없습니다. 잠시 후 다시 시도해 주세요.
-      remainingOf: 남은 시간 $1 / $2분
-      used: $1분 사용됨
     style:
       title: 자막 스타일
       description: 표시 모드, 위치, 글꼴, 색상, 배경을 미리보기로 확인하며 설정합니다
@@ -1067,8 +834,6 @@ options:
           confirm: 확인
           cancel: 취소
           description: 모든 캐시된 AI 분할 결과가 삭제됩니다. 다음에 AI 분할이 활성화된 비디오를 재생하면 자막이 다시 처리됩니다.
-  whatsNew:
-    title: 새로운 기능
   rateUs:
     title: 리뷰 남기기
   configMigration:
@@ -1081,7 +846,6 @@ side:
 translateService:
   title: 번역 서비스
   description: 웹페이지 번역 전용
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: 일반 번역기
   selectServices: 서비스 선택
@@ -1109,61 +873,18 @@ translation:
   sameLanguage: 원본 언어와 대상 언어는 달라야 합니다
   autoModeSameLanguage: 감지된 언어 '$1'은(는) 대상 언어와 같습니다
   extensionContextInvalidated: 확장 프로그램이 업데이트되었습니다. 이 페이지를 새로고침한 후 다시 시도하세요.
-speak:
-  fetchingAudio: 오디오 생성 중...
-  playingAudio: 오디오 재생 중...
-  failedToGenerateSpeech: 음성 생성 실패
-  noTextSelected: 텍스트가 선택되지 않았습니다
-  openaiNotConfigured: OpenAI 공급자가 구성되지 않았거나 활성화되지 않았습니다
-  openaiApiKeyNotConfigured: OpenAI API 키가 구성되지 않았습니다
 action:
   copy: 복사
   copied: 복사됨
   regenerate: 다시 생성
   viewContextDetails: 컨텍스트
   customizeCustomAction: $1 작업 맞춤 설정
-  saveToNotebase: Notebase에 저장
-  saveToNotebaseSaving: 저장 중...
-  saveToNotebaseSuccess: Notebase에 저장했습니다
-  saveToNotebaseFailed: Notebase에 저장하지 못했습니다
-  saveToNotebaseLoginRequired: Notebase에 저장하려면 readfrog.app에 로그인하세요
-  saveToNotebaseAccessDenied: 이 계정은 선택한 Notebase에 접근할 수 없습니다
-  saveToNotebaseLimitExceeded: 더 많은 Notebase 노트를 저장하려면 업그레이드가 필요합니다
-  saveToNotebaseTableUnavailable: 선택한 Notebase를 더 이상 사용할 수 없습니다
-  saveToNotebaseConnectionInvalid: 현재 Notebase 연결이 오래되었습니다. Custom AI Actions에서 새로고침하고 매핑을 수정하세요.
-  saveToNotebaseNoMappings: 저장하기 전에 유효한 매핑을 하나 이상 추가하세요
-  saveToNotebaseCreateTitle: Notebase를 만들까요?
-  saveToNotebaseCreateDescription: 이 Custom Action 출력 필드와 일치하는 열로 새 Notebase를 만들고, 현재 결과를 첫 노트로 저장합니다.
-  saveToNotebaseCreateAndSave: 만들고 저장
-  saveToNotebaseCreateAndSaveShort: 만들고 저장
-  saveToNotebaseLoginAndCreate: 로그인하고 자동 생성
-  saveToNotebaseLoginAndSave: 로그인하고 저장
-  saveToNotebaseConnectExisting: 기존 Notebase 연결
-  saveToNotebaseGoConfigure: 설정하기
-  saveToNotebaseLoginConnectedTitle: 로그인하고 저장할까요?
-  saveToNotebaseLoginConnectedDescription: 이 Custom Action은 아래 계정에 연결되어 있습니다. 로그인 후 가능하면 기존 Notebase에 저장하고, 사용할 수 없으면 로그인한 계정에 새 Notebase를 만듭니다.
-  saveToNotebaseConnectionUnavailableTitle: Notebase 연결을 사용할 수 없습니다
-  saveToNotebaseMissingNotebaseDescription: 이전 Notebase가 없거나 이 계정에서 열 수 없습니다. 새 Notebase를 만들고 저장하거나 Custom AI Actions에서 기존 Notebase를 연결하세요.
-  saveToNotebaseAccountUnavailableDescription: 로그인한 계정이 아래의 연결된 계정과 다릅니다. 만들고 저장하면 이전 연결 설정과 필드 매핑이 교체됩니다. Custom AI Actions에서 기존 Notebase를 연결할 수도 있습니다.
-  saveToNotebasePendingLogin: 로그인 후 저장 완료
-  saveToNotebasePendingLoginDescription: 로그인 후 Read Frog가 Notebase를 만들고 이 결과를 자동으로 저장합니다.
-  saveToNotebasePendingConnectedLoginDescription: 로그인 후 Read Frog는 가능하면 연결된 Notebase에 저장합니다. 이 계정에서 사용할 수 없으면 새 Notebase를 만들고 저장합니다.
   upgrade: 업그레이드
   updatePayment: 결제 수단 업데이트
   openCustomActions: Custom AI Actions 열기
-  openNotebase: Notebase 열기
   contextDetailsTitleLabel: 제목
   contextDetailsParagraphsLabel: 문단 내용
   translation: 번역
-  speak: 읽기
-  playing: 재생 중
-noteSuggestion:
-  title: 저장 추천
-  description: Notebase에 저장할 단어를 선택하고 언제든지 복습하세요.
-  save: 저장
-  saved: 저장됨
-  staleSuggestion: 이 제안은 더 이상 유효하지 않습니다
-  toggleLabel: 노트 제안 표시
 thinking:
   label: 사고 중
   complete: 사고 완료
@@ -1190,10 +911,6 @@ subtitles:
       retry: 다시 시도
       emptyTitle: 표시할 자막이 없습니다
       backToCurrent: 현재 위치로
-  loadingAiSubtitles: AI 자막 불러오는 중… (예상 3분)
-  aiSubtitlesHint: 첨단 AI 음성 인식으로 정확한 자막을 생성하며, 공식 자막이 없어도 사용할 수 있습니다.
-  requestAiSubtitles: AI 자막 요청
-  usingAiSubtitles: AI 자막 사용 중
   toggle:
     enabled: 자막 번역을 켰습니다
     disabled: 자막 번역을 껐습니다
@@ -1220,36 +937,13 @@ subtitles:
     noSubtitlesFound: 현재 영상에 자막이 없습니다
     videoNotFound: 비디오 요소를 찾을 수 없습니다
     controlsBarNotFound: 컨트롤 바를 찾을 수 없습니다
-    aiRateLimited: 요청이 너무 많습니다. 나중에 다시 시도해 주세요
-    aiAuthFailed: API 인증에 실패했습니다. API 키를 확인해 주세요
-    aiServiceUnavailable: 번역 서비스를 일시적으로 사용할 수 없습니다
-    aiQuotaExceeded: 이번 달 AI 자막 사용량을 모두 사용했습니다
-    aiQuotaExceededWithReset: 이번 달 AI 자막 사용량을 모두 사용했습니다 · $1에 초기화
-    aiLoginRequired: 로그인하여 AI 자막 사용량 확인
-    aiSubscriptionRequired: AI 자막은 Pro 또는 Ultra 구독이 필요합니다
-    aiPaymentRequired: AI 자막을 계속 생성하려면 결제 수단을 업데이트하세요
-    aiVideoTooLong: 이 영상은 너무 길어 AI 자막을 만들 수 없습니다
-    aiLiveReplayUnsupported: 라이브 스트리밍 다시보기는 아직 AI 자막을 지원하지 않습니다
-    aiStillProcessing: 아직 전사가 진행 중입니다. 몇 분 후 다시 클릭해 주세요
-    aiRequestFailed: AI 자막 요청에 실패했습니다. 잠시 후 다시 시도해 주세요
-    aiNoResponse: AI 서비스가 응답하지 않았습니다. 원문을 표시합니다
     translatedExportFailed: 번역 자막 생성에 실패했습니다
     translatedExportIncomplete: 모든 자막 줄을 번역하지 못했습니다
     translatedExportSameLanguage: 원본 언어와 대상 언어가 같습니다
-hostedAi:
-  ultraBadge:
-    tooltip: Ultra 요금제 가입이 필요합니다 · 배지를 클릭해 요금제 받기
-  availability:
-    authenticationRequired: 로그인 후 사용할 수 있습니다
-    ultraRequired: Ultra 요금제가 필요합니다
-    quotaExhausted: 할당량을 모두 사용했습니다
-    serviceUnavailable: 일시적으로 사용할 수 없습니다
-    usedPercent: "할당량 사용: $1%"
-    resetsAt: "$1에 초기화"
-  errors:
-    rateLimited: 요청이 너무 많습니다. 나중에 다시 시도해 주세요.
-    guestRateLimited: 게스트 요청이 너무 많습니다. 나중에 다시 시도해 주세요.
-    userRateLimited: 요청이 너무 많습니다. 나중에 다시 시도해 주세요.
+    aiRateLimited: 요청이 너무 많습니다. 나중에 다시 시도해 주세요
+    aiAuthFailed: API 인증에 실패했습니다. API 키를 확인해 주세요
+    aiServiceUnavailable: 번역 서비스를 일시적으로 사용할 수 없습니다
+    aiNoResponse: AI 서비스가 응답하지 않았습니다. 원문을 표시합니다
 hotkey:
   control: Ctrl
   alt: Option

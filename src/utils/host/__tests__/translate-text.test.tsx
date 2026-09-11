@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { DEFAULT_CONFIG as BASIC_CONFIG } from "@/utils/constants/config"
+import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
+const DEFAULT_CONFIG = { ...BASIC_CONFIG, providersConfig: [...BASIC_CONFIG.providersConfig, DEFAULT_PROVIDER_CONFIG.openai], selectionToolbar: { ...BASIC_CONFIG.selectionToolbar, builtInActions: { dictionary: { ...BASIC_CONFIG.selectionToolbar.builtInActions.dictionary, providerId: "openai-default" } } } }
 import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
 import { Sha256Hex } from "@/utils/hash"
@@ -17,7 +19,6 @@ import {
   endPageTranslationSession,
 } from "@/utils/host/translate/translation-session"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
-import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import { isTranslationCancelledError } from "@/utils/request/cancellation"
 
 // Mock dependencies
@@ -484,38 +485,7 @@ describe("translate-text", () => {
       )
     })
 
-    it("degrades to no summary when the optional summary hits a hosted denial", async () => {
-      mockGetConfigFromStorage.mockResolvedValue({
-        ...DEFAULT_CONFIG,
-        pageTranslation: {
-          ...DEFAULT_CONFIG.pageTranslation,
-          enableAIContentAware: true,
-        },
-        inputTranslation: {
-          ...DEFAULT_CONFIG.inputTranslation,
-          providerId: "openai-default",
-        },
-      })
-      mockGetOrGenerateWebPageSummary.mockRejectedValue(
-        new HostedAiProviderUnavailableError(
-          { kind: "system", id: "read-frog-free-ai", name: "Built-in AI", modelTier: "normal" },
-          "Weekly credit used up",
-        ),
-      )
-      mockSendMessage.mockResolvedValue("translated input")
-
-      // Input translation has no page-translation session to reuse, so it always
-      // resolves a ref inside this optional step. Aborting here would kill the
-      // request before the translation — which resolves the same ref and is the
-      // thing the user actually invoked — could surface the denial itself.
-      const result = await translateTextForInput("hello", "eng", "cmn")
-
-      expect(result).toBe("translated input")
-      expect(mockSendMessage).toHaveBeenCalledWith(
-        "enqueueTranslateRequest",
-        expect.objectContaining({ webSummary: undefined }),
-      )
-    })
+    
   })
 
   describe("hosted route mapping", () => {
@@ -541,35 +511,11 @@ describe("translate-text", () => {
       mockSendMessage.mockResolvedValue("translated")
     })
 
-    it("bills page translation and its summary against pageTranslation", async () => {
-      await translateTextForPage("Body text")
+    
 
-      expect(mockSendMessage).toHaveBeenCalledWith(
-        "enqueueTranslateRequest",
-        expect.objectContaining({ hostedFeature: "pageTranslation" }),
-      )
-      // (webPageContext, providerRef, enableAIContentAware, hostedFeature)
-      expect(mockGetOrGenerateWebPageSummary.mock.calls[0]?.[3]).toBe("pageTranslation")
-    })
+    
 
-    it("bills input translation and its summary against inputTranslation", async () => {
-      await translateTextForInput("hello", "eng", "cmn")
-
-      expect(mockSendMessage).toHaveBeenCalledWith(
-        "enqueueTranslateRequest",
-        expect.objectContaining({ hostedFeature: "inputTranslation" }),
-      )
-      expect(mockGetOrGenerateWebPageSummary.mock.calls[0]?.[3]).toBe("inputTranslation")
-    })
-
-    it("bills the page title against pageTranslation", async () => {
-      await translateTextForPageTitle("Source Title")
-
-      expect(mockSendMessage).toHaveBeenCalledWith(
-        "enqueueTranslateRequest",
-        expect.objectContaining({ hostedFeature: "pageTranslation" }),
-      )
-    })
+    
   })
 
   describe("executeTranslate", () => {
